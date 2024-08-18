@@ -8,7 +8,7 @@ namespace SocialMedia2024.Domain.Entities
     public class ReplyComment : BaseModel
     {
         [Required]
-        [MaxLength(Const.MaxLength)]
+        [MaxLength(StringLength.MaxLength)]
         public string Content {  get; set; }
         public int CommentParentID {  get; set; }
         public Comment Comment { get; set; }

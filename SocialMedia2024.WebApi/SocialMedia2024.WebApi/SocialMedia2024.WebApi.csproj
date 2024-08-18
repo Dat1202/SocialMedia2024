@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialMedia2024.WebApi.Data\SocialMedia2024.WebApi.Data.csproj" />
+    <ProjectReference Include="..\SocialMedia2024.WebApi.Service\SocialMedia2024.WebApi.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
   </ItemGroup>
 
 </Project>
