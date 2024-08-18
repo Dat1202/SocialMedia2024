@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SocialMedia2024.WebApi.Data\SocialMedia2024.WebApi.Data.csproj" />
+    <ProjectReference Include="..\SocialMedia2024.WebApi.Domain\SocialMedia2024.WebApi.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

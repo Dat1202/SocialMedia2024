@@ -8,7 +8,7 @@ namespace SocialMedia2024.Domain.Entities
     public class Message : BaseModel
     {
         [Required]
-        [MaxLength(Const.MaxLength)]
+        [MaxLength(StringLength.MaxLength)]
         public string Content { get; set; }
         public UserInChatGroup UserInChatGroup { get; set; }
         public int UserGroupChatID { get; set; }

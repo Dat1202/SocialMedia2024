@@ -8,7 +8,7 @@ namespace SocialMedia2024.Domain.Entities
     public class PostMedia : BaseModel
     {
         [Required]
-        [MaxLength(Const.MaxLength)]
+        [MaxLength(StringLength.MaxLength)]
         public string? MediaUrl { get; set; }
         public int PostID { get; set; }
         public required Post Post { get; set; }

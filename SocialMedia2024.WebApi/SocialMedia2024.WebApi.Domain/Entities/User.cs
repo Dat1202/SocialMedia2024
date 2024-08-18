@@ -7,15 +7,15 @@ namespace SocialMedia2024.Domain.Entities
 {
     public class User : IdentityUser
     {
-        [MaxLength(Const.MinLength)]
+        [MaxLength(StringLength.MinLength)]
         public string? Avatar { get; set; }
-        [MaxLength(Const.MinLength)]
+        [MaxLength(StringLength.MinLength)]
         public string? Cover { get; set; } /*ảnh bìa*/
         [Required]
-        [MaxLength(Const.MinLength)]
+        [MaxLength(StringLength.MinLength)]
         public string? LastName { get; set; }
         [Required]
-        [MaxLength(Const.MinLength)]
+        [MaxLength(StringLength.MinLength)]
         public string? FirstName { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; } 
