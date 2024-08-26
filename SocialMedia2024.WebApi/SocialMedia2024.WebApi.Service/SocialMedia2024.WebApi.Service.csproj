@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SocialMedia2024.WebApi.Data\SocialMedia2024.WebApi.Data.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SocialMedia2024.WebApi.Core\SocialMedia2024.WebApi.Core.csproj" />
     <ProjectReference Include="..\SocialMedia2024.WebApi.Domain\SocialMedia2024.WebApi.Domain.csproj" />
+    <ProjectReference Include="..\SocialMedia2024.WebApi.Infrastructure\SocialMedia2024.WebApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

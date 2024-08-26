@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SocialMedia2024.WebApi.Data.Migrations
+namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class addsystemerror : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,6 +71,22 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatGroups", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemErrors",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ErrorCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemErrors", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,17 +216,17 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                 name: "Friends",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserFollowerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserFollowingID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friends", x => new { x.ID, x.UserFollowerID, x.UserFollowingID });
+                    table.PrimaryKey("PK_Friends", x => new { x.UserFollowerID, x.UserFollowingID });
                     table.ForeignKey(
                         name: "FK_Friends_AspNetUsers_UserFollowerID",
                         column: x => x.UserFollowerID,
@@ -334,6 +350,7 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                     PostID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReactionTypeID = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<int>(type: "int", nullable: false),
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -467,11 +484,6 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friends_UserFollowerID",
-                table: "Friends",
-                column: "UserFollowerID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Friends_UserFollowingID",
                 table: "Friends",
                 column: "UserFollowingID");
@@ -549,6 +561,9 @@ namespace SocialMedia2024.WebApi.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReplyComments");
+
+            migrationBuilder.DropTable(
+                name: "SystemErrors");
 
             migrationBuilder.DropTable(
                 name: "TLMenus");

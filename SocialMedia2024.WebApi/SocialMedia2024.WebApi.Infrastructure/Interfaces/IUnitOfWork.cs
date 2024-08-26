@@ -14,6 +14,7 @@ namespace SocialMedia2024.WebApi.Data.Interfaces
     public interface IUnitOfWork
     {
         IRepository<TLMenu> TLMenus { get; }
+        IRepository<Post> Posts { get; }
 
         Task Commit();
     }
