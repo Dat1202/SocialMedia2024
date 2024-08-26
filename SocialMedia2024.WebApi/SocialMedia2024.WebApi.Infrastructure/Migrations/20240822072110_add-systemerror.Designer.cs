@@ -9,11 +9,11 @@ using SocialMedia2024.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace SocialMedia2024.WebApi.Data.Migrations
+namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 {
     [DbContext(typeof(SocialMedia2024DbContext))]
-    [Migration("20240816085806_init")]
-    partial class init
+    [Migration("20240822072110_add-systemerror")]
+    partial class addsystemerror
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -222,12 +222,6 @@ namespace SocialMedia2024.WebApi.Data.Migrations
 
             modelBuilder.Entity("SocialMedia2024.Domain.Entities.Friend", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
                     b.Property<string>("UserFollowerID")
                         .HasColumnType("nvarchar(450)");
 
@@ -237,15 +231,19 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ID", "UserFollowerID", "UserFollowingID");
-
-                    b.HasIndex("UserFollowerID");
+                    b.HasKey("UserFollowerID", "UserFollowingID");
 
                     b.HasIndex("UserFollowingID");
 
@@ -324,6 +322,9 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PostID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Active")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateAt")
@@ -524,6 +525,33 @@ namespace SocialMedia2024.WebApi.Data.Migrations
                     b.HasIndex("ChatGroupID");
 
                     b.ToTable("UserInChatGroups");
+                });
+
+            modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.SystemError", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ErrorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("SystemErrors");
                 });
 
             modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.TLMenu", b =>

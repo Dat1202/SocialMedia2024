@@ -10,8 +10,8 @@ namespace SocialMedia2024.WebApi.Domain.Interfaces
     public interface IRepository<T> where T : class
     {
         IQueryable<T> Table { get; }
-        Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> expression);
-        Task<T> GetById(object id);
+        Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? expression = null);
+        Task<T> GetSingle(Expression<Func<T, bool>>? expression = null);
         Task Add(T entity);
         Task Add(IEnumerable<T> entities);
         void Update(T entity);

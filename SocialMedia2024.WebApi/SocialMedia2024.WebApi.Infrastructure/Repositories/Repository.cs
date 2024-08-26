@@ -15,7 +15,7 @@ public class Repository<T> : IRepository<T> where T : class
             _socialMedia2024DbContext = socialMedia2024DbContext;
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? expression)
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? expression = null)
         {
             if (expression == null) 
             {
@@ -24,10 +24,9 @@ public class Repository<T> : IRepository<T> where T : class
             return await _socialMedia2024DbContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public async Task<T> GetById(object id)
+        public async Task<T?> GetSingle(Expression<Func<T, bool>> expression = null)
         {
-            var entity = await _socialMedia2024DbContext.Set<T>().FindAsync(id);
-            return entity ?? throw new KeyNotFoundException($"Entity with '{id}' was not found.");
+            return await _socialMedia2024DbContext.Set<T>().SingleOrDefaultAsync(expression);
         }
 
         public async Task Add(T entity) => await _socialMedia2024DbContext.Set<T>().AddAsync(entity);
