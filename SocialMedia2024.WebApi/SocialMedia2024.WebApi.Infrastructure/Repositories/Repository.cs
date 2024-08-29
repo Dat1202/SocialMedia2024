@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Domain.Interfaces;
 using System.Linq.Expressions;
@@ -24,9 +25,14 @@ public class Repository<T> : IRepository<T> where T : class
             return await _socialMedia2024DbContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public async Task<T?> GetSingle(Expression<Func<T, bool>> expression = null)
+        public async Task<T?> GetSingle(Expression<Func<T, bool>> expression)
         {
             return await _socialMedia2024DbContext.Set<T>().SingleOrDefaultAsync(expression);
+        }
+
+        public async Task<T?> GetByID(object id)
+        {
+            return await _socialMedia2024DbContext.Set<T>().FindAsync(id);
         }
 
         public async Task Add(T entity) => await _socialMedia2024DbContext.Set<T>().AddAsync(entity);

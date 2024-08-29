@@ -7,6 +7,7 @@ using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Core;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Data.Repositories;
+using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Middleware;
 using SocialMedia2024.WebApi.Service;
 
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<SocialMedia2024DbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SocialMediaConnention")));
 
 builder.Services.AddSingleton<IDistributedCacheService, DistributedCacheService>();
+builder.Services.AddScoped<IDapperHelper, DapperHelper>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITLMenuService, TLMenuService>();
 builder.Services.AddScoped<IErrorCodeService, ErrorCodeService>();

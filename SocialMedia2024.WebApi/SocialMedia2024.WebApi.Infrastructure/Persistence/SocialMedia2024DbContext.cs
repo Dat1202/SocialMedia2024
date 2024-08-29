@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Domain.Entities;
@@ -8,7 +9,7 @@ using SocialMedia2024.WebApi.Domain.SystemEntities;
 namespace SocialMedia2024.Infrastructure.Persistence
 {
 
-    public class SocialMedia2024DbContext : IdentityDbContext<User>
+    public class SocialMedia2024DbContext : IdentityDbContext<User, IdentityRole, string>
     {
         public SocialMedia2024DbContext(DbContextOptions<SocialMedia2024DbContext> options) : base(options)
         {

@@ -3,21 +3,23 @@ using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Domain.Interfaces;
 using SocialMedia2024.WebApi.Domain.SystemEntities;
+using SocialMedia2024.WebApi.Infrastructure.Interfaces;
+using SocialMedia2024.WebApi.Infrastructure.Repositories;
 
 namespace SocialMedia2024.WebApi.Data.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly SocialMedia2024DbContext _socialMedia2024DbContext;
-        private IRepository<Post>? _Post;
+        private IPostRepository? _Post;
+        private IMenuRepository? _Menus;
 
-        private IRepository<TLMenu>? _tlMenus;
         private bool disposedValue;
 
         public UnitOfWork(SocialMedia2024DbContext socialMedia2024DbContext) => _socialMedia2024DbContext = socialMedia2024DbContext;
 
-        public IRepository<TLMenu> TLMenus => _tlMenus ??= new Repository<TLMenu>(_socialMedia2024DbContext);
-        public IRepository<Post> Posts => _Post ??= new Repository<Post>(_socialMedia2024DbContext);
+        public IMenuRepository Menus => _Menus ??= new MenuRepository(_socialMedia2024DbContext);
+        public IPostRepository Posts => _Post ??= new PostRepositoty(_socialMedia2024DbContext);
 
         public async Task Commit()
         {
