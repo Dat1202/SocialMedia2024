@@ -6,13 +6,13 @@ namespace SocialMedia2024.WebApi.ViewModel
     public class ApiResponse<T>
     {
         public bool Success { get; set; }
-        public List<SystemError>? Error { get; set; }
+        public SystemError? Error { get; set; }
         public T? Data { get; set; }
 
-        public ApiResponse(List<SystemError> error)
+        public ApiResponse(SystemError error)
         {
             Success = false;
-            Error = error ?? new List<SystemError>();
+            Error = error;
             Data = default;
         }
 
@@ -24,7 +24,7 @@ namespace SocialMedia2024.WebApi.ViewModel
         }
 
 
-        public ApiResponse(T data, List<SystemError> error)
+        public ApiResponse(T data, SystemError error)
         {
             Success = false;
             Data = data;

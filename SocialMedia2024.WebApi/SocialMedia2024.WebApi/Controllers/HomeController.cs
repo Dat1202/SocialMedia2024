@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
 using SocialMedia2024.WebApi.Middleware;
@@ -21,19 +22,15 @@ namespace SocialMedia2024.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllTest()
         {
 
-            var menuItems = await _ITLMenuService.GetAll();
+            var menuItems = await _ITLMenuService.GetAllDapperStored();
             if (menuItems == null || menuItems.Count() == 0)
             {
-                List <string> errors = new List<string>();
-                var error = "Test";
-                errors.Add(error);
-                return await ResponseData<string>(errors);
-
+                return await ResponseError("Test");
             }
-            return await ResponseData(menuItems);
+            return await ResponseGet(menuItems);
         }
     }
 }

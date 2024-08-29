@@ -11,7 +11,8 @@ namespace SocialMedia2024.WebApi.Domain.Interfaces
     {
         IQueryable<T> Table { get; }
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? expression = null);
-        Task<T> GetSingle(Expression<Func<T, bool>>? expression = null);
+        Task<T?> GetSingle(Expression<Func<T, bool>> expression);
+        Task<T?> GetByID(object id); 
         Task Add(T entity);
         Task Add(IEnumerable<T> entities);
         void Update(T entity);

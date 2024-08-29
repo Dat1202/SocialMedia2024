@@ -16,23 +16,18 @@ namespace SocialMedia2024.WebApi.Controllers
             _errorService = errorService;
         }
 
-        protected async Task<IActionResult> ResponseData<T>(List<string> message)
+        protected async Task<IActionResult> ResponseError(string message)
         {
-            var errors = new List<SystemError>();
 
-            foreach (var item in message)
-            {
-                var error = await _errorService?.GetErrorMessageAsync(item);
-                errors.Add(error);
-            }
+            var error = await _errorService?.GetErrorMessageAsync(message);
 
-            var response = new ApiResponse<List<SystemError>>(errors);
+            var response = new ApiResponse<SystemError>(error);
 
             return Ok(response);
         }
 
 
-        protected async Task<IActionResult> ResponseData<T>(T data)
+        protected async Task<IActionResult> ResponseGet<T>(T data)
         {
             var response = new ApiResponse<T>(data);
 
