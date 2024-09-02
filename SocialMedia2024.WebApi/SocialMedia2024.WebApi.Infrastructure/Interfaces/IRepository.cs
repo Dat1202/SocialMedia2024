@@ -9,7 +9,6 @@ namespace SocialMedia2024.WebApi.Domain.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        IQueryable<T> Table { get; }
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? expression = null);
         Task<T?> GetSingle(Expression<Func<T, bool>> expression);
         Task<T?> GetByID(object id); 
@@ -18,6 +17,7 @@ namespace SocialMedia2024.WebApi.Domain.Interfaces
         void Update(T entity);
         void Delete(Expression<Func<T,bool>> expression);
         void Delete(T entity);
+        IQueryable<T> Table { get; }
 
     }
 }

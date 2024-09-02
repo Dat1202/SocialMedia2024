@@ -5,9 +5,9 @@ using SocialMedia2024.WebApi.Infrastructure.Interfaces;
 
 namespace SocialMedia2024.WebApi.Infrastructure.Repositories
 {
-    public class PostRepositoty : Repository<Post>, IPostRepository
+    public class PostRepository : Repository<Post>, IPostRepository
     {
-        public PostRepositoty(SocialMedia2024DbContext socialMedia2024DbContext) : base(socialMedia2024DbContext)
+        public PostRepository(SocialMedia2024DbContext socialMedia2024DbContext) : base(socialMedia2024DbContext)
         {
         }
     }

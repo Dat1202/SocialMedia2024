@@ -15,19 +15,19 @@ namespace SocialMedia2024.Infrastructure.Persistence
         {
 
         }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<ReplyComment> ReplyComments { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<PostAction> PostActions { get; set; }
-        public DbSet<PostMedia> PostMedias { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Friend> Friends { get; set; }
-        public DbSet<UserInChatGroup> UserInChatGroups { get; set; }
-        public DbSet<ChatGroup> ChatGroups { get; set; }
-        public DbSet<TLMenu> TLMenus { get; set; }
-        public DbSet<SystemError> SystemErrors { get; set; }
+        public DbSet<UserToken> UserToken { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<ReplyComment> ReplyComment { get; set; }
+        public DbSet<Post> Post { get; set; }
+        public DbSet<PostAction> PostAction { get; set; }
+        public DbSet<PostMedia> PostMedia { get; set; }
+        public DbSet<Notification> Notification { get; set; }
+        public DbSet<Friend> Friend { get; set; }
+        public DbSet<UserInChatGroup> UserInChatGroup { get; set; }
+        public DbSet<ChatGroup> ChatGroup { get; set; }
+        public DbSet<TLMenu> Menu { get; set; }
+        public DbSet<SystemError> SystemError { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,13 @@ namespace SocialMedia2024.Infrastructure.Persistence
             {
                 entity.HasIndex(u => u.Email)
                 .IsUnique();
+
+                entity.HasIndex(u => new { u.Email, u.PasswordHash });
             });
+
+            modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<IdentityRole>().ToTable("Role");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
 
             modelBuilder.Entity<Comment>(entity =>
             {

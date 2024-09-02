@@ -1,22 +1,17 @@
-﻿using Azure;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using NLog;
-using SocialMedia2024.WebApi.Middleware;
-using SocialMedia2024.WebApi.Service;
-using SocialMedia2024.WebApi.ViewModel;
-using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using SocialMedia2024.WebApi.Service.Interfaces;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     public class HomeController : HandleController
     {
-        private readonly ITLMenuService _ITLMenuService;
+        private readonly IMenuService _ITLMenuService;
 
-        public HomeController(ITLMenuService ITLMenuService, IErrorCodeService errorService)
-       : base(errorService) 
+        public HomeController(IMenuService ITLMenuService, IErrorCodeService errorService, IMapper mapper) : base(errorService, mapper) 
         {
             _ITLMenuService = ITLMenuService;
         }
@@ -24,13 +19,20 @@ namespace SocialMedia2024.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTest()
         {
-
-            var menuItems = await _ITLMenuService.GetAllDapperStored();
+            var menuItems = await _ITLMenuService.GetAllDapperSql();
             if (menuItems == null || menuItems.Count() == 0)
             {
                 return await ResponseError("Test");
             }
             return await ResponseGet(menuItems);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string name)
+        {
+            await _ITLMenuService.Delete(name);
+            return NoContent(); 
+        }
+
     }
 }

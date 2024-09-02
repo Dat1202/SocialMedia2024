@@ -1,15 +1,13 @@
-﻿using SocialMedia2024.WebApi.Domain.SystemEntities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
+﻿
 namespace SocialMedia2024.WebApi.ViewModel
 {
     public class ApiResponse<T>
     {
         public bool Success { get; set; }
-        public SystemError? Error { get; set; }
+        public ErrorVM? Error { get; set; }
         public T? Data { get; set; }
 
-        public ApiResponse(SystemError error)
+        public ApiResponse(ErrorVM error)
         {
             Success = false;
             Error = error;
@@ -24,7 +22,7 @@ namespace SocialMedia2024.WebApi.ViewModel
         }
 
 
-        public ApiResponse(T data, SystemError error)
+        public ApiResponse(T data, ErrorVM error)
         {
             Success = false;
             Data = data;
