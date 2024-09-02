@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialMedia2024.WebApi.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialMedia2024.WebApi.Core", "SocialMedia2024.WebApi.Core\SocialMedia2024.WebApi.Core.csproj", "{86D91742-F58A-4573-AA2D-CD24C92DA16A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia2024.WebApi.Authentication.Serivce", "SocialMedia2024.WebApi.Authentication.Serivce\SocialMedia2024.WebApi.Authentication.Serivce.csproj", "{3991D2E2-23AF-4279-828B-38BF79BA5114}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{86D91742-F58A-4573-AA2D-CD24C92DA16A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86D91742-F58A-4573-AA2D-CD24C92DA16A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86D91742-F58A-4573-AA2D-CD24C92DA16A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3991D2E2-23AF-4279-828B-38BF79BA5114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3991D2E2-23AF-4279-828B-38BF79BA5114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3991D2E2-23AF-4279-828B-38BF79BA5114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3991D2E2-23AF-4279-828B-38BF79BA5114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

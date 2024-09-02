@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMedia2024.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SocialMedia2024.Infrastructure.Persistence;
 namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 {
     [DbContext(typeof(SocialMedia2024DbContext))]
-    partial class SocialMedia2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240901152404_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
