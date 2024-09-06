@@ -4,10 +4,12 @@ using System.Security.Claims;
 using System.Text;
 using Azure.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Domain.SystemEntities;
+using SocialMedia2024.WebApi.Middleware;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Service.Service;
 
@@ -17,29 +19,32 @@ namespace SocialMedia2024.WebApi.Authentication.Service
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        private readonly IUserTokenService _userTokenService;
+        private readonly UserManager<User> _userManager;
 
-        public TokenHandler(IConfiguration configuration, IUserService userService, IUserTokenService userTokenService)
+        public TokenHandler(IConfiguration configuration, IUserService userService, UserManager<User> userManager)
         {
             _userService = userService;
             _configuration = configuration;
-            _userTokenService = userTokenService;
+            _userManager = userManager;
         }
 
         public async Task<(string, DateTime)> CreateAccessToken(User user)
         {
             DateTime expiredToken = DateTime.Now.AddMinutes(15);
-
+            var roles = await _userManager.GetRolesAsync(user);
             var claims = new Claim[]
             {
                   new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                   new Claim(JwtRegisteredClaimNames.Iss, _configuration["TokenBear:Issuer"]),
-                  new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.DateTime),
+                  new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                   new Claim(JwtRegisteredClaimNames.Aud, "SocialMedia"),
-                  new Claim(JwtRegisteredClaimNames.Exp, expiredToken.ToString(), ClaimValueTypes.DateTime),
+                  new Claim(JwtRegisteredClaimNames.Exp, expiredToken.ToString(), ClaimValueTypes.Integer64),
                   new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                  new Claim("Username", user.UserName)
-            };
+                  new Claim("Email", user.Email, ClaimValueTypes.String),
+                  new Claim("Username", user.UserName, ClaimValueTypes.String),
+                  new Claim("UserId", user.Id, ClaimValueTypes.String),
+
+            }.Union(roles.Select(x => new Claim(ClaimTypes.Role,x)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenBear:SignatureKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -55,6 +60,7 @@ namespace SocialMedia2024.WebApi.Authentication.Service
             );
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenInfo);
+            await _userManager.SetAuthenticationTokenAsync(user, "AccessTokenProvider", "AccessToken", accessToken);
 
             return await Task.FromResult((accessToken, expiredToken));
         }
@@ -71,6 +77,7 @@ namespace SocialMedia2024.WebApi.Authentication.Service
                   new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.DateTime),
                   new Claim(JwtRegisteredClaimNames.Exp, expiredToken.ToString(), ClaimValueTypes.DateTime),
                   new Claim(ClaimTypes.SerialNumber, code, ClaimValueTypes.String),
+                  new Claim("Username", user.UserName, ClaimValueTypes.String)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenBear:SignatureKey"]));
@@ -87,6 +94,7 @@ namespace SocialMedia2024.WebApi.Authentication.Service
             );
 
             var refreshToken = new JwtSecurityTokenHandler().WriteToken(tokenInfo);
+            await _userManager.SetAuthenticationTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken);
 
             return await Task.FromResult((code,refreshToken, expiredToken));
         }
@@ -109,17 +117,17 @@ namespace SocialMedia2024.WebApi.Authentication.Service
                 return;
             }
 
-            if (identity.FindFirst("Username") == null)
-            {
-                string username = identity.FindFirst("Username").Value;
+            //if (identity.FindFirst("Username") == null)
+            //{
+            //    string username = identity.FindFirst("Username").Value;
 
-                var  user = await _userService.FindByUsername(username);
-                if (user == null) 
-                {
-                    context.Fail("this token is invalid for user");
-                    return;
-                }
-            }
+            //    var  user = await _userService.FindByUsername(username);
+            //    if (user == null) 
+            //    {
+            //        context.Fail("this token is invalid for user");
+            //        return;
+            //    }
+            //}
 
             if (identity.FindFirst(JwtRegisteredClaimNames.Exp) == null)
             {
@@ -133,7 +141,9 @@ namespace SocialMedia2024.WebApi.Authentication.Service
                 new TokenValidationParameters
                 {
                     RequireExpirationTime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenBearer:SignatureKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenBear:SignatureKey"])),
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
@@ -142,16 +152,20 @@ namespace SocialMedia2024.WebApi.Authentication.Service
 
             if(claimPriciple == null) return new();
 
-            string code = claimPriciple.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber)?.Value;
+            string username = claimPriciple?.Claims?.FirstOrDefault(c => c.Type == "Username")?.Value;
             
-            if (string.IsNullOrEmpty(code)) return new();
-
-
-            UserToken userToken = await _userTokenService.CheckRefreshToken(code);
-            if (userToken != null) 
-            { 
-                User user = await _userService.FindById(userToken.UserId);
-
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found.");
+            }
+            var token = await _userManager.GetAuthenticationTokenAsync(user, "AccessTokenProvider", "AccessToken");
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new Exception("Access token not found for the user.");
+            }
+            if (!string.IsNullOrEmpty(token))
+            {
                 (string newAccessToken, DateTime createDate) = await CreateAccessToken(user);
                 (string codeRefreshToken, string newRefreshToken, DateTime newCreateDate) = await CreateRefreshToken(user);
 
@@ -160,10 +174,10 @@ namespace SocialMedia2024.WebApi.Authentication.Service
                     AccessToken = newAccessToken,
                     RefreshToken = newRefreshToken,
                     FullName = user.FirstName + " " + user.LastName,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    AccessTokenExpiredDate = createDate.ToString("dd-mm-yyyy hh:mm:ss")
                 };
             }
-
             return new();
         }
     }

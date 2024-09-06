@@ -2,8 +2,8 @@
 {
     public class Result
     {
-        public string ErrorCode { get; set; }
-        public string ErrorMessage { get; set; }
-        public List<string> Data { get; set; }
+        public string? ErrorCode { get; set; }
+        public string? ErrorMessage { get; set; }
+        public object? Data { get; set; } 
     }
 }

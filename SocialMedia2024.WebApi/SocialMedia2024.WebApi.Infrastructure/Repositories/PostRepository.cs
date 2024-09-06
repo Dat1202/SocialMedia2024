@@ -9,6 +9,7 @@ namespace SocialMedia2024.WebApi.Infrastructure.Repositories
     {
         public PostRepository(SocialMedia2024DbContext socialMedia2024DbContext) : base(socialMedia2024DbContext)
         {
+
         }
     }
 }

@@ -6,5 +6,6 @@
         public string RefreshToken { get; set; }
         public string FullName { get; set; }
         public string Username { get; set; }
+        public string AccessTokenExpiredDate {  get; set; }
     }
 }

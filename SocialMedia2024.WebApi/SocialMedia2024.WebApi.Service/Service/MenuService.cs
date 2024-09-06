@@ -1,8 +1,8 @@
 ﻿using SocialMedia2024.WebApi.Domain.SystemEntities;
-using SocialMedia2024.WebApi.Core;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Service.Interfaces;
+using SocialMedia2024.WebApi.Core.Cache;
 namespace SocialMedia2024.WebApi.Service.Service
 {
     public class MenuService : IMenuService

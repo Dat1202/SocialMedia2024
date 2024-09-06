@@ -1,6 +1,4 @@
-﻿
-
-namespace SocialMedia2024.WebApi.Core
+﻿namespace SocialMedia2024.WebApi.Core.Cache
 {
     public interface IDistributedCacheService
     {

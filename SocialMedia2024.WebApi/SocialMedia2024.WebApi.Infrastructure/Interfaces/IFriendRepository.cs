@@ -5,5 +5,6 @@ namespace SocialMedia2024.WebApi.Infrastructure.Interfaces
 {
     public interface IFriendRepository : IRepository<Friend>
     {
+        Task<Friend> ExistFriend(string currentUser, string friendId);
     }
 }
