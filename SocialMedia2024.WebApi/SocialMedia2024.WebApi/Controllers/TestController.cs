@@ -24,7 +24,7 @@ namespace SocialMedia2024.WebApi.Controllers
         public async Task<IActionResult> GetAllTest()
         {
             var menuItems = await _ITLMenuService.GetAllDapperSql();
-            if (menuItems == null || menuItems.Count() != 0)
+            if (menuItems == null || menuItems.Count() == 0)
             {
                 return await ResponseError("Test");
             }
