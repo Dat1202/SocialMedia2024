@@ -38,15 +38,12 @@ namespace SocialMedia2024.WebApi.Middleware
                     _ => StatusCodes.Status500InternalServerError   
                 };
 
-                var response = new Result
-                {
-                    ErrorMessage = exception is ValidationException errorMessage ? (errorMessage.AdditionalData != null ? errorMessage.AdditionalData?.ErrorMessage : exception.Message) : "",
-
-                    ErrorCode = exception is ValidationException ErrorCode
-                    ? (ErrorCode.AdditionalData != null ? ErrorCode.AdditionalData?.ErrorCode : "") : "",
-
-                    Data = []
-                };
+            var response = new Result
+            {
+                ErrorMessage = exception.Message,
+                ErrorCode = exception.InnerException?.Message ?? string.Empty,
+                Data = new List<object>()
+            };
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(response));
             }

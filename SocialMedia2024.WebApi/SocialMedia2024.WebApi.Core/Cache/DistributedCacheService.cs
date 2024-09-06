@@ -1,13 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SocialMedia2024.WebApi.Core
+namespace SocialMedia2024.WebApi.Core.Cache
 {
     public class DistributedCacheService : IDistributedCacheService
     {
@@ -33,7 +27,7 @@ namespace SocialMedia2024.WebApi.Core
 
             if (!string.IsNullOrEmpty(value))
             {
-                    return JsonConvert.DeserializeObject<T>(value);
+                return JsonConvert.DeserializeObject<T>(value);
             }
             return default;
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Domain.Entities;
 using SocialMedia2024.WebApi.Domain.Enum;
@@ -11,11 +13,16 @@ namespace SocialMedia2024.Infrastructure.Persistence
 
     public class SocialMedia2024DbContext : IdentityDbContext<User, IdentityRole, string>
     {
-        public SocialMedia2024DbContext(DbContextOptions<SocialMedia2024DbContext> options) : base(options)
-        {
+        private readonly IConfiguration _configuration;
+        private readonly IServiceProvider _serviceProvider;
 
+        public SocialMedia2024DbContext(DbContextOptions<SocialMedia2024DbContext> options, IConfiguration configuration,
+            IServiceProvider serviceProvider)  : base(options)
+        {
+            _configuration = configuration;
+            _serviceProvider = serviceProvider;
         }
-        public DbSet<UserToken> UserToken { get; set; }
+
         public DbSet<User> User { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<ReplyComment> ReplyComment { get; set; }
@@ -32,6 +39,11 @@ namespace SocialMedia2024.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            SeedData(modelBuilder);
+
+            modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<IdentityRole>().ToTable("Role");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
 
             modelBuilder.Entity<User>(entity =>
             {
@@ -40,10 +52,6 @@ namespace SocialMedia2024.Infrastructure.Persistence
 
                 entity.HasIndex(u => new { u.Email, u.PasswordHash });
             });
-
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<IdentityRole>().ToTable("Role");
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
 
             modelBuilder.Entity<Comment>(entity =>
             {
@@ -150,6 +158,62 @@ namespace SocialMedia2024.Infrastructure.Persistence
                .WithMany(c => c.ReplyComments)
                .HasForeignKey(u => u.UserID)
                .OnDelete(DeleteBehavior.NoAction);
+            });
+        }
+
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            string defaultAdmin = "Admin";
+            var passwordHashService = _serviceProvider.CreateScope().ServiceProvider.GetService<PasswordHasher<User>>();
+            string userId = Guid.NewGuid().ToString();
+            string roleId = string.Empty;
+            var roles = _configuration.GetSection("DefaultRole");
+
+            if (roles.Exists())
+            {
+                foreach (var role in roles.GetChildren())
+                {
+                    string id = Guid.NewGuid().ToString();
+
+                    modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+                    {
+                        Id = id,
+                        Name = role.Value,
+                        NormalizedName = role.Value.ToUpper()
+                    });
+
+                    if (role.Value == defaultAdmin)
+                    {
+                        roleId = id;
+                    }
+                }
+            }
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = userId,
+                    UserName = defaultAdmin.ToLower(),
+                    NormalizedUserName = defaultAdmin.ToUpper(),
+                    Email = "admin@gmail.com".ToUpper(),
+                    NormalizedEmail = "admin@gmail.com".ToUpper(),
+                    AccessFailedCount = 0,
+                    FirstName = defaultAdmin,
+                    LastName = "",
+                    PasswordHash = passwordHashService.HashPassword(new Domain.Entities.User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = defaultAdmin,
+                        NormalizedUserName = defaultAdmin.ToUpper(),
+                        Email = "admin@gmail.com".ToUpper(),
+                    }, "Admin@123")
+                });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = roleId,
+                UserId = userId,
+
             });
         }
     }

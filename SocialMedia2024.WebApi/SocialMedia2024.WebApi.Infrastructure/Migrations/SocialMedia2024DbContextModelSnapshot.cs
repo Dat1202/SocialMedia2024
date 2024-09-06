@@ -47,6 +47,20 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ae0271fe-21a8-42fd-aaa4-de29edb36939",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "837df243-6a71-4547-b861-cd13911abe74",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -134,6 +148,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRole", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "238b5066-43cb-4211-96ce-df2a29ff028f",
+                            RoleId = "837df243-6a71-4547-b861-cd13911abe74"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -227,12 +248,6 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -506,6 +521,28 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasIndex("Email", "PasswordHash");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "238b5066-43cb-4211-96ce-df2a29ff028f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "da6ba5f6-eaae-4e7f-a0ce-7e1f8570cb42",
+                            CreateAt = new DateTime(2024, 9, 6, 17, 15, 39, 188, DateTimeKind.Local).AddTicks(3179),
+                            DateOfBirth = new DateOnly(1, 1, 1),
+                            Email = "ADMIN@GMAIL.COM",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGyWqKG6tB8NpZU5EKumWGFjirjW8XSlEzxLmGkbVQ0Wwka9RUO0uSwUs+sLoiFLiA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7a3684d7-0636-4557-986f-6ca5577b813a",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("SocialMedia2024.WebApi.Domain.Entities.UserInChatGroup", b =>
@@ -582,48 +619,6 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Menu");
-                });
-
-            modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.UserToken", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("AccessToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CodeRefreshToken")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiredDateAccessToken")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiredDateRefreshToken")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("UserToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

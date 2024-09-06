@@ -1,5 +1,6 @@
 ﻿using Alachisoft.NCache.Caching.Distributed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,9 +12,12 @@ using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Authentication.Service;
 using SocialMedia2024.WebApi.Configuration;
-using SocialMedia2024.WebApi.Core;
+using SocialMedia2024.WebApi.Core.Cache;
+using SocialMedia2024.WebApi.Core.Configuration;
+using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Data.Repositories;
+using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Middleware;
 using SocialMedia2024.WebApi.Service.Interfaces;
@@ -33,9 +37,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
                     options.Password.RequireUppercase = true;
                     options.Password.RequireLowercase = true;
                     options.Password.RequireDigit = true;
-                }).
-                AddEntityFrameworkStores<SocialMedia2024DbContext>()
-                .AddDefaultTokenProviders();
+                }).AddEntityFrameworkStores<SocialMedia2024DbContext>()
+                  .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IDistributedCacheService, DistributedCacheService>();
 builder.Services.AddScoped<IDapperHelper, DapperHelper>();
@@ -48,7 +51,6 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
-builder.Services.AddScoped<IUserTokenService, UserTokenService>();
 builder.Services.AddScoped<PasswordHasher<User>>();
 builder.Services.AddScoped<PasswordValidator<User>>();
 
@@ -59,6 +61,16 @@ var audience = tokenBearConfig["Audience"];
 var signatureKey = tokenBearConfig["SignatureKey"];
 
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig).Assembly);
+
+//Policy
+builder.Services.AddAuthorization(options =>
+{
+    //options.AddPolicy("OnlyAdmin", x => x.RequireRole("Admin"));
+    //authorzition tất cả các controller, nếu cnl nào ko cần thì [AllowAnonymous]
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                                      .RequireAuthenticatedUser() 
+                                      .Build();
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -118,8 +130,15 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddNLog();
     loggingBuilder.SetMinimumLevel(LogLevel.Trace);
 });
+
+//email
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped<IEmailHelper, EmailHelper>();
+builder.Services.AddScoped<IEmailTemplateReader, EmailTemplateReader>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
