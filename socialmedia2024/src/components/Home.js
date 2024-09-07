@@ -1,30 +1,28 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import Apis, { endpoints } from "../configs/Apis";
 import Spinner from "../layout/Spinner";
 
 const Home = () => {
-
     const [menu, setMenu] = useState(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadMenu = async () => {
-            let res = await Apis.get(endpoints['menu']);
-            console.log(res)
-            setMenu(res.data.data);
-        }
-        loadMenu();
-    },[])
+                let { data } = await Apis.get(endpoints['menu']);
+                console.log(data);
+                setMenu(data);
+            };
+            loadMenu();
+        }, []);
 
-    if(menu == null) return <Spinner />
-    
+    if (menu===null) return <Spinner />;
+
     return (
         <>
-            <h1>Home</h1>
-            <ul>
-                {menu.map(c => <li className="m-4" key={c.id}>{c.menuName}</li>)}
-            </ul>
+            <h1>{menu.success ? (menu.data.map(m => (
+                <p key={m.id}>{m.menuName}</p>
+            ))) : (menu.error.errorMessage)}</h1>
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

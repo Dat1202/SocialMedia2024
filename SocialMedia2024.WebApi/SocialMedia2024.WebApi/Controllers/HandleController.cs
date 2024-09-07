@@ -43,7 +43,7 @@ namespace SocialMedia2024.WebApi.Controllers
         }
         protected Task<IActionResult> ResponseError(string errorCode)
         {
-            return HandleError(errorCode, response => BadRequest(response));
+            return HandleError(errorCode, response => Ok(response));
         }
 
         protected Task<IActionResult> NotFoundError(string errorCode)

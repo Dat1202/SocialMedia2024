@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import { Form, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import cookie from "react-cookies";
 import Apis, { endpoints } from "../configs/Apis";
 // import { MyUserContext } from "../../App";
@@ -22,7 +22,7 @@ const Login = () => {
                         "password": password
                     })
                     cookie.save("token", res.data.accessToken)
-                    console.log(res)
+                    console.log(cookie.load("token"))
                     // let { data } = await authApis().get(endpoints['current-user']);
                     // cookie.save("user", data)
                     // dispatch({
@@ -47,6 +47,8 @@ const Login = () => {
         <>
             <section class="container__form">
                 <h1>Đăng nhập</h1>
+                div.container      
+
                 <form onSubmit={login}>
                     <div class="form-control">
                         <input value={username} onChange={e => setUsername(e.target.value)}

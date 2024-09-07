@@ -1,7 +1,11 @@
+import { NavLink } from "react-router-dom"
+
 const Header = () => {
     return (
         <>
-            <h1>header</h1>
+            <NavLink className="nav-link" to='/'>Home</NavLink>
+            <NavLink className="nav-link" to='/login'>Login</NavLink>
+
         </>
     )
 }
