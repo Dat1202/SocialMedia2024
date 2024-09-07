@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using ProtoBuf.Extended.Meta;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Authentication.Service;
@@ -136,6 +137,15 @@ builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("MailSe
 builder.Services.AddScoped<IEmailHelper, EmailHelper>();
 builder.Services.AddScoped<IEmailTemplateReader, EmailTemplateReader>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -174,6 +184,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
