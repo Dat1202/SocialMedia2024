@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ae0271fe-21a8-42fd-aaa4-de29edb36939",
+                            Id = "8d26ca91-89aa-4dd2-b0c9-cef906a2b824",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "837df243-6a71-4547-b861-cd13911abe74",
+                            Id = "9969b366-0f0f-413e-a05c-48e398211c53",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "238b5066-43cb-4211-96ce-df2a29ff028f",
-                            RoleId = "837df243-6a71-4547-b861-cd13911abe74"
+                            UserId = "4f234820-a70f-49c3-a0a1-85a9869bacb3",
+                            RoleId = "9969b366-0f0f-413e-a05c-48e398211c53"
                         });
                 });
 
@@ -494,6 +494,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Sex")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -525,10 +528,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "238b5066-43cb-4211-96ce-df2a29ff028f",
+                            Id = "4f234820-a70f-49c3-a0a1-85a9869bacb3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "da6ba5f6-eaae-4e7f-a0ce-7e1f8570cb42",
-                            CreateAt = new DateTime(2024, 9, 6, 17, 15, 39, 188, DateTimeKind.Local).AddTicks(3179),
+                            ConcurrencyStamp = "af286c1c-4ebb-4b34-9ccc-bdac2b3c2a0a",
+                            CreateAt = new DateTime(2024, 9, 10, 14, 21, 34, 907, DateTimeKind.Local).AddTicks(6082),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -537,9 +540,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGyWqKG6tB8NpZU5EKumWGFjirjW8XSlEzxLmGkbVQ0Wwka9RUO0uSwUs+sLoiFLiA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEURFZeqjVcdOV7Lfscpl92L8km/LjEAkMJASH3o0gR8e2ruY1wPos9ubCEYJKpoFA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7a3684d7-0636-4557-986f-6ca5577b813a",
+                            SecurityStamp = "ff6505d0-23a4-437a-8618-6b23d0876aa7",
+                            Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

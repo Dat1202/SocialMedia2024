@@ -3,7 +3,7 @@ import { Google } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom';
 import Apis, { endpoints } from '../configs/Apis';
 import cookie from "react-cookies";
-import Modal from '../layout/Modal';
+import Modal from './Modal';
 
 const Login = () => {
     const nav = useNavigate()
@@ -52,10 +52,10 @@ const Login = () => {
                         <input type="submit" value="Đăng nhập" className='btn rounded-2xl m-2 text-white bg-blue-400 w-3/5 px-4 py-2 shadow-md hover:text-blue-400 hover:bg-white transition duration-200 ease-in' />
                         <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
                         <p className='text-blue-400 mt-4 text-sm'>Don't have an account?</p>
-                        <Modal isOpen={isModalOpen} onClose={closeModal} />
                         <p onClick={openModal} className='text-blue-400 mb-4 text-sm font-medium cursor-pointer'>Create a New Account?</p>
                     </div>
                </form>
+                <Modal isOpen={isModalOpen} onClose={closeModal} />
             </div>
         </div>
     )

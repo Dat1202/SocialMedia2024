@@ -1,14 +1,10 @@
 // rafc
 // dob const  
-import React, { useState } from 'react'
+import React, {  } from 'react'
 import { Google } from '@mui/icons-material'
 
 const Register = () => {
-    const [registerEmail, setRegisterEmail] = useState("");
-    const [registerPassword, setRegisterPassword] = useState("");
-    const [registerName, setRegisterName] = useState("");
-    const [registerAvatar, setRegisterAvatar] = useState("");
-    
+
     return (
         <div className="bg-blue-400 text-white rounded-2xl shadow-2xl  flex flex-col w-full  md:w-1/3 items-center max-w-4xl transition duration-1000 ease-in">
             <h2 className='p-3 text-3xl font-bold text-white'>Horiz</h2>
