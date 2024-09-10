@@ -20,6 +20,7 @@ namespace SocialMedia2024.Domain.Entities
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; } 
         public DateOnly DateOfBirth {  get; set; }
+        public bool Sex { get; set; }
         public ICollection<PostAction> PostActions { get; set; } = new List<PostAction>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<ReplyComment> ReplyComments { get; set; } = new List<ReplyComment>();

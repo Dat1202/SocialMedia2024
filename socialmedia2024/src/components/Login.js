@@ -1,76 +1,64 @@
-import React, {  useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Google } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom';
+import Apis, { endpoints } from '../configs/Apis';
 import cookie from "react-cookies";
-import Apis, { endpoints } from "../configs/Apis";
-// import { MyUserContext } from "../../App";
+import Modal from './Modal';
 
 const Login = () => {
+    const nav = useNavigate()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
-    // const [user, dispatch] = useContext(MyUserContext);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const navigate = useNavigate();
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
-    // const [q] = useSearchParams();
-
-    const login = async (e) => {
+    const login = async (e) =>{
         e.preventDefault();
-            const process = async () => {
-                try {
-                    let res = await Apis.post(endpoints['login'], {
-                        "username": username,
-                        "password": password
-                    })
-                    cookie.save("token", res.data.accessToken)
-                    console.log(cookie.load("token"))
-                    // let { data } = await authApis().get(endpoints['current-user']);
-                    // cookie.save("user", data)
-                    // dispatch({
-                    //     "type": "login",
-                    //     "payload": data
-                    // })
-                    navigate('/');
-
-                } catch (ex) {
-                    console.error(ex);
-                }
+        const process = async () => {
+            try{
+                let res = await Apis.post(endpoints['login'], {
+                    "username": username,
+                    "password": password
+                })
+                cookie.save("token", res.data.accessToken)
+                console.log(cookie.load("token"))
+                console.log(res)
+                nav("/")
+            } catch(ex){
+                console.log(ex)
             }
-            process();
         }
-    
-    // if (user !== null) {
-    //     let url = q.get("next") || "/";
-    //     return <Navigate to={url} />
-    // }
+        process();
+    }
 
     return (
-        <>
-            <section class="container__form">
-                <h1>Đăng nhập</h1>
-                div.container      
-
+        <div className='flex items-center justify-center h-screen bg-gray-100'>
+            <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-full md:w-1/3 items-center max-w-4xl transition duration-1000 ease-out">
+                <h2 className='p-3 text-3xl font-bold text-pink-400'>Wolf</h2>
+                <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
+                <h3 className='text-xl font-semibold text-blue-400 pt-2'>Sign In!</h3>
+                <div className='flex m-4 items-center justify-center'>
+                    <div className="socialIcon">
+                        <Google />
+                    </div>
+                </div>
+                {/* Inputs */}
                 <form onSubmit={login}>
-                    <div class="form-control">
-                        <input value={username} onChange={e => setUsername(e.target.value)}
-                            type="text" id="email" placeholder="Nhập username" />
+                    <div className='flex flex-col items-center justify-center'>
+                        <input type='text' value={username} onChange={e => {setUsername(e.target.value)}} className='rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0' placeholder='Email'></input>
+                        <input type="password" value={password} onChange={e => {setPassword(e.target.value)}} className='rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0' placeholder='Password'></input>
+                        <input type="submit" value="Đăng nhập" className='btn rounded-2xl m-2 text-white bg-blue-400 w-3/5 px-4 py-2 shadow-md hover:text-blue-400 hover:bg-white transition duration-200 ease-in' />
+                        <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
+                        <p className='text-blue-400 mt-4 text-sm'>Don't have an account?</p>
+                        <p onClick={openModal} className='text-blue-400 mb-4 text-sm font-medium cursor-pointer'>Create a New Account?</p>
                     </div>
-
-                    <div class="form-control">
-                        <input value={password} onChange={e => setPassword(e.target.value)}
-                            type="password" id="password" placeholder="Nhập mật khẩu" />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        Submit
-                    </button>               
-                    <div class="signup_link">Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link></div>
-                </form >
-            </section>
-        </>
+               </form>
+                <Modal isOpen={isModalOpen} onClose={closeModal} />
+            </div>
+        </div>
     )
 }
 
-export default Login
+export default Login;

@@ -6,7 +6,8 @@ const BASE_URL = "https://localhost:44389/api"
 
 export const endpoints = {
     "menu": "/Test/GetAllTest/",
-    "login": "/Authentication/login/"
+    "login": "/Authentication/login/",
+    "register": "/User/register/"
 }
 export default axios.create({
     baseURL: BASE_URL

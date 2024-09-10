@@ -38,7 +38,7 @@ namespace SocialMedia2024.WebApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserVM userVM)
         {
-            if(userVM != null)
+            if(userVM == null)
             {
                 return await ResponseError("Test");
             }
@@ -63,7 +63,7 @@ namespace SocialMedia2024.WebApi.Controllers
                 body = string.Format(body, user.FirstName + " " + user.LastName, url);
                 await _emailHelper.SendMail(new Domain.SystemEntities.EmailRequest
                 {
-                    To = user.Email,
+                    To = "dat120202@gmail.com",
                     Subject = "Xác nhận đăng ký tài khoản",
                     Content = body
                 });
