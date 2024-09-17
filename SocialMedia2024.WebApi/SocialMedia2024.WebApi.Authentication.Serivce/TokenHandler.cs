@@ -40,7 +40,7 @@ namespace SocialMedia2024.WebApi.Authentication.Service
                   new Claim(JwtRegisteredClaimNames.Aud, "SocialMedia"),
                   new Claim(JwtRegisteredClaimNames.Exp, expiredToken.ToString(), ClaimValueTypes.Integer64),
                   new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                  new Claim("Email", user.Email, ClaimValueTypes.String),
+                  //new Claim("Email", user.Email, ClaimValueTypes.String),
                   new Claim("Username", user.UserName, ClaimValueTypes.String),
                   new Claim("UserId", user.Id, ClaimValueTypes.String),
 

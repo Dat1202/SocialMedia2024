@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8d26ca91-89aa-4dd2-b0c9-cef906a2b824",
+                            Id = "d39dee8d-42ba-493e-beb5-1556518363ba",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "9969b366-0f0f-413e-a05c-48e398211c53",
+                            Id = "94eaa027-627d-4837-a1fa-bc79056b4492",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "4f234820-a70f-49c3-a0a1-85a9869bacb3",
-                            RoleId = "9969b366-0f0f-413e-a05c-48e398211c53"
+                            UserId = "9ad99745-114f-490b-97a3-c489fd958fd2",
+                            RoleId = "94eaa027-627d-4837-a1fa-bc79056b4492"
                         });
                 });
 
@@ -528,10 +528,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4f234820-a70f-49c3-a0a1-85a9869bacb3",
+                            Id = "9ad99745-114f-490b-97a3-c489fd958fd2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "af286c1c-4ebb-4b34-9ccc-bdac2b3c2a0a",
-                            CreateAt = new DateTime(2024, 9, 10, 14, 21, 34, 907, DateTimeKind.Local).AddTicks(6082),
+                            ConcurrencyStamp = "f0741dab-fd62-47d9-a055-686c36521500",
+                            CreateAt = new DateTime(2024, 9, 12, 16, 33, 2, 837, DateTimeKind.Local).AddTicks(4135),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -540,9 +540,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEURFZeqjVcdOV7Lfscpl92L8km/LjEAkMJASH3o0gR8e2ruY1wPos9ubCEYJKpoFA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEWBkBhhDMjEDHIlPP4eHkfrX8xSBqhj/DR/h5FAwm95oDqU6Keym9EQimHlpR3NMg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff6505d0-23a4-437a-8618-6b23d0876aa7",
+                            SecurityStamp = "0e86b853-acb4-4e34-80fb-e8f0f15ab378",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -567,7 +567,7 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.ToTable("UserInChatGroup");
                 });
 
-            modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.SystemError", b =>
+            modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.MessageResponse", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -578,11 +578,11 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ErrorCode")
+                    b.Property<string>("MessageCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ErrorMessage")
+                    b.Property<string>("MessageContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -591,7 +591,7 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SystemError");
+                    b.ToTable("MessageResponse");
                 });
 
             modelBuilder.Entity("SocialMedia2024.WebApi.Domain.SystemEntities.TLMenu", b =>

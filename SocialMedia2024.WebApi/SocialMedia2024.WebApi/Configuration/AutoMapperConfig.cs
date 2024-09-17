@@ -10,7 +10,7 @@ namespace SocialMedia2024.WebApi.Configuration
     {
         public AutoMapperConfig() 
         {
-            CreateMap<ErrorVM, SystemError>().ReverseMap();
+            CreateMap<ErrorVM, MessageResponse>().ReverseMap();
             CreateMap<UserVM, User>().ForMember(u => u.PasswordHash, y => y.MapFrom(src => src.Password)).ReverseMap();
         }   
     }

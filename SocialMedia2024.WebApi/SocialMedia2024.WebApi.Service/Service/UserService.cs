@@ -36,12 +36,12 @@ namespace SocialMedia2024.WebApi.Service.Service
             return user;
         }
 
-        public async Task<User> FindByUsername(string name)
+        public async Task<User> FindUserByUsername(string name)
         {
             return await _unitOfWork.Users.GetSingle(u => u.UserName == name);
         }
 
-        public async Task<User> FindById(string id)
+        public async Task<User> FindUserById(string id)
         {
             return await _unitOfWork.Users.GetSingle(u => u.Id == id);
         }

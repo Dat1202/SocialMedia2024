@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+:root{
+  --primary-color: #242526;
+  --secondary-color: #3a3b3c;
+  --icon-color: #e4e6eb;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

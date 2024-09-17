@@ -4,6 +4,6 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
 {
     public interface IErrorCodeService
     {
-        Task<SystemError> GetErrorMessageAsync(string errorCode);
+        Task<string?> GetMessageContent(string messageCode);
     }
 }

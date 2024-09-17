@@ -2,9 +2,10 @@
 
 namespace SocialMedia2024.WebApi.Domain.SystemEntities
 {
-    public class SystemError : BaseModel
+    public class MessageResponse : BaseModel
     {
-        public string ErrorCode { get; set; }
-        public string ErrorMessage { get; set; }
+        public string MessageCode { get; set; }
+        public string MessageContent { get; set; }
     }
 }
+ 

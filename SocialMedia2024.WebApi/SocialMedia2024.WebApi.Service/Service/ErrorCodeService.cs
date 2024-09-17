@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialMedia2024.Infrastructure.Persistence;
-using SocialMedia2024.WebApi.Domain.SystemEntities;
 using SocialMedia2024.WebApi.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialMedia2024.WebApi.Service.Service
 {
@@ -19,13 +13,13 @@ namespace SocialMedia2024.WebApi.Service.Service
             _context = context;
         }
 
-        public async Task<SystemError> GetErrorMessageAsync(string errorCode)
+        public async Task<string?> GetMessageContent(string messageCode)
         {
-            var error = await _context.SystemError
-               .Where(e => e.ErrorCode == errorCode)
+            var error = await _context.MessageResponse
+               .Where(e => e.MessageCode == messageCode)
                .FirstOrDefaultAsync();
 
-            return error;
+            return error?.MessageContent;
         }
     }
 }

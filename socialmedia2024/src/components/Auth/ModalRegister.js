@@ -1,12 +1,13 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import moment from 'moment/moment';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Apis, { endpoints } from '../configs/Apis';
-import Spinner from '../layout/Spinner';
+import Apis, { endpoints } from '../../configs/Apis';
+import {  toast } from 'react-toastify';
+import Spinner from '../../layout/Spinner';
 
-const Modal = ({ isOpen, onClose }) => {
+const ModalRegister = ({ isOpen, onClose }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [currentSelectedMonth, setCurrentSelectedMonth] = useState(startDate.getMonth());
     const [selectedSex, setSelectedSex] = useState('male');
@@ -22,50 +23,60 @@ const Modal = ({ isOpen, onClose }) => {
         "dateOfBirth": moment(startDate).format("YYYY-MM-DD")
     });
 
-    useEffect(() => {
-        setUser((prevUser) => ({
-            ...prevUser,
-            "sex": selectedSex === "male",
-            "dateOfBirth": moment(startDate).format("YYYY-MM-DD")
-        }));
-    }, [startDate, selectedSex]);
-
     const registerUser = async (e) => {
         e.preventDefault();
-        setLoading(true);   
 
-        // if (user.password !== user.confirmPassword) {
-        //     alert('Passwords do not match.');
-        //     setLoading(false);
-        //     return;
-        // }
-
-        const process = async () => {
-            try {
-                let res = await Apis.post(endpoints['register'], user)
-                console.log(res);
-            } catch (ex) {
-                console.log(ex)
-            }
+        if (user.password !== user.confirmPassword) {
+            toast.error('Passwords do not match.');
+            setLoading(false);
+            return;
         }
+        setLoading(true)
+
         process();
-        onClose();
     }
 
-    const change = (value, field) => {
+    const process = async () => {
+        try {
+            let res = await Apis.post(endpoints['register'], user);
+            if (res.success) {
+                setLoading(false)
+                onClose();  
+                toast.success(res.messageResponse)
+            }
+
+        } catch (error) {   
+            if (error.response && error.response.data) {
+                const errors = error.response.data;
+                setLoading(false)
+                errors.forEach(err => {
+                    toast.error(err.description);
+                });
+            }
+        }
+    }
+
+    const changeUser = (value, field) => {
         setUser(current => {
             return { ...current, [field]: value };
         });
-
-        console.log(user)
     }
 
     const handleChangeDatePicker = (date) => {
-        setStartDate(date);
+        if (!date) {
+            const today = new Date();
+            setStartDate(today);
+            setCurrentSelectedMonth(today.getMonth());
+        } else 
+            setStartDate(date);
+        
+        changeUser(moment(date).format("YYYY-MM-DD"), "dateOfBirth");
+
     }
 
     const handleSexChange = (event) => {
         setSelectedSex(event.target.id);
+        changeUser(event.target.id === "male", "sex")
     };
 
     const isSameMonth = (month) => {
@@ -80,6 +91,10 @@ const Modal = ({ isOpen, onClose }) => {
     };
 
     const handleMonthChange = (date) => {
+        if (!date) {
+            setCurrentSelectedMonth(moment(new Date().getMonth()))
+            return;
+        }
         setCurrentSelectedMonth(date.getMonth());
     };
 
@@ -94,7 +109,6 @@ const Modal = ({ isOpen, onClose }) => {
     return (
         <Dialog open={isOpen} onClose={onClose} className="relative z-10">
             <form onSubmit={registerUser}>
-                <div>{loading === true ? <Spinner /> : ""}</div>
                 <DialogBackdrop
                     transition
                     className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -125,14 +139,14 @@ const Modal = ({ isOpen, onClose }) => {
                                                     <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                                                         Họ
                                                     </span>
-                                                    <input onChange={e => change(e.target.value, "firstName")} type="text" name="firstName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Họ" />
+                                                    <input onChange={e => changeUser(e.target.value, "firstName")} type="text" name="firstName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Họ" />
                                                 </label>
 
                                                 <label className="block">
                                                     <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                                                         Tên
                                                     </span>
-                                                    <input onChange={e => change(e.target.value, "lastName")} type="text" name="lastName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Tên" />
+                                                    <input onChange={e => changeUser(e.target.value, "lastName")} type="text" name="lastName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Tên" />
                                                 </label>
                                             </div>
 
@@ -140,21 +154,21 @@ const Modal = ({ isOpen, onClose }) => {
                                                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                                                     Tên đăng nhập
                                                 </span>
-                                                <input onChange={e => change(e.target.value, "username")} type="text" name="username" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Số điện thoại hoặc email" />
+                                                <input onChange={e => changeUser(e.target.value, "username")} type="text" name="username" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Số điện thoại hoặc email" />
                                             </label>
 
                                             <label className="block">
                                                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                                                     Mật khẩu
                                                 </span>
-                                                <input onChange={e => change(e.target.value, "password")} type="password" name="password" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Mật khẩu" />
+                                                <input onChange={e => changeUser(e.target.value, "password")} type="password" name="password" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Mật khẩu" />
                                             </label>
 
                                             <label className="block">
                                                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                                                     Xác nhận mật khẩu
                                                 </span>
-                                                <input onChange={e => change(e.target.value, "confirmPassword")} type="password" name="confirmPassword" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Xác nhận mật khẩu" />
+                                                <input onChange={e => changeUser(e.target.value, "confirmPassword")} type="password" name="confirmPassword" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Xác nhận mật khẩu" />
                                             </label>
 
                                             <div className='flex justify-between'>
@@ -193,14 +207,15 @@ const Modal = ({ isOpen, onClose }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            {loading ? <div className="text-end mr-4"><Spinner /></div> : <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                 <input
                                     type="submit"
                                     data-autofocus
-                                    className="mt-3 inline-flex w-full justify-center rounded-md text-white bg-blue-400 hover:text-blue-400 hover:bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                    value="Save" 
+                                    className="mt-3 inline-flex w-full justify-center rounded-md text-white bg-blue-400 hover:text-blue-400 hover:bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 sm:mt-0 sm:w-auto transition duration-200 ease-in"
+                                    value="Save"
                                 />
-                            </div>
+                            </div>}
+                            
                         </DialogPanel>
                     </div>
                 </div>
@@ -209,4 +224,4 @@ const Modal = ({ isOpen, onClose }) => {
     )
 }
 
-export default Modal;
+export default ModalRegister;

@@ -4,9 +4,9 @@ namespace SocialMedia2024.WebApi.Middleware
 {
     public class ValidationException : Exception
     {
-        public SystemError AdditionalData { get; }
+        public MessageResponse AdditionalData { get; }
 
-        public ValidationException(string message, SystemError additionalData) : base(message)
+        public ValidationException(string message, MessageResponse additionalData) : base(message)
         {
             AdditionalData = additionalData;
         }
