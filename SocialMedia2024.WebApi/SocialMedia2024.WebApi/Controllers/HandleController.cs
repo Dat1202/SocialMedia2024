@@ -1,8 +1,5 @@
-﻿using Alachisoft.NCache.Common.ErrorHandling;
-using AutoMapper;
-using log4net.Extended.Core;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SocialMedia2024.WebApi.Domain.SystemEntities;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.ViewModel;
 
@@ -20,40 +17,37 @@ namespace SocialMedia2024.WebApi.Controllers
             _errorService = errorService;
         }
 
-        protected async Task<IActionResult> ResponseGet<T>(T data)
+        protected async Task<IActionResult> Response<T>(T data, string errorCode = null)
         {
-            var response = new ApiResponse<T>(data);
+            string messageResponse = await _errorService.GetMessageContent(errorCode);
+
+            var response = new ApiResponse<T>(data, messageResponse);
 
             return Ok(response);
         }
 
-        protected async Task<IActionResult> HandleError(string errorCode, Func<ApiResponse<ErrorVM>, IActionResult> errorResponse)
+        protected async Task<IActionResult> HandleError(string messageCode, Func<ApiResponse<ErrorVM>, IActionResult> errorResponse)
         {
-            SystemError error = await _errorService.GetErrorMessageAsync(errorCode);
+            string responseData = await _errorService.GetMessageContent(messageCode);
 
-            if (error == null)
-            {
-                return NotFound("Error code not found");
-            }
-
-            ErrorVM errorVM = _mapper.Map<ErrorVM>(error);
-            var response = new ApiResponse<ErrorVM>(errorVM);
+            var response = new ApiResponse<ErrorVM>(responseData);
 
             return errorResponse(response);
         }
-        protected Task<IActionResult> ResponseError(string errorCode)
+
+        protected Task<IActionResult> ResponseError(string messageResponse)
         {
-            return HandleError(errorCode, response => Ok(response));
+            return HandleError(messageResponse, response => BadRequest(response));
         }
 
-        protected Task<IActionResult> NotFoundError(string errorCode)
+        protected Task<IActionResult> NotFoundError(string messageResponse)
         {
-            return HandleError(errorCode, response => NotFound(response));
+            return HandleError(messageResponse, response => NotFound(response));
         }
 
-        protected Task<IActionResult> UnauthorizedError(string errorCode)
+        protected Task<IActionResult> UnauthorizedError(string messageResponse)
         {
-            return HandleError(errorCode, response => Unauthorized(response));
+            return HandleError(messageResponse, response => Unauthorized(response));
         }
 
     }

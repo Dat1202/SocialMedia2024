@@ -34,7 +34,7 @@ namespace SocialMedia2024.Infrastructure.Persistence
         public DbSet<UserInChatGroup> UserInChatGroup { get; set; }
         public DbSet<ChatGroup> ChatGroup { get; set; }
         public DbSet<TLMenu> Menu { get; set; }
-        public DbSet<SystemError> SystemError { get; set; }
+        public DbSet<MessageResponse> MessageResponse { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -39,6 +39,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
                     options.Password.RequireLowercase = true;
                     options.Password.RequireDigit = true;
                 }).AddEntityFrameworkStores<SocialMedia2024DbContext>()
+                  .AddErrorDescriber<CustomIdentityErrorDescriber>()
                   .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IDistributedCacheService, DistributedCacheService>();

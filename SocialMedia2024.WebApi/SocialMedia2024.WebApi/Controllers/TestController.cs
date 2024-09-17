@@ -35,7 +35,7 @@ namespace SocialMedia2024.WebApi.Controllers
             //    Subject = "Test",
             //    Content = "Test"
             //});
-            return await ResponseGet(menuItems);
+            return await Response(menuItems);
         }
 
         [HttpDelete]

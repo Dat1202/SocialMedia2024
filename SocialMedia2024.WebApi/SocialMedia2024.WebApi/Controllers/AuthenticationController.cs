@@ -30,7 +30,7 @@ namespace SocialMedia2024.WebApi.Controllers
 
             if (user == null) 
             { 
-                return Unauthorized();
+                return await UnauthorizedError("adaa");
             }
 
             //if (!user.EmailConfirmed)
@@ -40,29 +40,31 @@ namespace SocialMedia2024.WebApi.Controllers
 
             (string accessToken, DateTime expiredDateAccessToken) = await _tokenHandler.CreateAccessToken(user);
             (string code, string refreshToken, DateTime expiredDateRefreshToken) = await _tokenHandler.CreateRefreshToken(user);
-
-            return Ok(new JwtVM
+            var token = new JwtVM
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                FullName = user.FirstName + " " + user.LastName,    
+                FullName = user.FirstName + " " + user.LastName,
                 Username = user.UserName,
                 AccessTokenExpiredDate = expiredDateAccessToken.ToString("dd-mm-yyyy hh:mm:ss")
-            });
+            };
+            return await Response(token, "LoginSuccess");
         }
 
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenVM token)
         {
             if (token == null) return BadRequest("token is null");
-            return Ok(await _tokenHandler.ValidateRefreshToken(token.RefreshToken));
+            return await Response(await _tokenHandler.ValidateRefreshToken(token.RefreshToken));
         }
 
-        [HttpGet("get-user")]
+        [Authorize]
+        [HttpGet("get-current-user")]
         public async Task<IActionResult> GetUser()
         {
             var userId = User.FindFirst("UserId")?.Value;
-            return Ok(userId);
+            var currentUser = await _userService.FindUserById(userId);
+            return Ok(currentUser);
         }
     }
 }
