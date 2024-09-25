@@ -45,5 +45,16 @@ namespace SocialMedia2024.WebApi.Service.Service
         {
             return await _unitOfWork.Users.GetSingle(u => u.Id == id);
         }
+
+        public async Task SaveImage(string userId,string fileName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.Avatar = fileName;
+                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Commit();
+            }
+        }
     }
 }

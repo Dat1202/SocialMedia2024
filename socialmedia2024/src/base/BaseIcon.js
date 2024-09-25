@@ -4,7 +4,7 @@ import React from 'react'
 const BaseIcon = ({ icon, background }) => {
     return (
         <>
-            <div style={{ background: background }} className="rounded-full px-4 py-3">
+            <div style={{ background: background }} className="px-4 py-3 rounded-full hover:bg-slate-300 transition ease-in-out">
                 <FontAwesomeIcon icon={icon} />
             </div>
         </>
