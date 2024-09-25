@@ -38,8 +38,6 @@ const Login = () => {
 
             let currentUser = await authApis().get(endpoints['getCurrentUser'])
             cookie.save("user", currentUser.data)
-            console.log("user", currentUser.data)
-
             setLoading(false)
             dispatch({
                 "type": "login",

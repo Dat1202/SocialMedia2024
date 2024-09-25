@@ -1,14 +1,15 @@
 ﻿using Alachisoft.NCache.Caching.Distributed;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using ProtoBuf.Extended.Meta;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Authentication.Service;
@@ -21,6 +22,7 @@ using SocialMedia2024.WebApi.Data.Repositories;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Middleware;
+using SocialMedia2024.WebApi.Model;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Service.Service;
 using System.Text;
@@ -52,6 +54,7 @@ builder.Services.AddScoped<IPostActionService, PostActionService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
+
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 builder.Services.AddScoped<PasswordHasher<User>>();
 builder.Services.AddScoped<PasswordValidator<User>>();
@@ -116,6 +119,15 @@ builder.Services.AddAuthentication(options =>
             }
         };
     });
+
+//Cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+    return new Cloudinary(new Account(config.CloudName, config.ApiKey, config.ApiSecret));
+});
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 //cache
 builder.Services.AddNCacheDistributedCache(options =>
