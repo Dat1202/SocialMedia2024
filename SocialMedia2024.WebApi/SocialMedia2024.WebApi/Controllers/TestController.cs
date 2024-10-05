@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia2024.WebApi.Core.EmailHelper;
@@ -40,7 +41,7 @@ namespace SocialMedia2024.WebApi.Controllers
             //    Subject = "Test",
             //    Content = "Test"
             //});
-            return await Response(menuItems);
+            return await ResponseSuccess(menuItems, "Menu");
         }
 
         [HttpDelete]
@@ -50,53 +51,6 @@ namespace SocialMedia2024.WebApi.Controllers
             return NoContent(); 
         }
 
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file provided or file is empty.");
-            }
-            string userId = "9ad99745-114f-490b-97a3-c489fd958fd2";
-            var result = await _cloudinaryService.UploadImageAsync(file);
-
-
-            if (result.Error != null)
-                return BadRequest(result.Error.Message);
-
-            await _userService.SaveImage(userId, result.Url.ToString());
-
-            return Ok(result.Url.ToString());
-        }
-
-        [HttpPost("upload/multiple")]
-        public async Task<IActionResult> UploadImages(List<IFormFile> files)
-        {
-            if (files == null || files.Count == 0)
-            {
-                return BadRequest("No files provided or files are empty.");
-            }
-
-            string userId = "9ad99745-114f-490b-97a3-c489fd958fd2";
-
-            var resultList = await _cloudinaryService.UploadImagesAsync(files);
-
-            foreach (var result in resultList)
-            {
-                if (result.Error != null)
-                {
-                    return BadRequest(result.Error.Message);
-                }
-            }
-
-            foreach (var result in resultList)
-            {
-                await _userService.SaveImage(userId, result.Url.ToString());
-            }
-
-            var urls = resultList.Select(r => r.Url.ToString()).ToList();
-            return Ok(urls);
-        }
-
+       
     }
 }

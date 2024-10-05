@@ -31,9 +31,9 @@ const Header = () => {
                         </Link>
                     </div>
                     {/* search */}
-                    <div style={{ color: "var(--icon-color)" }} className="relative">
-                        <FontAwesomeIcon className="absolute left-2 top-1/4	" icon={faMagnifyingGlass} />
-                        <input style={{ background: "var(--secondary-color)" }} type="text" className="border-black border-2 w-64 rounded-full p-2" />
+                    <div style={{ color: "var(--icon-color)" }} className="relative group">
+                        <FontAwesomeIcon className="text-slate-400 group-hover:text-slate-400 group-focus:text-slate-600 absolute left-2 top-1/2 transform -translate-y-1/2" icon={faMagnifyingGlass} />
+                        <input style={{ background: "var(--secondary-color)" }} type="text" className="group-hover:border focus:border-neutral-400 focus:border focus:outline-none w-64 rounded-full p-2 pl-8" />
                     </div>
                 </div>
                 <div ></div>
@@ -41,17 +41,17 @@ const Header = () => {
                     <BaseIcon icon={faMessage} background="var(--secondary-color)" />
                     <BaseIcon icon={faBell} background="var(--secondary-color)" />
 
-                    <div onClick={() => setIsOpen(!isOpen)} style={{ background: "var(--secondary-color)" }} className="relative rounded-full px-4 py-3">
-                        <img src="" style={{ objectFit: "cover" }} alt="avatar" className="" />
+                    <div onClick={() => setIsOpen(!isOpen)} className="relative p-2">
+                        <img src={user?.avatar} style={{ objectFit: "cover" }} alt="avatar" className="rounded-full w-11 h-11 " />
                     </div>
                     {isOpen && (user === null
                         ? (
-                            <div style={{ background: "var(--primary-color)" }} className="absolute top-14 right-8 p-3 w-64 rounded-lg border-2">
+                            <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2">
                                 <Menu icon={faArrowRightFromBracket} content="Đăng nhập" link="/login" />
                             </div>
                         ) : (
-                            <div style={{ background: "var(--primary-color)" }} className="absolute top-14 right-8 p-3 w-64 rounded-lg border-2">
-                                <ProfileRoute />
+                            <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2">
+                                <ProfileRoute avatar={user?.avatar} userName={user?.userName} />
                                 <Menu icon={faGear} content="Cài đặt" link="/setting" />
                                 <Menu icon={faArrowRightFromBracket} content="Đăng xuất" func={logout} />
                             </div>

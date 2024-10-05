@@ -10,6 +10,7 @@ export const endpoints = {
     "login": "/Authentication/login/",
     "getCurrentUser": "/Authentication/get-current-user/",
     "register": "/User/register/",
+    "uploadImage": "/Test/UploadImage/upload/"
 }
 const instance = axios.create({
     baseURL: BASE_URL

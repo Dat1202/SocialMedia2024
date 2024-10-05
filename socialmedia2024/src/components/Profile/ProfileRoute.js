@@ -1,17 +1,16 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../../Router';
+import React from 'react'
+import { Link } from 'react-router-dom';
 
-const ProfileRoute = () => {
-    const [user,] = useContext(UserContext);
+const ProfileRoute = ({ avatar, userName }) => {
 
     return (
         <>
-            {user &&
+            <Link to="/profile">
                 <div className='flex items-center gap-3 m-2'>
-                    <img className="rounded-full w-14 h-14" src={user.avatar} />
-                    <p className="capitalize">{user.userName}</p>
+                    <img className="rounded-full w-12 h-12" src={avatar} alt='' />
+                    {userName && <p className="capitalize">{userName}</p>}
                 </div>
-            }
+            </Link>
         </>
     )
 }

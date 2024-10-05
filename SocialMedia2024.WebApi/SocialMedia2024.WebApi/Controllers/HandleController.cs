@@ -17,37 +17,33 @@ namespace SocialMedia2024.WebApi.Controllers
             _errorService = errorService;
         }
 
-        protected async Task<IActionResult> Response<T>(T data, string errorCode = null)
-        {
-            string messageResponse = await _errorService.GetMessageContent(errorCode);
-
-            var response = new ApiResponse<T>(data, messageResponse);
-
-            return Ok(response);
-        }
-
-        protected async Task<IActionResult> HandleError(string messageCode, Func<ApiResponse<ErrorVM>, IActionResult> errorResponse)
+        protected async Task<IActionResult> HandleMessageContent<T>(string messageCode, T data, Func<ApiResponse<T>, IActionResult> errorResponse)
         {
             string responseData = await _errorService.GetMessageContent(messageCode);
 
-            var response = new ApiResponse<ErrorVM>(responseData);
+            var response = new ApiResponse<T>(data, responseData);
 
             return errorResponse(response);
+        }   
+
+        protected Task<IActionResult> ResponseSuccess<T>(T data, string messageResponse)
+        {
+            return HandleMessageContent(messageResponse, data, response => Ok(response));
         }
 
         protected Task<IActionResult> ResponseError(string messageResponse)
         {
-            return HandleError(messageResponse, response => BadRequest(response));
+            return HandleMessageContent<object>(messageResponse, null, response => BadRequest(response));
         }
 
         protected Task<IActionResult> NotFoundError(string messageResponse)
         {
-            return HandleError(messageResponse, response => NotFound(response));
+            return HandleMessageContent<object>(messageResponse, null, response => NotFound(response));
         }
 
         protected Task<IActionResult> UnauthorizedError(string messageResponse)
         {
-            return HandleError(messageResponse, response => Unauthorized(response));
+            return HandleMessageContent<object>(messageResponse, null, response => Unauthorized(response));
         }
 
     }
