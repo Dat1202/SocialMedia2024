@@ -30,7 +30,7 @@ namespace SocialMedia2024.WebApi.Controllers
 
             if (user == null) 
             { 
-                return await UnauthorizedError("adaa");
+                return await UnauthorizedError("UnauthorizedError");
             }
 
             //if (!user.EmailConfirmed)
@@ -48,14 +48,14 @@ namespace SocialMedia2024.WebApi.Controllers
                 Username = user.UserName,
                 AccessTokenExpiredDate = expiredDateAccessToken.ToString("dd-mm-yyyy hh:mm:ss")
             };
-            return await Response(token, "LoginSuccess");
+            return await ResponseSuccess(token, "LoginSuccess");
         }
 
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenVM token)
         {
             if (token == null) return BadRequest("token is null");
-            return await Response(await _tokenHandler.ValidateRefreshToken(token.RefreshToken));
+            return await ResponseSuccess(await _tokenHandler.ValidateRefreshToken(token.RefreshToken), "RefreshToken");
         }
 
         [Authorize]

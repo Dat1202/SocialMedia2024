@@ -2,10 +2,11 @@ import React, { useReducer, createContext } from 'react'
 import App from './App';
 import Home from './components/Home/Home';
 import Login from './components/Auth/Login';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import UserReducer from './reducers/UserReducer';
 import cookie from "react-cookies";
+import Profile from './components/Profile/Profile';
 
 export const UserContext = createContext()
 
@@ -19,6 +20,7 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<App />}>
               <Route index element={<Home />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>

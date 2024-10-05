@@ -2,6 +2,7 @@
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -43,7 +44,14 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
                 }).AddEntityFrameworkStores<SocialMedia2024DbContext>()
                   .AddErrorDescriber<CustomIdentityErrorDescriber>()
                   .AddDefaultTokenProviders();
-
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100 MB limit
+});
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100 MB
+});
 builder.Services.AddSingleton<IDistributedCacheService, DistributedCacheService>();
 builder.Services.AddScoped<IDapperHelper, DapperHelper>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -9,13 +9,13 @@ import ModalRegister from './ModalRegister';
 import Spinner from '../../layout/Spinner';
 
 const Login = () => {
+    const [user, dispatch] = useContext(UserContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-    const [user, dispatch] = useContext(UserContext);
     
     const login = async (e) =>{
         e.preventDefault();
@@ -23,27 +23,27 @@ const Login = () => {
             toast.error("Wow so easy!");
             return;
         }
-        setLoading(true)
-        process();
-    }
-
-    const process = async () => {
         try {
             setLoading(true)
+
             let data = await Apis.post(endpoints['login'], {
                 "username": username,
                 "password": password
             })
-            cookie.save("token", data.data.accessToken)
 
-            let currentUser = await authApis().get(endpoints['getCurrentUser'])
-            cookie.save("user", currentUser.data)
-            setLoading(false)
-            dispatch({
-                "type": "login",
-                "payload": currentUser.data
-            });
+            if (data){
+                cookie.save("token", data.data.accessToken)
 
+                let currentUser = await authApis().get(endpoints['getCurrentUser'])
+                cookie.save("user", currentUser.data)
+                setLoading(false)
+                dispatch({
+                    "type": "login",
+                    "payload": currentUser.data
+                });
+                toast.success(data.messageResponse)
+            }
+            
         } catch (ex) {
             toast.error(ex.response.data.messageResponse);
             setLoading(false)

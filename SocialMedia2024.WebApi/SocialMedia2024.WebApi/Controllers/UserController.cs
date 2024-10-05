@@ -69,7 +69,7 @@ namespace SocialMedia2024.WebApi.Controllers
                 });
 
                 await _userManager.AddToRoleAsync(user, "User");
-                return await Response(user, "CreateSuccesUser");
+                return await ResponseSuccess(user, "CreateSuccesUser");
             }
             else
             {
