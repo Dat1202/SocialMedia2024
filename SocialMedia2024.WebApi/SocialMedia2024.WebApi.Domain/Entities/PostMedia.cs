@@ -11,6 +11,6 @@ namespace SocialMedia2024.Domain.Entities
         [MaxLength(StringLength.MaxLength)]
         public string? MediaUrl { get; set; }
         public int PostID { get; set; }
-        public required Post Post { get; set; }
+        public Post Post { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ModalUploadImage from './ModalUploadImage'
+import ModalUploadImage from '../Modal/UploadImageModal'
 
 const Profile = () => {
 

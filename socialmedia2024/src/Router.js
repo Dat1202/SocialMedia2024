@@ -2,7 +2,7 @@ import React, { useReducer, createContext } from 'react'
 import App from './App';
 import Home from './components/Home/Home';
 import Login from './components/Auth/Login';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import UserReducer from './reducers/UserReducer';
 import cookie from "react-cookies";
@@ -17,20 +17,20 @@ const Router = () => {
     <>
       <UserContext.Provider value={[user, dispatch]}>
         <BrowserRouter>
-          <Routes>
+          {/* <Routes>
             <Route path="/" element={<App />}>
               <Route index element={<Home />} />
               <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/login" element={<Login />} />
-          </Routes>
-          {/* <Routes>
+          </Routes> */}
+          <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={user ? <App /> : <Navigate to="/login" replace />}>
               <Route index element={<Home />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
-          </Routes> */}
+          </Routes>
         </BrowserRouter>
 
         <ToastContainer

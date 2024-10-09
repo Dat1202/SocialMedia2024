@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Service.Interfaces;
-using SocialMedia2024.WebApi.Service.Service;
 
 namespace SocialMedia2024.WebApi.Controllers
 {

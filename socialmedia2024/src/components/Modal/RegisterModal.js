@@ -5,9 +5,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Apis, { endpoints } from '../../configs/Apis';
 import {  toast } from 'react-toastify';
-import Spinner from '../../layout/Spinner';
+import Spinner from '../base/Spinner';
 
-const ModalRegister = ({ isOpen, onClose }) => {
+const RegisterModal = ({ isOpen, onClose }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [currentSelectedMonth, setCurrentSelectedMonth] = useState(startDate.getMonth());
     const [selectedSex, setSelectedSex] = useState('male');
@@ -224,4 +224,4 @@ const ModalRegister = ({ isOpen, onClose }) => {
     )
 }
 
-export default ModalRegister;
+export default RegisterModal;

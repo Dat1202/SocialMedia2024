@@ -2,13 +2,13 @@ import React, { useContext, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Spinner from '../../layout/Spinner';
+import Spinner from '../base/Spinner';
 import { UserContext } from '../../Router';
 import Apis, { endpoints } from '../../configs/Apis';
 import cookie from "react-cookies";
 import { toast } from 'react-toastify';
 
-const ModalUploadImage = ({ isOpen, onClose }) => {
+const UploadImageModal = ({ isOpen, onClose }) => {
     const [user, dispatch] = useContext(UserContext);
     const [file, setFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(user?.avatar);
@@ -29,7 +29,7 @@ const ModalUploadImage = ({ isOpen, onClose }) => {
         setLoading(true)
         const data = new FormData();
         data.append('userId', user.id);
-        data.append('file', file);
+        data.append('files', file);
 
         try {
             let res = await Apis.post(endpoints['uploadImage'], data);
@@ -103,4 +103,4 @@ const ModalUploadImage = ({ isOpen, onClose }) => {
     )
 }
 
-export default ModalUploadImage;
+export default UploadImageModal;

@@ -32,7 +32,6 @@ namespace SocialMedia2024.WebApi.Controllers
             _userManager = userManager;
             _passwordValidator = passwordValidator;
             _emailTemplateReader = emailTemplateReader;
-
         }
 
         [HttpPost("register")]
