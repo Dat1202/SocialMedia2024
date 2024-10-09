@@ -18,6 +18,7 @@ namespace SocialMedia2024.WebApi.Data.Repositories
         private ICommentRepository? _Comment;
         private IPostActionRepository? _PostAction;
         private IFriendRepository? _Friend;
+        private IPostMediaRepository? _PostMedia;
         //private IUserTokenRepository? _UserToken;
 
         private bool disposedValue;
@@ -29,6 +30,8 @@ namespace SocialMedia2024.WebApi.Data.Repositories
         public ICommentRepository Comment => _Comment ??= new CommentRepository(_socialMedia2024DbContext);
         public IPostActionRepository PostAction => _PostAction ??= new PostActionRepository(_socialMedia2024DbContext);
         public IFriendRepository Friend => _Friend ??= new FriendRepository(_socialMedia2024DbContext);
+        public IPostMediaRepository PostMedia => _PostMedia ??= new PostMediaRepository(_socialMedia2024DbContext);
+
         //public IUserTokenRepository UserToken => _UserToken ??= new UserTokenRepository(_socialMedia2024DbContext);
 
         public DbSet<T> Table<T>() where T : class => _socialMedia2024DbContext.Set<T>();

@@ -10,7 +10,6 @@ namespace SocialMedia2024.Domain.Entities
         [Required]
         [MaxLength(StringLength.MaxLength)]
         public string? Content { get; set; }
-        public MediaType? MediaType { get; set; }
         public string UserID { get; set; }
         public User User { get; set; }
         public ICollection<PostAction> PostActions { get; set; } = new List<PostAction>();

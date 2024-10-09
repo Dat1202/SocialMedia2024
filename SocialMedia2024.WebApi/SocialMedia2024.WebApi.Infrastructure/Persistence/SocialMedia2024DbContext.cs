@@ -93,8 +93,8 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 .HasForeignKey(p => p.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-                entity.Property(p => p.MediaType)
-                .HasConversion(v => (int)v, v => (MediaType)v);// Chuyển đổi enum thành int khi lưu
+                //entity.Property(p => p.MediaType)
+                //.HasConversion(v => (int)v, v => (MediaType)v);// Chuyển đổi enum thành int khi lưu
             });
 
             modelBuilder.Entity<PostAction>(entity =>

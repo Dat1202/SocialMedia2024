@@ -4,9 +4,9 @@ import { UserContext } from "../Router";
 import { faArrowRightFromBracket, faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faMessage } from "@fortawesome/free-regular-svg-icons";
-import BaseIcon from "../base/BaseIcon";
-import Menu from "../base/Menu";
-import ProfileRoute from "../components/Profile/ProfileRoute";
+import BaseIcon from "../components/base/BaseIcon";
+import Menu from "../components/base/MenuItem";
+import ProfileRoute from "../components/base/ProfileRoute";
 
 const Header = () => {
     const [user, dispatch] = useContext(UserContext);

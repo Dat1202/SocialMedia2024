@@ -18,6 +18,8 @@ namespace SocialMedia2024.WebApi.Data.Interfaces
         ICommentRepository Comment { get; }
         IPostActionRepository PostAction { get; }
         IFriendRepository Friend { get; }
+        IPostMediaRepository PostMedia { get; }
+
         //IUserTokenRepository UserToken { get; }
         DbSet<T> Table<T>() where T : class;
 

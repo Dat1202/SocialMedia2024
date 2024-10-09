@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Router';
-import ProfileRoute from '../Profile/ProfileRoute';
+import ProfileRoute from '../base/ProfileRoute';
 
 const Post = () => {
     const [user, dispatch] = useContext(UserContext);
