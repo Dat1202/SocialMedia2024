@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Apis, { endpoints } from "../../configs/Apis";
-import Spinner from "../base/Spinner";
-import MenuSideBar from "../SideBar/SideBar";
-import Post from "../Post/Post";
+import Spinner from "../../components/base/Spinner";
+import MenuSideBar from "../../components/sideBar/SideBar";
+import Post from "../../components/post/Post";
 
 const Home = () => {
     const [menu, setMenu] = useState(null);

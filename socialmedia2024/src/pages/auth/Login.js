@@ -4,9 +4,9 @@ import { Navigate } from 'react-router-dom';
 import Apis, { endpoints, authApis } from '../../configs/Apis';
 import cookie from "react-cookies";
 import { ToastContainer, toast } from 'react-toastify';
-import { UserContext } from '../../Router';
-import ModalRegister from '../Modal/RegisterModal';
-import Spinner from '../base/Spinner';
+import { UserContext } from '../../layout/Router';
+import ModalRegister from '../../components/modal/RegisterModal';
+import Spinner from '../../components/base/Spinner';
 
 const Login = () => {
     const [user, dispatch] = useContext(UserContext);

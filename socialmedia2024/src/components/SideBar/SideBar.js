@@ -2,7 +2,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons'
 import React, { useContext } from 'react'
 import Menu from '../base/MenuItem'
 import ProfileRoute from '../base/ProfileRoute';
-import { UserContext } from '../../Router';
+import { UserContext } from '../../layout/Router';
 
 const MenuSideBar = ({ menu }) => {
     const [user,] = useContext(UserContext);

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { UserContext } from '../../../Router'
-import Spinner from '../../../layout/Spinner'
-import ProfileRoute from '../../../base/ProfileRoute'
+import { UserContext } from '../../layout/Router'
+import Spinner from '../base/Spinner'
+import ProfileRoute from '../base/ProfileRoute'
 
 const PostModal = ({ isOpen, onClose }) => {
     const [user,] = useContext(UserContext);

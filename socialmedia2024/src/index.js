@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
-import Router from './Router';
+import Router from './layout/Router';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

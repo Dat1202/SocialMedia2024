@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d39dee8d-42ba-493e-beb5-1556518363ba",
+                            Id = "39afcda9-6197-4d1a-9612-96a366baad8f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "94eaa027-627d-4837-a1fa-bc79056b4492",
+                            Id = "efeadfce-9906-4b2e-b1b0-f4045f2c5cd8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9ad99745-114f-490b-97a3-c489fd958fd2",
-                            RoleId = "94eaa027-627d-4837-a1fa-bc79056b4492"
+                            UserId = "088ba5ee-ebea-45b1-97e4-dd7a6e25b09e",
+                            RoleId = "efeadfce-9906-4b2e-b1b0-f4045f2c5cd8"
                         });
                 });
 
@@ -311,9 +311,6 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("MediaType")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -372,6 +369,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("Height")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("MediaUrl")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -382,6 +382,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("Width")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ID");
 
@@ -528,10 +531,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ad99745-114f-490b-97a3-c489fd958fd2",
+                            Id = "088ba5ee-ebea-45b1-97e4-dd7a6e25b09e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f0741dab-fd62-47d9-a055-686c36521500",
-                            CreateAt = new DateTime(2024, 9, 12, 16, 33, 2, 837, DateTimeKind.Local).AddTicks(4135),
+                            ConcurrencyStamp = "1243dab0-f9ce-4f8e-9d51-289015d5f631",
+                            CreateAt = new DateTime(2024, 10, 13, 1, 29, 6, 445, DateTimeKind.Local).AddTicks(6934),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -540,9 +543,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEWBkBhhDMjEDHIlPP4eHkfrX8xSBqhj/DR/h5FAwm95oDqU6Keym9EQimHlpR3NMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGerhjYqbJuBxVoavTZETGsQxFc2XKxnLstxe+tZJ2XKuMCHJi7xqeSQtgDcuLqrUw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0e86b853-acb4-4e34-80fb-e8f0f15ab378",
+                            SecurityStamp = "775328b3-7fbf-4a97-a9a5-c0a92c4f8272",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"

@@ -6,6 +6,6 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
 {
     public interface IPostService
     {
-        Task CreatePost(Post post, List<string>? files, string userId);
+        Task CreatePost(Post post, List<string>? files);
     }
 }

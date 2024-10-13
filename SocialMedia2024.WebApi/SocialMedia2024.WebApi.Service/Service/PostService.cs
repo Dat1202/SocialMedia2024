@@ -14,10 +14,9 @@ namespace SocialMedia2024.WebApi.Service.Service
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task CreatePost(Post post, List<string>? urls, string userId)
+        public async Task CreatePost(Post post, List<string>? urls)
         {
             var listMedia = new List<PostMedia>();
-            post.UserID = userId;
             await _unitOfWork.Posts.Add(post);
 
             if(urls != null)

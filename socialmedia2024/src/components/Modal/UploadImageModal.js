@@ -3,7 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Spinner from '../base/Spinner';
-import { UserContext } from '../../Router';
+import { UserContext } from '../../layout/Router';
 import Apis, { endpoints } from '../../configs/Apis';
 import cookie from "react-cookies";
 import { toast } from 'react-toastify';
@@ -13,7 +13,6 @@ const UploadImageModal = ({ isOpen, onClose }) => {
     const [file, setFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(user?.avatar);
     const [loading, setLoading] = useState(false);
-
     const saveImage = async (e) => {
         e.preventDefault();
 
@@ -32,16 +31,16 @@ const UploadImageModal = ({ isOpen, onClose }) => {
         data.append('files', file);
 
         try {
-            let res = await Apis.post(endpoints['uploadImage'], data);
-            setLoading(false)
+            let res = await Apis.post(endpoints['uploadAvatar'], data);
+            toast.success(res.messageResponse)
             dispatch({
                 type: 'UPDATE_AVATAR', 
-                payload: res
+                payload: res.data
             });
-
-            cookie.save("user", { ...user, avatar: res });
+            
+            cookie.save("user", { ...user, avatar: res.data });
             setLoading(false)
-            onClose();
+            // onClose();
         } catch (error) {
             console.error("Error uploading image:", error.response?.data || error);
         }
