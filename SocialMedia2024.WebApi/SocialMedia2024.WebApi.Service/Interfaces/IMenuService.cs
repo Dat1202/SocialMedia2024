@@ -1,4 +1,5 @@
 ﻿using SocialMedia2024.WebApi.Domain.SystemEntities;
+using SocialMedia2024.WebApi.Domain.ViewModel;
 
 namespace SocialMedia2024.WebApi.Service.Interfaces
 {
@@ -7,7 +8,7 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
         Task Delete(string name);
         Task<IEnumerable<TLMenu>> GetAll();
         Task<IEnumerable<TLMenu>> GetAllDapperSql();
-        Task<IEnumerable<TLMenu>> GetAllDapperStored();
+        Task<IEnumerable<PostVM>> ListPost(string userId);
 
     }
 }

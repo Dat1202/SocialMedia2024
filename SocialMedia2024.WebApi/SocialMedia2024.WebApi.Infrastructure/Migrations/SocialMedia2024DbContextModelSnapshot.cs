@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d39dee8d-42ba-493e-beb5-1556518363ba",
+                            Id = "43980840-82ac-4561-a966-1ace844b547c",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "94eaa027-627d-4837-a1fa-bc79056b4492",
+                            Id = "3cfe2c22-8090-44fd-b8d1-fa5b4cf44c47",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9ad99745-114f-490b-97a3-c489fd958fd2",
-                            RoleId = "94eaa027-627d-4837-a1fa-bc79056b4492"
+                            UserId = "d62ca625-a88a-43e4-8ddd-6fca45a34426",
+                            RoleId = "3cfe2c22-8090-44fd-b8d1-fa5b4cf44c47"
                         });
                 });
 
@@ -304,15 +304,11 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("MediaType")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -372,6 +368,12 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("Height")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsVideo")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MediaUrl")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -382,6 +384,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("Width")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ID");
 
@@ -528,10 +533,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ad99745-114f-490b-97a3-c489fd958fd2",
+                            Id = "d62ca625-a88a-43e4-8ddd-6fca45a34426",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f0741dab-fd62-47d9-a055-686c36521500",
-                            CreateAt = new DateTime(2024, 9, 12, 16, 33, 2, 837, DateTimeKind.Local).AddTicks(4135),
+                            ConcurrencyStamp = "6a33aa09-1e53-413a-a2a0-bf7ed2f790b3",
+                            CreateAt = new DateTime(2024, 10, 17, 22, 31, 51, 915, DateTimeKind.Local).AddTicks(5225),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -540,9 +545,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEWBkBhhDMjEDHIlPP4eHkfrX8xSBqhj/DR/h5FAwm95oDqU6Keym9EQimHlpR3NMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENWDpGNOFtOGbjisVTfw4DSccWNShpfDcTNRRxbh7ObiHR8jQ7r0nWhgSBselz8uWA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0e86b853-acb4-4e34-80fb-e8f0f15ab378",
+                            SecurityStamp = "509b7a5d-4d6c-4218-8207-5bc4da9ce7f6",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"

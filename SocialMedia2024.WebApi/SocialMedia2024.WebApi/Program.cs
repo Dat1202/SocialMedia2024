@@ -27,6 +27,7 @@ using SocialMedia2024.WebApi.Model;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Service.Service;
 using System.Text;
+using System.Text.Json.Serialization;
 using TokenHandler = SocialMedia2024.WebApi.Authentication.Service.TokenHandler;
 
 var builder = WebApplication.CreateBuilder(args);

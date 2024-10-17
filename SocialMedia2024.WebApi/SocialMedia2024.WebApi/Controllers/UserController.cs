@@ -6,6 +6,7 @@ using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Service.Interfaces;
+using SocialMedia2024.WebApi.Service.Service;
 using SocialMedia2024.WebApi.ViewModel;
 
 namespace SocialMedia2024.WebApi.Controllers
@@ -19,19 +20,24 @@ namespace SocialMedia2024.WebApi.Controllers
         private readonly IMapper _mapper;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly PasswordValidator<User> _passwordValidator;
+        private readonly ICloudinaryService _cloudinaryService;
         private readonly IEmailHelper _emailHelper;
         private readonly IEmailTemplateReader _emailTemplateReader;
+        private readonly IUserService _userService;
 
-        public UserController(IErrorCodeService errorService, IMapper mapper, UserManager<User> userManager, 
+        public UserController(IUserService userService, IErrorCodeService errorService, IMapper mapper, UserManager<User> userManager, 
                PasswordHasher<User> passwordHasher, PasswordValidator<User> passwordValidator,
-               IEmailHelper emailHelper, IEmailTemplateReader emailTemplateReader) : base(errorService, mapper)
+               IEmailHelper emailHelper, IEmailTemplateReader emailTemplateReader, ICloudinaryService cloudinaryService) : base(errorService, mapper)
         {
+            _cloudinaryService = cloudinaryService;
             _emailHelper = emailHelper;
             _passwordHasher = passwordHasher;
             _mapper = mapper;
             _userManager = userManager;
             _passwordValidator = passwordValidator;
             _emailTemplateReader = emailTemplateReader;
+            _userService = userService;
+
         }
 
         [HttpPost("register")]
@@ -99,6 +105,33 @@ namespace SocialMedia2024.WebApi.Controllers
             }
 
             return BadRequest("failed");
+        }
+
+        [HttpPost("upload-avatar")]
+        public async Task<IActionResult> UploadAvatar([FromForm] string userId, List<IFormFile> files)
+        {
+            if (files == null)
+            {
+                return BadRequest("No files provided or files are empty.");
+            }
+
+            var resultList = await _cloudinaryService.UploadImages(files);
+
+            foreach (var result in resultList)
+            {
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error.Message);
+                }
+            }
+
+            foreach (var result in resultList)
+            {
+                await _userService.SaveImage(userId, result.Url.ToString());
+            }
+
+            var urls = resultList.Select(r => r.Url.ToString()).ToList();
+            return await ResponseSuccess(urls, "UploadAvatarSuccess");
         }
     }
 }
