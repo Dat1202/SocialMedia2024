@@ -10,22 +10,40 @@ export const endpoints = {
     "login": "/Authentication/login/",
     "getCurrentUser": "/Authentication/get-current-user/",
     "register": "/User/register/",
-    "uploadAvatar": "/User/upload-avatar/"
+    "uploadAvatar": "/User/upload-avatar/",
+    "createPost": "/Post/new-post/",
+    "listPost": "/Post/list-post/"
+
 }
 const instance = axios.create({
     baseURL: BASE_URL
 })
 
-export const authApis = () =>{
-    return axios.create({
+export const authApis = () => {
+    const token = cookie.load('token');
+    const authInstance = axios.create({
         baseURL: BASE_URL,
         headers: {
-            'Authorization': `Bearer ${cookie.load('token')}`
+            'Authorization': `Bearer ${token}`
         }
-    })
-}
+    });
 
-// Add a request interceptor
+    authInstance.interceptors.request.use(function (config) {
+        return config;
+    }, function (error) {
+        return Promise.reject(error);
+    });
+
+    authInstance.interceptors.response.use(function (response) {
+        return response && response.data ? response.data : response;
+    }, function (error) {
+        return Promise.reject(error);
+    });
+
+    return authInstance;
+};
+
+
 instance.interceptors.request.use(function (config) {
     return config;
 }, function (error) {

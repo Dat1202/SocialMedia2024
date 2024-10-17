@@ -17,8 +17,4 @@
     <ProjectReference Include="..\SocialMedia2024.WebApi.Infrastructure\SocialMedia2024.WebApi.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
 </Project>

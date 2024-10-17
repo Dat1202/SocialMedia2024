@@ -1,40 +1,43 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../layout/Router';
 import ProfileRoute from '../base/ProfileRoute';
 import PostModal from '../modal/PostModal';
+import { authApis, endpoints } from '../../configs/Apis';
+import Spinner from '../base/Spinner';
+import PostItem from './PostItem';
 
 const Post = () => {
-    const [user, dispatch] = useContext(UserContext);
-    const [content, setContent] = useState("")
+    const [user,] = useContext(UserContext);
     const [isOpenPostModal, setIsOpenPostModal] = useState(false);
-
+    const [post, setPost] = useState(null);
     const openPostModal = () => setIsOpenPostModal(true);
     const closePostModal = () => setIsOpenPostModal(false);
-    return ( 
+    console.log(user)
+    useEffect(() => {
+        GetListPost();
+    }, []);
+
+    const GetListPost = async () => {
+        const posts = await authApis().get(endpoints['listPost']);
+        setPost(posts);
+    }
+
+    if (post === null) return <Spinner />;
+
+    return (
         <>
             <div className='bg-white text-black py-2 px-4 flex items-center gap-2 border border-slate-400 rounded-lg shadow-md '>
-                <ProfileRoute avatar={user?.avatar}/>
-                <input type='text' value={content} className='w-11/12 px-4 py-2 rounded-full caret-transparent focus:outline-none' onClick={openPostModal} style={{ background: "var(--bg-color)" }} placeholder="123-45-678" />
+                <ProfileRoute avatar={user?.avatar} />
+                <input type='text' onClick={openPostModal} placeholder={`${user.firstName} ơi, Bạn đang nghĩ gì thế?` }
+                    className='w-11/12 px-4 py-2 rounded-full caret-transparent focus:outline-none hover:cursor-pointer bg-[var(--bg-color)] hover:bg-[var(--hover-color)]' />
             </div>
+            <PostModal GetListPost={GetListPost} isOpen={isOpenPostModal} onClose={closePostModal} />
 
-            <PostModal isOpen={isOpenPostModal} onClose={closePostModal} />
-            <div className='bg-white p-2 my-3'>
-                <div >
-                    <ProfileRoute avatar={user?.avatar} userName={user?.userName} time="12-10-2024 00:10:20 "/>
-                </div>
-                {/* content */}
-                <div>
-                    <p>ssssssssssssssssssssssssssssss</p>
-                </div>
-                {/* img */}
-                <div className='grid grid-cols-2 gap-1 my-3'>
-                    <div className='cursor-pointer'><img className='max-w-full h-auto object-cover' src="http://res.cloudinary.com/djmvq0myz/image/upload/v1728157095/mrghlkcjyh3nd4mnxqp6.jpg" alt="" /></div>
-                    <div className=''><img className='max-w-full h-auto of' src="http://res.cloudinary.com/djmvq0myz/image/upload/v1728157095/mrghlkcjyh3nd4mnxqp6.jpg" alt="" /></div>
-                    <div className=''><img className='max-w-full h-auto' src="http://res.cloudinary.com/djmvq0myz/image/upload/v1728157095/mrghlkcjyh3nd4mnxqp6.jpg" alt="" /></div>
-                    <div className=''><img className='max-w-full h-auto' src="http://res.cloudinary.com/djmvq0myz/image/upload/v1728744452/duups9fxicqemkjz08ym.jpg" alt="" /></div>
-                </div>
-            </div>
-            
+            {post && post.data.length > 0 ? post.data.map(p => (
+                <PostItem post={p} />
+            )) : <h1></h1>}
+
+
         </>
     )
 }

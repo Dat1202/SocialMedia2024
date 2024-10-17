@@ -10,7 +10,7 @@ import ProfileRoute from "../components/base/ProfileRoute";
 
 const Header = () => {
     const [user, dispatch] = useContext(UserContext);
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpenProfile, setIsOpenProfile] = useState(false)
     const nav = useNavigate()
     const logout = (e) => {
         e.preventDefault();
@@ -41,10 +41,11 @@ const Header = () => {
                     <BaseIcon icon={faMessage} background="var(--secondary-color)" />
                     <BaseIcon icon={faBell} background="var(--secondary-color)" />
 
-                    <div onClick={() => setIsOpen(!isOpen)} className="relative p-2">
+                    <div onClick={() => setIsOpenProfile(!isOpenProfile)} className="relative p-2">
+                        {/* <ProfileRoute avatar={user?.avatar} /> */}
                         <img src={user?.avatar} style={{ objectFit: "cover" }} alt="avatar" className="rounded-full w-11 h-11 " />
                     </div>
-                    {isOpen && (user === null
+                    {isOpenProfile && (user === null
                         ? (
                             <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2">
                                 <Menu icon={faArrowRightFromBracket} content="Đăng nhập" link="/login" />

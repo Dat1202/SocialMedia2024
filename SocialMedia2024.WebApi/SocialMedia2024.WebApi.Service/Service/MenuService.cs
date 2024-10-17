@@ -3,6 +3,11 @@ using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Core.Cache;
+using SocialMedia2024.WebApi.Domain.ViewModel;
+using Dapper;
+using Newtonsoft.Json;
+using SocialMedia2024.Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
 namespace SocialMedia2024.WebApi.Service.Service
 {
     public class MenuService : IMenuService
@@ -40,7 +45,7 @@ namespace SocialMedia2024.WebApi.Service.Service
             await _unitOfWork.Commit();
         }
 
-
+        //rawquery 
         public async Task<IEnumerable<TLMenu>> GetAllDapperSql()
         {
             string sql = "Select * from Menu";
@@ -48,11 +53,27 @@ namespace SocialMedia2024.WebApi.Service.Service
             return await _dapperHelper.ExecuteSqlReturnList<TLMenu>(sql);
         }
 
-        public async Task<IEnumerable<TLMenu>> GetAllDapperStored()
+        //gọi stored và truyền params
+        public async Task<IEnumerable<PostVM>> ListPost(string userId)
         {
-            string sql = "GetMenu";
+            string sql = "GetPost";
 
-            return await _dapperHelper.ExecuteStoreProcedureReturnListAsync<TLMenu>(sql);
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+
+            var postDtos = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(sql, parameters);
+
+            foreach (var post in postDtos)
+            {
+                if (!string.IsNullOrEmpty(post.PostMediasJson))
+                {
+                    post.PostMedias = JsonConvert.DeserializeObject<List<PostMediaVM>>(post?.PostMediasJson);
+                }
+            }
+
+            return postDtos;
         }
+
+
     }
 }

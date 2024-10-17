@@ -13,6 +13,7 @@ const UploadImageModal = ({ isOpen, onClose }) => {
     const [file, setFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(user?.avatar);
     const [loading, setLoading] = useState(false);
+    
     const saveImage = async (e) => {
         e.preventDefault();
 
@@ -40,7 +41,7 @@ const UploadImageModal = ({ isOpen, onClose }) => {
             
             cookie.save("user", { ...user, avatar: res.data });
             setLoading(false)
-            // onClose();
+            onClose();
         } catch (error) {
             console.error("Error uploading image:", error.response?.data || error);
         }

@@ -12,11 +12,18 @@ code {
     monospace;
 }
 
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root{
   --primary-color: #ffffff;
   --secondary-color: #e4e6eb;
   --bg-color:#f0f2f5;
   --icon-color: #050505;
+  --hover-color: #d4d9df;
 }
 
 @tailwind base;

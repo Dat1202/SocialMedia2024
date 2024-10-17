@@ -45,6 +45,9 @@ namespace SocialMedia2024.WebApi.Controllers
         {
             return HandleMessageContent<object>(messageResponse, null, response => Unauthorized(response));
         }
-
+        protected Task<IActionResult> CreateOK(string messageResponse)
+        {
+            return HandleMessageContent<object>(messageResponse, null, response => NoContent());
+        }
     }
 }

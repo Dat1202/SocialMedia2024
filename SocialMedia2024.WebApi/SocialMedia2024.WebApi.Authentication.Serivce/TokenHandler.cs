@@ -30,7 +30,7 @@ namespace SocialMedia2024.WebApi.Authentication.Service
 
         public async Task<(string, DateTime)> CreateAccessToken(User user)
         {
-            DateTime expiredToken = DateTime.Now.AddMinutes(15);
+            DateTime expiredToken = DateTime.Now.AddHours(24);
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new Claim[]
             {

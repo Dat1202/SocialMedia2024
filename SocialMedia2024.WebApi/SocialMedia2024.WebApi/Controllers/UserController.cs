@@ -131,7 +131,7 @@ namespace SocialMedia2024.WebApi.Controllers
             }
 
             var urls = resultList.Select(r => r.Url.ToString()).ToList();
-            return await ResponseSuccess(urls, "UploadSuccess");
+            return await ResponseSuccess(urls, "UploadAvatarSuccess");
         }
     }
 }

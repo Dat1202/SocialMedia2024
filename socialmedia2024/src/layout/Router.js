@@ -8,13 +8,10 @@ import Login from '../pages/auth/Login';
 import Home from '../pages/home/Home';
 import Profile from '../pages/profile/Profile';
 
-// Create the UserContext
 export const UserContext = createContext();
 
-// ProtectedRoute component
 const ProtectedRoute = ({ children }) => {
-  const [user] = useContext(UserContext); // Access user from context
-
+  const [user] = useContext(UserContext); 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -23,15 +20,13 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const Router = () => {
-  const [user, dispatch] = useReducer(UserReducer, cookie.load("user") || null); // Initialize user from cookie
-
+  const [user, dispatch] = useReducer(UserReducer, cookie.load("user") || null); 
   return (
     <>
       <UserContext.Provider value={[user, dispatch]}>
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
-            {/* Wrap protected routes inside ProtectedRoute */}
             <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>}>
               <Route index element={<Home />} />
               <Route path="profile" element={<Profile />} />

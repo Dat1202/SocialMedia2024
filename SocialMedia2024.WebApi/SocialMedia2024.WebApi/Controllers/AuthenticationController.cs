@@ -6,6 +6,7 @@ using SocialMedia2024.WebApi.ViewModel;
 using SocialMedia2024.WebApi.Domain.SystemEntities;
 using System.Security.Claims;
 using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
@@ -26,11 +27,20 @@ namespace SocialMedia2024.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
         {
-            var user = await _userService.CheckLogin(loginVM.UserName, loginVM.Password);
+            if(loginVM.Username.IsNullOrEmpty())
+            {
+                return await ResponseError("InvalidUsername");
+            }
+            if (loginVM.Password.IsNullOrEmpty())
+            {
+                return await ResponseError("InvalidPassword");
+            }
+
+            var user = await _userService.CheckLogin(loginVM.Username, loginVM.Password);
 
             if (user == null) 
             { 
-                return await UnauthorizedError("UnauthorizedError");
+                return await UnauthorizedError("IncorrectUser");
             }
 
             //if (!user.EmailConfirmed)

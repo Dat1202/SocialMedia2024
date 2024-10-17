@@ -3,16 +3,50 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { UserContext } from '../../layout/Router'
 import Spinner from '../base/Spinner'
 import ProfileRoute from '../base/ProfileRoute'
+import { endpoints, authApis } from '../../configs/Apis';
+import { toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImage } from '@fortawesome/free-regular-svg-icons'
 
-const PostModal = ({ isOpen, onClose }) => {
+const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const [user,] = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const [content, setContent] = useState("");
+    const [isUploadImage, setUploadImage] = useState(false);
+    const [files, setFile] = useState([]);
 
-    const createPost = () => {
+    const createPost = async (e) => {
+        e.preventDefault();
 
+        if(content === "" && files.length === 0){
+            toast.error("Please fill in all required fields");
+            return;
+        }
+            
+        setLoading(true);
+        const data = new FormData();
+
+        data.append("UserId", user.id)
+        data.append("Content", content)
+        if (files && files.length > 0) {
+            files.forEach((file) => {
+                data.append("Files", file);
+            });
+        }
+
+        try {
+            let post = await authApis().post(endpoints['createPost'], data);
+            toast.success(post.data.messageResponse);
+            onClose();
+            setContent('');
+            setFile([]);
+            setLoading(false);
+            GetListPost();
+        }
+        catch (ex) {
+            console.log(ex);
+        }
     }
-
-    const [content, setContent] = useState('');
 
     const handleInput = (e) => {
         const textarea = e.target;
@@ -20,6 +54,11 @@ const PostModal = ({ isOpen, onClose }) => {
         textarea.style.height = textarea.scrollHeight + 'px';
         setContent(e.target.value);
     };
+
+    const handleFileChange = (e) => {
+        setFile([...files, ...e.target.files]);
+    }
+
     return (
         <>
             <Dialog open={isOpen} onClose={onClose} className="relative z-10">
@@ -51,7 +90,16 @@ const PostModal = ({ isOpen, onClose }) => {
                                         placeholder="Nhập nội dung ở đây..."
                                     />
                                 </div>
-                                {loading ? <div className="text-end mr-4"><Spinner /></div> :
+
+                                <div>
+                                    <input type="file" multiple onChange={e => handleFileChange(e)} />
+                                </div>
+
+                                <div>
+                                    <FontAwesomeIcon className='text-green-400' icon={faImage} />
+                                </div>
+
+                                {loading ? <div className="text-center mr-4"><Spinner /></div> :
                                     <div className="bg-gray-50 px-4 py-3 sm:px-6">
                                         <input
                                             type="submit"

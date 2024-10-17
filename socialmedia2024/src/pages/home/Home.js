@@ -19,7 +19,7 @@ const Home = () => {
 
     return (
         <>
-            <div className="flex justify-between gap-10" style={{ background: "var(--bg-color)" }}>
+            <div className="flex justify-between gap-16" style={{ background: "var(--bg-color)" }}>
                 {/* MenuSideBar */}
                 <div className="basis-1/4">
                     <MenuSideBar menu={menu} />
