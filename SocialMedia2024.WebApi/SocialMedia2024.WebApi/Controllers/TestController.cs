@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Core.EmailHelper;
-using SocialMedia2024.WebApi.Domain.ViewModel;
+using SocialMedia2024.WebApi.Infrastructure.ViewModel;
 using SocialMedia2024.WebApi.Service.Interfaces;
 
 namespace SocialMedia2024.WebApi.Controllers

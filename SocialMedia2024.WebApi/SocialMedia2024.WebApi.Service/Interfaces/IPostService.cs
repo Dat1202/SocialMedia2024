@@ -1,6 +1,6 @@
 ﻿using CloudinaryDotNet.Actions;
 using SocialMedia2024.Domain.Entities;
-using SocialMedia2024.WebApi.Domain.ViewModel;
+using SocialMedia2024.WebApi.Infrastructure.ViewModel;
 
 namespace SocialMedia2024.WebApi.Service.Interfaces
 {

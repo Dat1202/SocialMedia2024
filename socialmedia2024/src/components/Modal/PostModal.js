@@ -18,11 +18,11 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const createPost = async (e) => {
         e.preventDefault();
 
-        if(content === "" && files.length === 0){
+        if (content === "" && files.length === 0) {
             toast.error("Please fill in all required fields");
             return;
         }
-            
+
         setLoading(true);
         const data = new FormData();
 
@@ -59,6 +59,10 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
         setFile([...files, ...e.target.files]);
     }
 
+    const openAddImage = () => {
+
+    }
+    
     return (
         <>
             <Dialog open={isOpen} onClose={onClose} className="relative z-10">
@@ -95,8 +99,9 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                     <input type="file" multiple onChange={e => handleFileChange(e)} />
                                 </div>
 
-                                <div>
-                                    <FontAwesomeIcon className='text-green-400' icon={faImage} />
+                                <div onClick={openAddImage}>
+                                    <FontAwesomeIcon className='text-green-400' icon={faImage}
+                                    />
                                 </div>
 
                                 {loading ? <div className="text-center mr-4"><Spinner /></div> :

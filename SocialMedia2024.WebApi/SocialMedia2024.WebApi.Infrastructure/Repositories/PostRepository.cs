@@ -2,10 +2,6 @@
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.Infrastructure.Persistence;
 using SocialMedia2024.WebApi.Infrastructure.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using SocialMedia2024.WebApi.Domain.ViewModel;
-using SocialMedia2024.WebApi.Domain.Enum;
-using System.Linq;
 
 namespace SocialMedia2024.WebApi.Infrastructure.Repositories
 {
