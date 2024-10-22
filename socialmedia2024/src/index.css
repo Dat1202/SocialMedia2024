@@ -24,6 +24,7 @@ code {
   --bg-color:#f0f2f5;
   --icon-color: #050505;
   --hover-color: #d4d9df;
+  --bg-image: #000102bd;
 }
 
 @tailwind base;

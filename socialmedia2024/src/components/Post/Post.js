@@ -34,10 +34,8 @@ const Post = () => {
             <PostModal GetListPost={GetListPost} isOpen={isOpenPostModal} onClose={closePostModal} />
 
             {post && post.data.length > 0 ? post.data.map(p => (
-                <PostItem post={p} />
-            )) : <h1></h1>}
-
-
+                <PostItem key={p.id} post={p} />
+            )) : <h1>Bạn chưa có bài viết, hãy kết bạn thêm</h1>}
         </>
     )
 }

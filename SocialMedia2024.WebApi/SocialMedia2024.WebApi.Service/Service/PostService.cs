@@ -2,7 +2,7 @@
 using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Service.Interfaces;
-using SocialMedia2024.WebApi.Domain.ViewModel;
+using SocialMedia2024.WebApi.Infrastructure.ViewModel;
 using Dapper;
 using Newtonsoft.Json;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;

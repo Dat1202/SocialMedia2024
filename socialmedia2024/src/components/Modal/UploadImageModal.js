@@ -76,7 +76,7 @@ const UploadImageModal = ({ isOpen, onClose }) => {
                                                 <FontAwesomeIcon icon={faPlus} className="mr-2" />
                                                 Tải ảnh
                                             </label>
-                                            <input type="file" name="" id="uploadImage" hidden onChange={e => handleChangeImage(e)} />
+                                            <input type="file" id="uploadImage" hidden onChange={e => handleChangeImage(e)} />
                                         </div>
                                         <div className="w-full h-96 border-2 border-dashed flex items-center justify-center">
                                             <div className="w-full h-full flex items-center justify-center p-2">
