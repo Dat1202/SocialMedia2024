@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { UserContext } from '../../layout/Router'
 import Spinner from '../base/Spinner'
@@ -6,14 +6,16 @@ import ProfileRoute from '../base/ProfileRoute'
 import { endpoints, authApis } from '../../configs/Apis';
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage } from '@fortawesome/free-regular-svg-icons'
+import { faFileImage, faImage } from '@fortawesome/free-regular-svg-icons'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 
 const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const [user,] = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState("");
-    const [isUploadImage, setUploadImage] = useState(false);
+    const [previewImage, setPreviewImage] = useState(null);
     const [files, setFile] = useState([]);
+    const [isOpenAddImage, setOpenAddImage] = useState(false);
 
     const createPost = async (e) => {
         e.preventDefault();
@@ -41,6 +43,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
             setContent('');
             setFile([]);
             setLoading(false);
+            setPreviewImage(null);
             GetListPost();
         }
         catch (ex) {
@@ -54,18 +57,26 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
         textarea.style.height = textarea.scrollHeight + 'px';
         setContent(e.target.value);
     };
-
+    useEffect(() => {
+        console.log("Updated previewImage:", previewImage);
+    }, [previewImage]);
     const handleFileChange = (e) => {
+        const filesArray = Array.from(e.target.files);
+        const newPreviewImages = filesArray.map(file => URL.createObjectURL(file));
+
+        setPreviewImage(newPreviewImages);
+        console.log("previewImage", previewImage)
+
         setFile([...files, ...e.target.files]);
     }
 
     const openAddImage = () => {
-
+        setOpenAddImage(!isOpenAddImage);
     }
-    
+
     return (
         <>
-            <Dialog open={isOpen} onClose={onClose} className="relative z-10">
+            <Dialog open={isOpen} onClose={onClose} className="relative z-50">
                 <form onSubmit={createPost}>
                     <DialogBackdrop
                         transition
@@ -95,13 +106,33 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                     />
                                 </div>
 
+                                {
+                                    isOpenAddImage && (previewImage === null ?
+                                        <div className='border border-black p-2 m-2'>
+                                            <label htmlFor="uploadImage" className='cursor-pointer' >
+                                                <div className='bg-[var(--secondary-color)] p-28'>
+                                                    <FontAwesomeIcon icon={faFileImage} />
+                                                </div>
+                                            </label>
+                                        </div> :
+                                        <div className='h-96' >
+                                            <PerfectScrollbar>
+                                                {previewImage.map((image, index) => (
+                                                    <div className='flex flex-wrap' key={index}>
+                                                        <img className='max-w-44 h-full object-cover block' src={image} />
+                                                    </div>
+                                                ))}
+                                            </PerfectScrollbar>
+                                        </div>
+                                    )
+                                }
+
                                 <div>
-                                    <input type="file" multiple onChange={e => handleFileChange(e)} />
+                                    <input id="uploadImage" hidden type="file" multiple onChange={e => handleFileChange(e)} />
                                 </div>
 
-                                <div onClick={openAddImage}>
-                                    <FontAwesomeIcon className='text-green-400' icon={faImage}
-                                    />
+                                <div className='cursor-pointer' onClick={openAddImage}>
+                                    <FontAwesomeIcon className='text-green-400' icon={faImage} />
                                 </div>
 
                                 {loading ? <div className="text-center mr-4"><Spinner /></div> :
@@ -116,8 +147,8 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                             </DialogPanel>
                         </div>
                     </div>
-                </form>
-            </Dialog>
+                </form >
+            </Dialog >
         </>
     )
 }

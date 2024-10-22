@@ -3,7 +3,7 @@ import { Google } from '@mui/icons-material'
 import { Navigate, useNavigate } from 'react-router-dom';
 import Apis, { endpoints, authApis } from '../../configs/Apis';
 import cookie from "react-cookies";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { UserContext } from '../../layout/Router';
 import ModalRegister from '../../components/modal/RegisterModal';
 import Spinner from '../../components/base/Spinner';
