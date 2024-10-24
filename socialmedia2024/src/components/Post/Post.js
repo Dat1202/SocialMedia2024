@@ -12,7 +12,7 @@ const Post = () => {
     const [post, setPost] = useState(null);
     const openPostModal = () => setIsOpenPostModal(true);
     const closePostModal = () => setIsOpenPostModal(false);
-    console.log(user)
+    
     useEffect(() => {
         GetListPost();
     }, []);

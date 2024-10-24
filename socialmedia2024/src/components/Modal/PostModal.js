@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileImage, faImage } from '@fortawesome/free-regular-svg-icons'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const [user,] = useContext(UserContext);
@@ -50,16 +51,17 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
             console.log(ex);
         }
     }
-
     const handleInput = (e) => {
         const textarea = e.target;
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
         setContent(e.target.value);
     };
+
     useEffect(() => {
         console.log("Updated previewImage:", previewImage);
     }, [previewImage]);
+
     const handleFileChange = (e) => {
         const filesArray = Array.from(e.target.files);
         const newPreviewImages = filesArray.map(file => URL.createObjectURL(file));
@@ -72,6 +74,10 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
 
     const openAddImage = () => {
         setOpenAddImage(!isOpenAddImage);
+    }
+    const DeletePreviewImage = () => {
+        setPreviewImage(null);
+        setFile([]);
     }
 
     return (
@@ -106,27 +112,33 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                     />
                                 </div>
 
-                                {
-                                    isOpenAddImage && (previewImage === null ?
-                                        <div className='border border-black p-2 m-2'>
-                                            <label htmlFor="uploadImage" className='cursor-pointer' >
-                                                <div className='bg-[var(--secondary-color)] p-28'>
-                                                    <FontAwesomeIcon icon={faFileImage} />
-                                                </div>
-                                            </label>
-                                        </div> :
-                                        <div className='h-96' >
-                                            <PerfectScrollbar>
-                                                {previewImage.map((image, index) => (
-                                                    <div className='flex flex-wrap' key={index}>
-                                                        <img className='max-w-44 h-full object-cover block' src={image} />
-                                                    </div>
-                                                ))}
-                                            </PerfectScrollbar>
-                                        </div>
-                                    )
-                                }
 
+                                {isOpenAddImage && (previewImage === null ?
+                                    <div className='border border-black p-2 m-2'>
+                                        <label htmlFor="uploadImage" className='cursor-pointer' >
+                                            <div className='text-2xl bg-[var(--secondary-color)] hover:bg-[var(--hover-color)] p-28'>
+                                                <FontAwesomeIcon icon={faFileImage} />
+                                            </div>
+                                        </label>
+                                    </div> :
+                                    <>
+                                        <div className='h-72 relative overflow-hidden' >
+                                            <PerfectScrollbar>
+                                                <div className={`${previewImage.length > 2 ? 'grid grid-cols-2 gap-1' : ''} `} >
+                                                    {previewImage.map((image, index) => (
+                                                        <div key={index}>
+                                                            <img className='max-full h-auto object-cover' src={image} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                            </PerfectScrollbar>
+                                            <div onClick={DeletePreviewImage} className='absolute top-2 right-4 z-30 bg-slate-100 border rounded-full p-2'>
+                                                <FontAwesomeIcon icon={faXmark} />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                                 <div>
                                     <input id="uploadImage" hidden type="file" multiple onChange={e => handleFileChange(e)} />
                                 </div>
