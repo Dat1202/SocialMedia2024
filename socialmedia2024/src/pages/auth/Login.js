@@ -28,7 +28,6 @@ const Login = () => {
                 "username": username,
                 "password": password
             })
-            console.log(data)
             if (data) {
                 toast.success(data.messageResponse)
 
