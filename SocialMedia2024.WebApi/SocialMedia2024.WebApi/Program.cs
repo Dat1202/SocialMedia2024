@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -20,14 +21,14 @@ using SocialMedia2024.WebApi.Core.Configuration;
 using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Data.Repositories;
+using SocialMedia2024.WebApi.Hubs;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Middleware;
-using SocialMedia2024.WebApi.Model;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Service.Service;
+using SocialMedia2024.WebApi.ViewModel;
 using System.Text;
-using System.Text.Json.Serialization;
 using TokenHandler = SocialMedia2024.WebApi.Authentication.Service.TokenHandler;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -162,14 +163,16 @@ builder.Services.AddScoped<IEmailTemplateReader, EmailTemplateReader>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        builder => builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        builder => builder.WithOrigins("http://localhost:3000")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials());
 });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -222,5 +225,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<ChatHub>("ChatHub");
 app.Run();
