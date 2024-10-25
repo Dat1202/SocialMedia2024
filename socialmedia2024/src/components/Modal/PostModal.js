@@ -123,8 +123,8 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                     </div> :
                                     <>
                                         <div className='h-72 relative overflow-hidden' >
-                                            <PerfectScrollbar>
-                                                <div className={`${previewImage.length > 2 ? 'grid grid-cols-2 gap-1' : ''} `} >
+                                            <PerfectScrollbar>  
+                                                <div className={`${previewImage.length > 2 ? 'grid grid-cols-2 gap-1 px-1' : ''} `} >
                                                     {previewImage.map((image, index) => (
                                                         <div key={index}>
                                                             <img className='max-full h-auto object-cover' src={image} />
