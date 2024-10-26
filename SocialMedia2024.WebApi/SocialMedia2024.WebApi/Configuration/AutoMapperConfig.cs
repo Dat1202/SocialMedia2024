@@ -11,6 +11,7 @@ namespace SocialMedia2024.WebApi.Configuration
             CreateMap<ErrorVM, MessageResponse>().ReverseMap();
             CreateMap<UserVM, User>().ForMember(u => u.PasswordHash, y => y.MapFrom(src => src.Password)).ReverseMap();
             CreateMap<PostVM, Post>().ReverseMap();
+            CreateMap<PostActionVM, PostAction>().ReverseMap();
 
         }
     }

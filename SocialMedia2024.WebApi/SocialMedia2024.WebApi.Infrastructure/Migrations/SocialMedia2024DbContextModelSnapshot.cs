@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "43980840-82ac-4561-a966-1ace844b547c",
+                            Id = "c2121b02-7fe0-4d2f-8e48-b786b3b3fcd8",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "3cfe2c22-8090-44fd-b8d1-fa5b4cf44c47",
+                            Id = "1cd8a462-091d-458d-a1df-a4c0169d05c6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "d62ca625-a88a-43e4-8ddd-6fca45a34426",
-                            RoleId = "3cfe2c22-8090-44fd-b8d1-fa5b4cf44c47"
+                            UserId = "f2f5a505-9732-4710-992a-9fc845e42e20",
+                            RoleId = "1cd8a462-091d-458d-a1df-a4c0169d05c6"
                         });
                 });
 
@@ -332,8 +332,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<int>("PostID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Active")
-                        .HasColumnType("int");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -533,10 +533,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d62ca625-a88a-43e4-8ddd-6fca45a34426",
+                            Id = "f2f5a505-9732-4710-992a-9fc845e42e20",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6a33aa09-1e53-413a-a2a0-bf7ed2f790b3",
-                            CreateAt = new DateTime(2024, 10, 17, 22, 31, 51, 915, DateTimeKind.Local).AddTicks(5225),
+                            ConcurrencyStamp = "5b46f9b3-c087-4a26-90e5-3ca1c4b35f5a",
+                            CreateAt = new DateTime(2024, 10, 26, 13, 43, 14, 919, DateTimeKind.Local).AddTicks(1228),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -545,9 +545,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENWDpGNOFtOGbjisVTfw4DSccWNShpfDcTNRRxbh7ObiHR8jQ7r0nWhgSBselz8uWA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPQQtLs9xFpsu7ypMj3U/UYzeIOq1KVB74zDhPfv11DrkEksgzRTDz+C3Ww2v/ZbOQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "509b7a5d-4d6c-4218-8207-5bc4da9ce7f6",
+                            SecurityStamp = "cb375064-b10b-408a-83b0-41a67b5cb06a",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"

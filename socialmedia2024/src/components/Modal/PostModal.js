@@ -38,7 +38,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
         }
 
         try {
-            let post = await authApis().post(endpoints['createPost'], data);
+            let post = await authApis().post(endpoints['post'], data);
             toast.success(post.data.messageResponse);
             onClose();
             setContent('');
@@ -127,7 +127,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                                 <div className={`${previewImage.length > 2 ? 'grid grid-cols-2 gap-1 px-1' : ''} `} >
                                                     {previewImage.map((image, index) => (
                                                         <div key={index}>
-                                                            <img className='max-full h-auto object-cover' src={image} />
+                                                            <img className='max-full h-auto object-cover' src={image} alt=''/>
                                                         </div>
                                                     ))}
                                                 </div>
