@@ -26,7 +26,7 @@ namespace SocialMedia2024.WebApi.Controllers
             return errorResponse(response);
         }   
 
-        protected Task<IActionResult> ResponseSuccess<T>(T data, string messageResponse)
+        protected Task<IActionResult> ResponseSuccess<T>(T data, string messageResponse = null)
         {
             return HandleMessageContent(messageResponse, data, response => Ok(response));
         }
@@ -45,7 +45,7 @@ namespace SocialMedia2024.WebApi.Controllers
         {
             return HandleMessageContent<object>(messageResponse, null, response => Unauthorized(response));
         }
-        protected Task<IActionResult> CreateOK(string messageResponse)
+        protected Task<IActionResult> CreateOK(string messageResponse = null)
         {
             return HandleMessageContent<object>(messageResponse, null, response => NoContent());
         }

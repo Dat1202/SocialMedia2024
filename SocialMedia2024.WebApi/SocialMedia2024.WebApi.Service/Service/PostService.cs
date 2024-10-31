@@ -47,7 +47,7 @@ namespace SocialMedia2024.WebApi.Service.Service
 
         public async Task<IEnumerable<PostVM>> ListPost(string userId)
         {
-            string sql = "GetPost";
+            string sql = "Post_Get";
 
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);

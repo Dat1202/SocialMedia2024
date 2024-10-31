@@ -64,6 +64,7 @@ builder.Services.AddScoped<IPostActionService, PostActionService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 builder.Services.AddScoped<PasswordHasher<User>>();

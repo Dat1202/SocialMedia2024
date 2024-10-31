@@ -1,43 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import * as signalR from '@microsoft/signalr';
-import cookie from "react-cookies";
+import { startConnection, stopConnection, sendMessage, setOnMessageReceived } from '../../service/HubService';
 
 const Chat = ({ userId, targetUserId }) => {
-    const [connection, setConnection] = useState(null);
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState("");
 
     useEffect(() => {
-        const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:44389/chatHub", {
-                accessTokenFactory: () => cookie.load('token'),
-            })
-            .withAutomaticReconnect()
-            .build();
+        startConnection();
 
-        setConnection(newConnection);
+        setOnMessageReceived((senderId, message) => {
+            console.log(`nhận message from ${senderId}: ${message}`);
+            setMessages((messages) => [...messages, { senderId, message }]);
+        });
 
         return () => {
-            newConnection.stop();
+            stopConnection();
         };
     }, []);
 
-    useEffect(() => {
-        if (connection) {
-            connection.start()
-                .then(() => {
-                    connection.on("ReceiveMessage", (senderId, message) => {
-                        console.log(`Received message from ${senderId}: ${message}`);
-                        setMessages((messages) => [...messages, { senderId, message }]);
-                    });
-                })
-                .catch((error) => console.error("Connection failed: ", error));
-        }
-    }, [connection]);
-
-    const sendMessage = async () => {
-        if (messageInput.trim() && connection) {
-            await connection.invoke("SendMessageToUser", "9e6f2a6b-a9e0-4717-b22b-7b7d35c685ac", messageInput);
+    const handleSendMessage = async () => {
+        if (messageInput.trim()) {
+            await sendMessage("f2f5a505-9732-4710-992a-9fc845e42e20", messageInput);
             setMessages((messages) => [...messages, { senderId: userId, message: messageInput }]);
             setMessageInput("");
         }
@@ -58,7 +41,7 @@ const Chat = ({ userId, targetUserId }) => {
                 onChange={(e) => setMessageInput(e.target.value)}
                 placeholder="Type a message..."
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={handleSendMessage}>Send</button>
         </div>
     );
 };

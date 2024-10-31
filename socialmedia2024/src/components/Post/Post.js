@@ -15,15 +15,15 @@ const Post = () => {
     const closePostModal = () => setIsOpenPostModal(false);
 
     useEffect(() => {
-        GetListPost();
-        getReaction();
+        GetListPost();  
+        GetReaction();
+
     }, []);
 
-    const getReaction = async () => {
+    const GetReaction = async () => {
         try {
             const res = await authApis().get(endpoints['action']);
             setPostAction(res.data);
-            console.log(res.data);
         } catch (error) {
             console.error("Error fetching reactions:", error);
         }
@@ -33,6 +33,7 @@ const Post = () => {
         const posts = await authApis().get(endpoints['post']);
         setPost(posts);
     }
+    console.log("Rendering post with ID:", post);
 
     if (post === null) return <Spinner />;
 

@@ -1,14 +1,17 @@
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { endpoints, authApis } from '../../configs/Apis';
+import { sendMessage } from '../../service/HubService';
+import { UserContext } from '../../layout/Router';
+import moment from 'moment';
 
-const Action = ({ postId, postAction }) => {
+const Action = ({ post, postAction }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const [fecthAction, ] = useState(postAction?.filter(action => action.postID === postId)[0]);
+    const [fecthAction,] = useState(postAction?.filter(action => action.postID === post.id)[0]);
     const [currentAction, setCurrentAction] = useState();
-    console.log("postAction", postId, fecthAction);
+    const [user,] = useContext(UserContext);
 
     const actions = [
         { icon: faThumbsUp, text: 'Thích' },
@@ -17,13 +20,13 @@ const Action = ({ postId, postAction }) => {
     ];
 
     const reactions = [
-        { value: '0', name: 'like', icon: '👍', label: 'Like' },
-        { value: '1', name: 'like', icon: '👍', label: 'Like' },
-        { value: '2', name: 'love', icon: '❤️', label: 'Love' },
-        { value: '3', name: 'haha', icon: '😆', label: 'Haha' },
-        { value: '4', name: 'wow', icon: '😮', label: 'Wow' },
-        { value: '5', name: 'sad', icon: '😢', label: 'Sad' },
-        { value: '6', name: 'angry', icon: '😡', label: 'Angry' },
+        { value: '0', name: 'like', icon: '👍', label: 'thích' },
+        { value: '1', name: 'like', icon: '👍', label: 'thích' },
+        { value: '2', name: 'love', icon: '❤️', label: 'yêu thích' },
+        { value: '3', name: 'haha', icon: '😆', label: 'haha' },
+        { value: '4', name: 'wow', icon: '😮', label: 'wow' },
+        { value: '5', name: 'sad', icon: '😢', label: 'buồn' },
+        { value: '6', name: 'angry', icon: '😡', label: 'phẫn nộ' },
     ];
 
     useEffect(() => {
@@ -31,15 +34,26 @@ const Action = ({ postId, postAction }) => {
     }, []);
 
     const submitReaction = async (reaction) => {
-
-        const isSameReaction = +currentAction?.value === +reaction.value;
-
-        const newReaction = isSameReaction ? reactions[0] : reaction;
-        setCurrentAction(newReaction);
+        if (+currentAction?.value === +reaction.value) {
+            setCurrentAction(reactions[0]);
+        }
+        else {
+            setCurrentAction(reaction);
+            if (user.id !== post.postUserId) {
+                const notificationAction = {
+                    senderName: user.userName,
+                    avatar: user.avatar,
+                    reaction: reaction.name,
+                    postID: post.id,
+                    createdAt: moment()
+                };
+                await sendMessage(post.postUserId, notificationAction);
+            }
+        }
 
         const postActionVM = {
-            ReactionTypeID: +newReaction.value,
-            PostID: +postId
+            ReactionTypeID: +reaction.value,
+            PostID: +post.id
         };
 
         try {
@@ -50,16 +64,16 @@ const Action = ({ postId, postAction }) => {
     };
 
     return (
-        <div className='relative flex flex-wrap justify-center gap-2 p-1'>
+        <div className='relative flex justify-center py-1'>
             {actions.map(action => (
                 <div
                     key={action.text}
-                    className='relative flex items-center gap-2 py-2 px-14 hover:bg-[--hover-color] hover:rounded-xl'
+                    className='relative flex items-center py-2 px-14 hover:bg-[--hover-color] hover:rounded-xl'
                     onMouseEnter={() => action.text === 'Thích' && setIsHovered(true)}
                     onMouseLeave={() => action.text === 'Thích' && setIsHovered(false)}
                     aria-label={action.text}
                 >
-                    <div onClick={() => submitReaction(reactions[1])}>
+                    <div className='flex items-center gap-1' onClick={() => submitReaction(reactions[1])}>
                         {action.text === 'Thích' ? (
                             currentAction && currentAction.value !== '0' ? (
                                 <p className="text-red-500">{currentAction.icon} {currentAction.label}</p>
@@ -67,11 +81,12 @@ const Action = ({ postId, postAction }) => {
                                 <p>{reactions[0].icon} {reactions[0].label}</p>
                             )
                         ) : (
-                            <FontAwesomeIcon icon={action.icon} />
+                            <>
+                                <FontAwesomeIcon icon={action.icon} />
+                                <p>{action.text !== 'Thích' ? action.text : ""}</p>
+                            </>
                         )}
                     </div>
-
-                    {action.text !== 'Thích' ? action.text : ""}
 
                     {isHovered && action.text === 'Thích' && (
                         <div className="absolute -top-12 -left-10 bg-white border border-gray-200 rounded-lg p-2 shadow-lg">
