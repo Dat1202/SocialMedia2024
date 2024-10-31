@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ProfileRoute from '../base/ProfileRoute';
 import ImageItem from './ImageItem';
 import Action from './Action';
 
 const PostItem = ({ post, postAction }) => {
-
     return (
         <div className='bg-white my-3 border border-slate-300 rounded-lg shadow-md'>
             <div className='p-2'>
@@ -13,7 +12,7 @@ const PostItem = ({ post, postAction }) => {
             </div>
             {/* img */}
             <ImageItem image={post?.postMedias} total={post?.totalCount} />
-            <Action postId={post.id} postAction={postAction} />
+            <Action post={post} postAction={postAction} />
         </div>
     );
 };

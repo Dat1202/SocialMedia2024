@@ -6,7 +6,7 @@ const ProfileRoute = ({ avatar, userName, time }) => {
     return (
         <>
             <Link to="/profile">
-                <div className='flex items-center gap-3 m-2 cursor-pointer'>
+                <div className='flex items-center gap-2 m-2 cursor-pointer'>
                     <img className="rounded-full w-11 h-11 object-cover	" src={avatar} alt='' />
                     <div>
                         {userName && <p className="capitalize">{userName}</p>}

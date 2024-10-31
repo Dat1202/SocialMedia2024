@@ -13,6 +13,7 @@ export const endpoints = {
     "uploadAvatar": "/User/upload-avatar/",
     "post": "/Post/post/",
     "action": "/Post/action/",
+    "notification": "/notification/notification/",
 }
 const instance = axios.create({
     baseURL: BASE_URL

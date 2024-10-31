@@ -67,7 +67,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
         const newPreviewImages = filesArray.map(file => URL.createObjectURL(file));
 
         setPreviewImage(newPreviewImages);
-        console.log("previewImage", previewImage)
+        // console.log("previewImage", previewImage)
 
         setFile([...files, ...e.target.files]);
     }
