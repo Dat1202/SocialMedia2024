@@ -9,5 +9,6 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
         Task<User> FindUserById(string id);
         Task<User> FindUserByUsername(string name);
         Task SaveImage(string fileName, string userId);
+        Task<User> GetProfileUser(string userId);
     }
 }

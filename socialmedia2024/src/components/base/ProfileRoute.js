@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/vi';
-const ProfileRoute = ({ avatar, userName, time }) => {
+
+const ProfileRoute = ({ avatar, userName, time, userId, height, width, link }) => {
+    const profileLink = link || (userId ? `/profile/${userId}` : '#');
+
     return (
         <>
-            <Link to="/profile">
+            <Link to={profileLink}>
                 <div className='flex items-center gap-2 m-2 cursor-pointer'>
-                    <img className="rounded-full w-11 h-11 object-cover	" src={avatar} alt='' />
+                    <img className={`rounded-full ${height || 'h-11'} ${width || 'w-11'} object-cover`} src={avatar} alt='' />
                     <div>
                         {userName && <p className="capitalize">{userName}</p>}
-                        {time && <p title={moment(time).format('LLLL')} className="hover:underline">{moment(time,"YYYY-MM-DD HH:mm:ss").fromNow()}</p>} {/* Corrected here */}
+                        {time && <p title={moment(time).format('LLLL')} className="hover:underline">{moment(time, "YYYY-MM-DD HH:mm:ss").fromNow()}</p>}
                     </div>
                 </div>
             </Link>

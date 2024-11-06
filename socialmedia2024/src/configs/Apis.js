@@ -11,9 +11,11 @@ export const endpoints = {
     "getCurrentUser": "/Authentication/get-current-user/",
     "register": "/User/register/",
     "uploadAvatar": "/User/upload-avatar/",
+    "profile": "/User/profile", 
     "post": "/Post/post/",
     "action": "/Post/action/",
-    "notification": "/notification/notification/",
+    "notification": "/Notification/notification/",
+    "friendStatus": "/Friend/status-friend",
 }
 const instance = axios.create({
     baseURL: BASE_URL

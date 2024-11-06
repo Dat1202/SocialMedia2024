@@ -6,7 +6,6 @@ using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Service.Interfaces;
-using SocialMedia2024.WebApi.Service.Service;
 using SocialMedia2024.WebApi.ViewModel;
 
 namespace SocialMedia2024.WebApi.Controllers
@@ -41,7 +40,7 @@ namespace SocialMedia2024.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserVM userVM)
+        public async Task<IActionResult> RegisterUser([FromBody] UserVM userVM)
         {
             if(userVM == null)
             {
@@ -108,7 +107,7 @@ namespace SocialMedia2024.WebApi.Controllers
         }
 
         [HttpPost("upload-avatar")]
-        public async Task<IActionResult> UploadAvatar([FromForm] string userId, List<IFormFile> files)
+        public async Task<IActionResult> UploadAvatarUser([FromForm] string userId, List<IFormFile> files)
         {
             if (files == null)
             {
@@ -133,5 +132,12 @@ namespace SocialMedia2024.WebApi.Controllers
             var urls = resultList.Select(r => r.Url.ToString()).ToList();
             return await ResponseSuccess(urls, "UploadAvatarSuccess");
         }
-    }
+
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfileUser([FromQuery] string userId)
+        {
+            var user = await _userService.GetProfileUser(userId);
+            return await ResponseSuccess(user, "");
+        }
+    } 
 }

@@ -3,7 +3,7 @@ import { faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useEffect, useState } from 'react';
 import { endpoints, authApis } from '../../configs/Apis';
-import { sendMessage } from '../../service/HubService';
+import { sendNotificationToUser } from '../../service/HubService';
 import { UserContext } from '../../layout/Router';
 import moment from 'moment';
 
@@ -41,13 +41,14 @@ const Action = ({ post, postAction }) => {
             setCurrentAction(reaction);
             if (user.id !== post.postUserId) {
                 const notificationAction = {
-                    senderName: user.userName,
+                    senderName: `${user.lastName} ${user.firstName}`,
                     avatar: user.avatar,
-                    reaction: reaction.name,
+                    reaction: reaction.label,
                     postID: post.id,
-                    createdAt: moment()
+                    createdAt: moment(),
+                    ActionType: 1
                 };
-                await sendMessage(post.postUserId, notificationAction);
+                await sendNotificationToUser("SendNotificationActionToUser", post.postUserId, notificationAction);
             }
         }
 

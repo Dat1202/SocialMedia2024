@@ -1,5 +1,5 @@
 ﻿using SocialMedia2024.WebApi.Domain.SystemEntities;
-using SocialMedia2024.WebApi.Infrastructure.ViewModel;
+using SocialMedia2024.WebApi.Service.ViewModel;
 
 namespace SocialMedia2024.WebApi.Service.Interfaces
 {

@@ -31,7 +31,7 @@ const Router = () => {
             <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>}>
               <Route index element={<Home />} />
               <Route path="chat" element={<Chat />} />
-              <Route path="profile" element={<Profile />} />
+              <Route path="profile/:userId" element={<Profile />} />
             </Route>
           </Routes>
         </BrowserRouter>

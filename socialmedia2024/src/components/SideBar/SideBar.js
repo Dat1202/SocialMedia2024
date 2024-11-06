@@ -24,7 +24,7 @@ const MenuSideBar = () => {
         <div className="h-screen sticky top-16 overflow-hidden ">
             <PerfectScrollbar >
                 <div className='p-1 hover:rounded-lg transition duration-150 ease-in-out hover:bg-[var(--hover-color)]'>
-                    <ProfileRoute avatar={user?.avatar} userName={user?.userName} />
+                    <ProfileRoute avatar={user?.avatar} userName={user?.userName} userId={user?.id} />
                 </div>
                 <h1>{menu.success ? (menu.data.map(m => (
                     <div key={m.id}>

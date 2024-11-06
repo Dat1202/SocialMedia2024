@@ -56,5 +56,11 @@ namespace SocialMedia2024.WebApi.Service.Service
                 await _unitOfWork.Commit();
             }
         }
+
+        public async Task<User> GetProfileUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return user;
+        }
     }
 }

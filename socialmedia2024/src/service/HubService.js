@@ -11,7 +11,7 @@ export const startConnection = async () => {
     }
 
     connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:44389/chatHub", {
+        .withUrl("https://localhost:44389/HubService", {
             accessTokenFactory: () => {
                 const token = cookie.load('token');
                 return token;
@@ -36,7 +36,7 @@ export const startConnection = async () => {
         await connection.start();
         console.log("SignalR connection success.");
 
-        connection.on("ReceiveMessage", (senderId, message) => {
+        connection.on("ReceiveNotification", (senderId, message) => {
             if (onMessageReceivedCallback) {
                 onMessageReceivedCallback(senderId, message);
             }
@@ -53,10 +53,10 @@ export const stopConnection = async () => {
     }
 };
 
-export const sendMessage = async (targetUserId, notificationAction) => {
+export const sendNotificationToUser = async (nameMethod ,targetUserId, notificationAction) => {
     if (connection && connection.state === signalR.HubConnectionState.Connected) {
         try {
-            await connection.invoke("SendMessageToUser", targetUserId, notificationAction);
+            await connection.invoke(nameMethod, targetUserId, notificationAction);
         } catch (error) {
             console.error("Failed to send message: ", error);
         }
