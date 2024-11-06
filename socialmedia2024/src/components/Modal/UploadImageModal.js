@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,12 +8,17 @@ import Apis, { endpoints } from '../../configs/Apis';
 import cookie from "react-cookies";
 import { toast } from 'react-toastify';
 
-const UploadImageModal = ({ isOpen, onClose }) => {
-    const [user, dispatch] = useContext(UserContext);
+const UploadImageModal = ({ isOpen, onClose, user }) => {
+    const [currentUser, dispatch] = useContext(UserContext);
+
     const [file, setFile] = useState(null);
-    const [previewImage, setPreviewImage] = useState(user?.avatar);
+    const [previewImage, setPreviewImage] = useState("");
     const [loading, setLoading] = useState(false);
-    
+
+    useEffect(() => {
+        setPreviewImage(user?.avatar);
+    }, [user?.avatar]);
+
     const saveImage = async (e) => {
         e.preventDefault();
 
@@ -35,10 +40,10 @@ const UploadImageModal = ({ isOpen, onClose }) => {
             let res = await Apis.post(endpoints['uploadAvatar'], data);
             toast.success(res.messageResponse)
             dispatch({
-                type: 'UPDATE_AVATAR', 
+                type: 'UPDATE_AVATAR',
                 payload: res.data
             });
-            
+
             cookie.save("user", { ...user, avatar: res.data });
             setLoading(false)
             onClose();

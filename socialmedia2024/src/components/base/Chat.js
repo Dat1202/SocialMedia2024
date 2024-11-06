@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { startConnection, stopConnection, sendMessage, setOnMessageReceived } from '../../service/HubService';
+import { startConnection, stopConnection, sendNotificationToUser, setOnMessageReceived } from '../../service/HubService';
 
 const Chat = ({ userId, targetUserId }) => {
     const [messages, setMessages] = useState([]);
@@ -20,7 +20,7 @@ const Chat = ({ userId, targetUserId }) => {
 
     const handleSendMessage = async () => {
         if (messageInput.trim()) {
-            await sendMessage("f2f5a505-9732-4710-992a-9fc845e42e20", messageInput);
+            await sendNotificationToUser("f2f5a505-9732-4710-992a-9fc845e42e20", messageInput);
             setMessages((messages) => [...messages, { senderId: userId, message: messageInput }]);
             setMessageInput("");
         }

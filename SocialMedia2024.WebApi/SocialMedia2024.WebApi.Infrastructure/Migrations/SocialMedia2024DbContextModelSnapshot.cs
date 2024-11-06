@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c2121b02-7fe0-4d2f-8e48-b786b3b3fcd8",
+                            Id = "f346c6e4-927f-49d1-aef9-13fd3645da81",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "1cd8a462-091d-458d-a1df-a4c0169d05c6",
+                            Id = "f4d83798-a2f3-4d18-9f44-290dd049a2a2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f2f5a505-9732-4710-992a-9fc845e42e20",
-                            RoleId = "1cd8a462-091d-458d-a1df-a4c0169d05c6"
+                            UserId = "9cd8e6ce-0081-491f-8a7c-561d99a74467",
+                            RoleId = "f4d83798-a2f3-4d18-9f44-290dd049a2a2"
                         });
                 });
 
@@ -270,13 +270,16 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<int>("ActionType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostID")
+                    b.Property<int?>("PostID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Seened")
+                    b.Property<bool>("Seen")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -533,10 +536,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f2f5a505-9732-4710-992a-9fc845e42e20",
+                            Id = "9cd8e6ce-0081-491f-8a7c-561d99a74467",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b46f9b3-c087-4a26-90e5-3ca1c4b35f5a",
-                            CreateAt = new DateTime(2024, 10, 26, 13, 43, 14, 919, DateTimeKind.Local).AddTicks(1228),
+                            ConcurrencyStamp = "26d3ed94-3b69-4e92-9b65-a79964841970",
+                            CreateAt = new DateTime(2024, 11, 5, 15, 57, 58, 258, DateTimeKind.Local).AddTicks(1853),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -545,9 +548,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPQQtLs9xFpsu7ypMj3U/UYzeIOq1KVB74zDhPfv11DrkEksgzRTDz+C3Ww2v/ZbOQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOM3T/wTX4nZFh1Mm55AYQKyHUfJWo7qzRUZcS7ms3B7+NbwGiEtQ0w5aG+95z1j4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cb375064-b10b-408a-83b0-41a67b5cb06a",
+                            SecurityStamp = "489a6e90-f7d8-49b5-b276-a74d31addf03",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -724,8 +727,7 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasOne("SocialMedia2024.Domain.Entities.Post", "Post")
                         .WithMany("Notifications")
                         .HasForeignKey("PostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SocialMedia2024.Domain.Entities.User", "User")
                         .WithMany("Notifications")

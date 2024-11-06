@@ -17,11 +17,10 @@ const Header = () => {
     const [isOpenProfile, setIsOpenProfile] = useState(false);
     const [isOpenNotify, setIsOpenNotify] = useState(false);
     const [notification, setNotification] = useState([]);
-    console.log(notification);
-
+    // console.log(notification);
 
     useEffect(() => {
-        console.log("header")
+        // console.log("header")
         GetNotifications();
         startConnection();
 
@@ -30,11 +29,15 @@ const Header = () => {
 
             setNotification((notifications) => [
                 {
+                    id: notificationAction.id,
+                    userId: notificationAction.userId,
                     senderName: notificationAction.senderName,
                     avatar: notificationAction.avatar,
                     reaction: notificationAction.reaction,
                     postID: notificationAction.postID,
-                    createdAt: notificationAction.createdAt
+                    createdAt: notificationAction.createdAt,
+                    actionType: notificationAction.actionType,
+                    seen: notificationAction.seen,
                 },
                 ...notifications,
             ]);
@@ -102,7 +105,7 @@ const Header = () => {
                     </span>
                     {isOpenNotify && (
                         <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-2 w-80 rounded-lg border-2">
-                            <Notification notification={notification} />
+                            <Notification notification={notification} getNotifications={GetNotifications}/>
                         </div>
                     )}
 
@@ -117,7 +120,7 @@ const Header = () => {
                             </div>
                         ) : (
                             <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2">
-                                <ProfileRoute avatar={user?.avatar} userName={user?.userName} />
+                                <ProfileRoute avatar={user?.avatar} userName={user?.userName} userId={user?.id} />
                                 <Menu icon={faGear} content="Cài đặt" link="/setting" />
                                 <Menu icon={faArrowRightFromBracket} content="Đăng xuất" func={logout} />
                             </div>

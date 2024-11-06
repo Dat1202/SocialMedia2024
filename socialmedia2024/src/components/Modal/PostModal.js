@@ -100,7 +100,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
                                     </div>
                                 </div>
                                 <div className='p-2'>
-                                    <ProfileRoute avatar={user?.avatar} userName={user.userName} />
+                                    <ProfileRoute avatar={user?.avatar} userName={user.userName} userId={user?.id} />
                                 </div>
                                 <div className='text-left w-full'>
                                     <textarea

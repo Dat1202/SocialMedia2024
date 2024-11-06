@@ -226,5 +226,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ChatHub>("ChatHub");
+app.MapHub<HubService>("HubService");
 app.Run();
