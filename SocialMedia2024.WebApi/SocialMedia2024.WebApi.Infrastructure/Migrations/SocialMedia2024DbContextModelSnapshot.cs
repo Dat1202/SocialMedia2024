@@ -51,13 +51,13 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f346c6e4-927f-49d1-aef9-13fd3645da81",
+                            Id = "54479837-26aa-41ec-805d-9c253b392468",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "f4d83798-a2f3-4d18-9f44-290dd049a2a2",
+                            Id = "fe3360a8-6744-4d46-a306-eff100bb1322",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,8 +152,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9cd8e6ce-0081-491f-8a7c-561d99a74467",
-                            RoleId = "f4d83798-a2f3-4d18-9f44-290dd049a2a2"
+                            UserId = "1e9bb1c4-a576-47cd-a38b-5e1ae270b6e8",
+                            RoleId = "fe3360a8-6744-4d46-a306-eff100bb1322"
                         });
                 });
 
@@ -240,10 +240,10 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
             modelBuilder.Entity("SocialMedia2024.Domain.Entities.Friend", b =>
                 {
-                    b.Property<string>("UserFollowerID")
+                    b.Property<string>("UserSentID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserFollowingID")
+                    b.Property<string>("UserReceivedID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateAt")
@@ -255,9 +255,11 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserFollowerID", "UserFollowingID");
+                    b.HasKey("UserSentID", "UserReceivedID");
 
-                    b.HasIndex("UserFollowingID");
+                    b.HasIndex("UserReceivedID");
+
+                    b.HasIndex("UserSentID", "UserReceivedID");
 
                     b.ToTable("Friend");
                 });
@@ -285,7 +287,11 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("UserReceivedID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserSentID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -293,7 +299,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.HasIndex("PostID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserSentID");
+
+                    b.HasIndex("UserReceivedID", "UserSentID");
 
                     b.ToTable("Notification");
                 });
@@ -321,6 +329,8 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CreateAt");
 
                     b.HasIndex("UserID");
 
@@ -529,17 +539,17 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("Email", "PasswordHash");
+                    b.HasIndex("UserName", "PasswordHash");
 
                     b.ToTable("User", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = "9cd8e6ce-0081-491f-8a7c-561d99a74467",
+                            Id = "1e9bb1c4-a576-47cd-a38b-5e1ae270b6e8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "26d3ed94-3b69-4e92-9b65-a79964841970",
-                            CreateAt = new DateTime(2024, 11, 5, 15, 57, 58, 258, DateTimeKind.Local).AddTicks(1853),
+                            ConcurrencyStamp = "79911bbe-1e90-4c81-949c-59197189d0d6",
+                            CreateAt = new DateTime(2024, 11, 7, 15, 27, 15, 723, DateTimeKind.Local).AddTicks(7842),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "ADMIN@GMAIL.COM",
                             EmailConfirmed = false,
@@ -548,9 +558,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOM3T/wTX4nZFh1Mm55AYQKyHUfJWo7qzRUZcS7ms3B7+NbwGiEtQ0w5aG+95z1j4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFXmr0Kr9Lw82fi2jQF3qsEUWhB1r2R5VDJJaGLxItRmO0Jfev+3feoKEbF4/gubSQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "489a6e90-f7d8-49b5-b276-a74d31addf03",
+                            SecurityStamp = "cab944e8-3271-48a0-a741-04ef4a9364c9",
                             Sex = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -705,21 +715,21 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
             modelBuilder.Entity("SocialMedia2024.Domain.Entities.Friend", b =>
                 {
-                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserFollower")
-                        .WithMany("UserFollowers")
-                        .HasForeignKey("UserFollowerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserFollowing")
-                        .WithMany("UserFollowings")
-                        .HasForeignKey("UserFollowingID")
+                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserReceived")
+                        .WithMany("UserReceived")
+                        .HasForeignKey("UserReceivedID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("UserFollower");
+                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserSent")
+                        .WithMany("UserSent")
+                        .HasForeignKey("UserSentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("UserFollowing");
+                    b.Navigation("UserReceived");
+
+                    b.Navigation("UserSent");
                 });
 
             modelBuilder.Entity("SocialMedia2024.Domain.Entities.Notification", b =>
@@ -729,15 +739,23 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                         .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SocialMedia2024.Domain.Entities.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserID")
+                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserReceived")
+                        .WithMany("NotificationsReceived")
+                        .HasForeignKey("UserReceivedID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SocialMedia2024.Domain.Entities.User", "UserSent")
+                        .WithMany("NotificationsSent")
+                        .HasForeignKey("UserSentID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Post");
 
-                    b.Navigation("User");
+                    b.Navigation("UserReceived");
+
+                    b.Navigation("UserSent");
                 });
 
             modelBuilder.Entity("SocialMedia2024.Domain.Entities.Post", b =>
@@ -844,7 +862,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Notifications");
+                    b.Navigation("NotificationsReceived");
+
+                    b.Navigation("NotificationsSent");
 
                     b.Navigation("PostActions");
 
@@ -852,11 +872,11 @@ namespace SocialMedia2024.WebApi.Infrastructure.Migrations
 
                     b.Navigation("ReplyComments");
 
-                    b.Navigation("UserFollowers");
-
-                    b.Navigation("UserFollowings");
-
                     b.Navigation("UserInChatGroups");
+
+                    b.Navigation("UserReceived");
+
+                    b.Navigation("UserSent");
                 });
 #pragma warning restore 612, 618
         }

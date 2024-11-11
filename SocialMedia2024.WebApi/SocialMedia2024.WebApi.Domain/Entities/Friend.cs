@@ -5,10 +5,10 @@ namespace SocialMedia2024.Domain.Entities
 {
     public class Friend
     {
-        public User? UserFollower { get; set; }
-        public string UserFollowerID { get; set; }
-        public User? UserFollowing { get; set; }
-        public string UserFollowingID { get; set; }
+        public User? UserSent { get; set; }
+        public string UserSentID { get; set; }
+        public User? UserReceived { get; set; }
+        public string UserReceivedID { get; set; }
         public Status Status { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }

@@ -10,27 +10,28 @@ import Spinner from "../../components/base/Spinner";
 const MenuSideBar = () => {
     const [user,] = useContext(UserContext);
     const [menu, setMenu] = useState(null);
+    // console.log(menu);
 
     useEffect(() => {
         const loadMenu = async () => {
             let data = await Apis.get(endpoints['menu']);
-            setMenu(data);
+            setMenu(data.data);
         };
         loadMenu();
     }, []);
-
     if (menu === null) return <Spinner />;
-    return (    
+
+    return (
         <div className="h-screen sticky top-16 overflow-hidden ">
             <PerfectScrollbar >
                 <div className='p-1 hover:rounded-lg transition duration-150 ease-in-out hover:bg-[var(--hover-color)]'>
-                    <ProfileRoute avatar={user?.avatar} userName={user?.userName} userId={user?.id} />
+                    <ProfileRoute avatar={user?.avatar} userName={`${user?.lastName} ${user?.firstName}`} userId={user?.id} />
                 </div>
-                <h1>{menu.success ? (menu.data.map(m => (
+                <h1>{menu.data && (menu.map(m => (
                     <div key={m.id}>
                         <Menu icon={faGear} content={m.menuName} link="/setting" />
                     </div>
-                ))) : (menu.error.errorMessage)}</h1>
+                )))}</h1>
             </PerfectScrollbar>
         </div>
     )

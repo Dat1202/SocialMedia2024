@@ -3,10 +3,10 @@ import React from 'react'
 const ImageItem = ({ image, total }) => {
     return (
         <>
-            <div className={`grid ${image.length === 3
+            <div className={`grid ${image && image.length === 3
                 ? (image[0]?.height < image[0]?.width ? 'grid-cols-2' : 'grid-cols-3')
                 : 'grid-cols-2'} gap-1 my-2 w-full`}>
-                {image.map((md, index) => {
+                {image && image.map((md, index) => {
                     let gridClasses = 'cursor-pointer relative';
                     if (image.length === 3 && index === 0) {
                         if (md.height > md.width)

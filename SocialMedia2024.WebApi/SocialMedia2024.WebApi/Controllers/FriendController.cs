@@ -19,7 +19,7 @@ namespace SocialMedia2024.WebApi.Controllers
         [HttpPost("status-friend")]
         public async Task<IActionResult> FriendStatusPost([FromBody] FriendStatusVM friendStatusVM)
         {
-            friendStatusVM.UserFollowerID = User.FindFirst("UserId")?.Value;
+            friendStatusVM.UserSentID = User.FindFirst("UserId")?.Value;
 
             await _friendService.FriendStatusModify(friendStatusVM);
             return await CreateOK();

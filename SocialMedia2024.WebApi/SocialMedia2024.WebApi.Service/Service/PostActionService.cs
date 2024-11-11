@@ -3,6 +3,7 @@ using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Data.Interfaces;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
 using SocialMedia2024.WebApi.Service.Interfaces;
+using SocialMedia2024.WebApi.Service.ViewModel;
 namespace SocialMedia2024.WebApi.Service.Service
 {
     public class PostActionService : IPostActionService
@@ -16,12 +17,13 @@ namespace SocialMedia2024.WebApi.Service.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task ActionModify(PostAction postAction)
+        public async Task ActionModify(PostActionVM postAction)
         {
             string sql = "Action_Modify";
 
             var parameters = new DynamicParameters();
-            parameters.Add("@UserId", postAction.UserID);
+            parameters.Add("@PostUserID", postAction.PostUserID);
+            parameters.Add("@CurrentUserID", postAction.CurrentUserID);
             parameters.Add("@PostID", postAction.PostID);
             parameters.Add("@ReactionTypeID", postAction.ReactionTypeID);
 

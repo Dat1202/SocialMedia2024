@@ -6,6 +6,7 @@ using SocialMedia2024.WebApi.Service.ViewModel;
 using Dapper;
 using Newtonsoft.Json;
 using SocialMedia2024.WebApi.Infrastructure.Dapper;
+using Azure;
 
 namespace SocialMedia2024.WebApi.Service.Service
 {
@@ -45,12 +46,14 @@ namespace SocialMedia2024.WebApi.Service.Service
             await _unitOfWork.Commit();
         }
 
-        public async Task<IEnumerable<PostVM>> ListPost(string userId)
+        public async Task<IEnumerable<PostVM>> ListPost(string userId, int page)
         {
             string sql = "Post_Get";
 
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);
+            parameters.Add("@PageSize", 5);
+            parameters.Add("@PageIndex", page);
 
             var postDtos = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(sql, parameters);
 

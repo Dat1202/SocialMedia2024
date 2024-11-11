@@ -50,7 +50,7 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 entity.HasIndex(u => u.Email)
                 .IsUnique();
 
-                entity.HasIndex(u => new { u.Email, u.PasswordHash });
+                entity.HasIndex(u => new { u.UserName, u.PasswordHash });
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -68,23 +68,7 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 entity.HasIndex(p => p.CreateAt);
             });
 
-            modelBuilder.Entity<Friend>(entity =>
-            {
-                entity.HasKey(ui => new { ui.UserFollowerID, ui.UserFollowingID });
-
-                entity.HasOne(u => u.UserFollower)
-                .WithMany(f => f.UserFollowers) // Mối quan hệ nhiều-nhiều với UserFollowers
-                .HasForeignKey(f => f.UserFollowerID)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(u => u.UserFollowing)
-                .WithMany(f => f.UserFollowings) // Mối quan hệ nhiều-nhiều với UserFollowings
-                .HasForeignKey(f => f.UserFollowingID)
-                .OnDelete(DeleteBehavior.NoAction);
-
-                entity.Property(p => p.Status)
-                .HasConversion(v => (int)v, v => (Status)v);
-            });
+     
 
             modelBuilder.Entity<Post>(entity =>
             {
@@ -92,6 +76,8 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 .WithMany(p => p.Posts)
                 .HasForeignKey(p => p.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(n => n.CreateAt);
 
                 //entity.Property(p => p.MediaType)
                 //.HasConversion(v => (int)v, v => (MediaType)v);// Chuyển đổi enum thành int khi lưu
@@ -107,13 +93,32 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 entity.HasKey(k => new { k.UserID, k.PostID });
             });
 
-
             modelBuilder.Entity<PostMedia>(entity =>
             {
                 entity.HasOne(p => p.Post)
                    .WithMany(c => c.PostMedias)
                    .HasForeignKey(u => u.PostID)
                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Friend>(entity =>
+            {
+                entity.HasKey(ui => new { ui.UserSentID, ui.UserReceivedID });
+
+                entity.HasOne(u => u.UserSent)
+                .WithMany(f => f.UserSent) 
+                .HasForeignKey(f => f.UserSentID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(u => u.UserReceived)
+                .WithMany(f => f.UserReceived) // Mối quan hệ nhiều-nhiều với UserFollowings
+                .HasForeignKey(f => f.UserReceivedID)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasIndex(f => new { f.UserSentID, f.UserReceivedID });
+
+                entity.Property(p => p.Status)
+                .HasConversion(v => (int)v, v => (Status)v);
             });
 
             modelBuilder.Entity<Notification>(entity =>
@@ -123,10 +128,18 @@ namespace SocialMedia2024.Infrastructure.Persistence
                 .HasForeignKey(u => u.PostID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(p => p.User)
-                .WithMany(c => c.Notifications)
-                .HasForeignKey(u => u.UserID)
+                entity.HasOne(p => p.UserReceived)
+                .WithMany(c => c.NotificationsReceived)
+                .HasForeignKey(u => u.UserReceivedID)
                 .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(p => p.UserSent)
+                .WithMany(c => c.NotificationsSent)
+                .HasForeignKey(u => u.UserSentID)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasIndex(n => new { n.UserReceivedID, n.UserSentID });
+
             });
 
             modelBuilder.Entity<UserInChatGroup>(entity =>

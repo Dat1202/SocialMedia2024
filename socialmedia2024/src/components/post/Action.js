@@ -12,7 +12,7 @@ const Action = ({ post, postAction }) => {
     const [fecthAction,] = useState(postAction?.filter(action => action.postID === post.id)[0]);
     const [currentAction, setCurrentAction] = useState();
     const [user,] = useContext(UserContext);
-
+// console.log(post)
     const actions = [
         { icon: faThumbsUp, text: 'Thích' },
         { icon: faComment, text: 'Bình luận' },
@@ -48,13 +48,15 @@ const Action = ({ post, postAction }) => {
                     createdAt: moment(),
                     ActionType: 1
                 };
-                await sendNotificationToUser("SendNotificationActionToUser", post.postUserId, notificationAction);
+                await sendNotificationToUser("SendNotification", post.postUserId, notificationAction);
             }
         }
 
         const postActionVM = {
             ReactionTypeID: +reaction.value,
-            PostID: +post.id
+            PostID: +post.id,
+            PostUserID: post.postUserId
+            
         };
 
         try {

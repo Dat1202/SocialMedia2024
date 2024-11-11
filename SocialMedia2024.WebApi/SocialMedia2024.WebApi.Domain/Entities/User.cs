@@ -25,9 +25,10 @@ namespace SocialMedia2024.Domain.Entities
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<ReplyComment> ReplyComments { get; set; } = new List<ReplyComment>();
         public ICollection<Post> Posts { get; set; } = new List<Post>(); 
-        public ICollection<Friend> UserFollowings { get; set; } = new List<Friend>();
-        public ICollection<Friend> UserFollowers { get; set; } = new List<Friend>();
-        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        public ICollection<Friend> UserReceived { get; set; } = new List<Friend>();
+        public ICollection<Friend> UserSent { get; set; } = new List<Friend>();
+        public ICollection<Notification> NotificationsReceived { get; set; } = new List<Notification>(); // User as target
+        public ICollection<Notification> NotificationsSent { get; set; } = new List<Notification>(); // User as source
         public ICollection<UserInChatGroup> UserInChatGroups { get; set; } = new List<UserInChatGroup>();
 
 

@@ -54,7 +54,7 @@ const Header = () => {
     const GetNotifications = async () =>{
         const res = await authApis().get(endpoints['notification']);
         setNotification(res.data);
-        console.log(res.data)
+        // console.log(res.data)
     }
 
     const logout = (e) => {
@@ -120,7 +120,7 @@ const Header = () => {
                             </div>
                         ) : (
                             <div style={{ background: "var(--primary-color)" }} className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2">
-                                <ProfileRoute avatar={user?.avatar} userName={user?.userName} userId={user?.id} />
+                                <ProfileRoute avatar={user?.avatar} userName={`${user?.lastName} ${user?.firstName}`} userId={user?.id} />
                                 <Menu icon={faGear} content="Cài đặt" link="/setting" />
                                 <Menu icon={faArrowRightFromBracket} content="Đăng xuất" func={logout} />
                             </div>
