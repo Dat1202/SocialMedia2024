@@ -26,8 +26,8 @@ namespace SocialMedia2024.WebApi.Service.Service
         {
             var sql = "Friend_Status_Modify";
             var parameters = new DynamicParameters();
-            parameters.Add("@CurrentUserId", friendStatusVM.UserFollowerID);
-            parameters.Add("@ProfileUserId", friendStatusVM.UserFollowingID);
+            parameters.Add("@CurrentUserId", friendStatusVM.UserSentID);
+            parameters.Add("@ProfileUserId", friendStatusVM.UserReceivedID);
             parameters.Add("@Status", friendStatusVM.Status);
 
             await _dapperHelper.ExecuteNonReturn(sql, parameters);

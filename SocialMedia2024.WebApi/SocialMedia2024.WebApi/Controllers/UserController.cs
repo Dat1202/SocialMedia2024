@@ -6,6 +6,7 @@ using SocialMedia2024.Domain.Entities;
 using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Service.Interfaces;
+using SocialMedia2024.WebApi.Service.ViewModel;
 using SocialMedia2024.WebApi.ViewModel;
 
 namespace SocialMedia2024.WebApi.Controllers
@@ -65,12 +66,12 @@ namespace SocialMedia2024.WebApi.Controllers
                 string url = Url.Action("ConfirmEmail", "User", new { userId = user.Id, tokenReset = token }, Request.Scheme);
                 string body = await _emailTemplateReader.GetTemplate("Templates\\ConfirmEmail.html");
                 body = string.Format(body, user.FirstName + " " + user.LastName, url);
-                await _emailHelper.SendMail(new Domain.SystemEntities.EmailRequest
-                {
-                    To = "dat120202@gmail.com",
-                    Subject = "Xác nhận đăng ký tài khoản",
-                    Content = body
-                });
+                //await _emailHelper.SendMail(new Domain.SystemEntities.EmailRequest
+                //{
+                //    To = "dat120202@gmail.com",
+                //    Subject = "Xác nhận đăng ký tài khoản",
+                //    Content = body
+                //});
 
                 await _userManager.AddToRoleAsync(user, "User");
                 return await ResponseSuccess(user, "CreateSuccesUser");

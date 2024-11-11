@@ -9,7 +9,7 @@ const Notification = ({ notification, getNotifications }) => {
   const handleConfirm = async (userId) => {
     const FriendStatusVM = {
       Status: 2,
-      UserFollowingID: userId,
+      UserReceivedID: userId,
     }
     await authApis().post(endpoints['friendStatus'], FriendStatusVM);
     getNotifications();
@@ -20,7 +20,7 @@ const Notification = ({ notification, getNotifications }) => {
       {notification.map((note, index) => (
         <div className={`flex p-2  hover:rounded-lg hover:bg-[--hover-color] hover:cursor`} key={index}>
           <div>
-            <ProfileRoute avatar={note.avatar} />
+            <ProfileRoute avatar={note.avatar} userId={note.userId} />
           </div>
           <div>
             {note.actionType === 1 ? (
@@ -31,9 +31,14 @@ const Notification = ({ notification, getNotifications }) => {
               <p>
                 <b>{note.senderName} </b> đã gửi cho bạn một lời mời kết bạn.
               </p>
-            ) : (
-              <p>Thông báo không xác định.</p>
-            )}
+            ) : note.actionType === 3 ? (
+              <p>
+                <b>{note.senderName} </b> đã chấp nhận lời mời kết bạn.
+              </p>
+            )
+              : (
+                <p>Thông báo không xác định.</p>
+              )}
             <p className='text-sm'>{moment(note.createdAt).fromNow()}</p>
             <div className='pt-2'>
               {note.actionType === 2 &&
