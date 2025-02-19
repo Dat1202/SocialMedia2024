@@ -28,6 +28,7 @@ const Login = () => {
                 "username": username,
                 "password": password
             })
+
             if (data) {
                 toast.success(data.messageResponse)
 
@@ -43,7 +44,8 @@ const Login = () => {
             }
 
         } catch (ex) {
-            toast.error(ex.response.messageResponse);
+            console.log(ex)
+            toast.error(ex.response.data.messageResponse);
             setLoading(false)
         }
     }
