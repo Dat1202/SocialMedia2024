@@ -17,9 +17,9 @@ namespace SocialMedia2024.WebApi.Service.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task ActionModify(PostActionVM postAction)
+        public async Task ModifyPostAction(PostActionVM postAction)
         {
-            string sql = "Action_Modify";
+            const string storedProcedure = "Action_Modify";
 
             var parameters = new DynamicParameters();
             parameters.Add("@PostUserID", postAction.PostUserID);
@@ -27,17 +27,17 @@ namespace SocialMedia2024.WebApi.Service.Service
             parameters.Add("@PostID", postAction.PostID);
             parameters.Add("@ReactionTypeID", postAction.ReactionTypeID);
 
-            await _dapperHelper.ExecuteNonReturn(sql, parameters);
+            await _dapperHelper.ExecuteNonReturn(storedProcedure, parameters);
         }
 
-        public async Task<IEnumerable<PostAction>> ActionGet(string userId)
+        public async Task<IEnumerable<PostAction>> GetUserPostActions(string userId)
         {
-            string sql = "Action_Get";
+            string storedProcedure = "Action_Get";
 
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);
 
-            var result = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostAction>(sql, parameters);
+            var result = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostAction>(storedProcedure, parameters);
             return result;
         }
     }

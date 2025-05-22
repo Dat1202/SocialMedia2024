@@ -18,10 +18,8 @@ const Notification = ({ notification, getNotifications }) => {
   return (
     <div className='flex flex-wrap'>
       {notification.map((note, index) => (
-        <div className={`flex p-2  hover:rounded-lg hover:bg-[--hover-color] hover:cursor`} key={index}>
-          <div>
+        <div className={`flex p-2  gap-3 hover:rounded-lg hover:bg-[--hover-color] hover:cursor`} key={index}>
             <ProfileRoute avatar={note.avatar} userId={note.userId} />
-          </div>
           <div>
             {note.actionType === 1 ? (
               <p>
@@ -39,12 +37,14 @@ const Notification = ({ notification, getNotifications }) => {
               : (
                 <p>Thông báo không xác định.</p>
               )}
-            <p className='text-sm'>{moment(note.createdAt).fromNow()}</p>
+            <p className='text-sm text-gray-500'>{moment(note.createdAt).fromNow()}</p>
             <div className='pt-2'>
               {note.actionType === 2 &&
                 <div className='flex gap-3 '>
-                  <div onClick={() => handleConfirm(note.userId)} className='border bg-[--button-color] py-2 px-4 rounded-lg text-white cursor-pointer'>Xác nhận</div>
-                  <div className='border bg-[--bg-color] py-2 px-4 rounded-lg text-black cursor-pointer'>Từ chối</div>
+                  <button onClick={() => handleConfirm(note.userId)} className='border bg-[--button-color] 
+                                  py-2 px-4 rounded-lg text-white cursor-pointer'>Xác nhận</button>
+                  <button className='border bg-[--bg-color] py-2 px-4 rounded-lg 
+                                  text-black cursor-pointer'>Từ chối</button>
                 </div>
               }
             </div>

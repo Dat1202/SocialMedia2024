@@ -10,9 +10,12 @@ const ProfileRoute = ({ avatar, userName, time, userId, height, width, link, tex
         <>
             <Link to={profileLink}>
                 <div className='flex items-center gap-2 m-2 cursor-pointer'>
-                    <img className={`rounded-full ${height || 'h-11'} ${width || 'w-11'} object-cover`} src={avatar} alt='' />
+                <img className={`rounded-full ${height || 'h-11'} ${width || 'w-11'} object-cover`}
+                     src={avatar || '/default-avatar.png'}
+                     alt={`${userName || 'User'} avatar`}
+                    />                    
                     <div>
-                        {userName && <p className={`capitalize ${textFont}`}>{userName}</p>}
+                        <p className={`capitalize ${textFont || ''}`}>{userName}</p>
                         {time && <p title={moment(time).format('LLLL')} className="hover:underline">{moment(time, "YYYY-MM-DD HH:mm:ss").fromNow()}</p>}
                     </div>
                 </div>

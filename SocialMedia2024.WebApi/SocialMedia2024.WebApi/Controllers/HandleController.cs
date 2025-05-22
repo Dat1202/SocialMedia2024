@@ -10,7 +10,7 @@ namespace SocialMedia2024.WebApi.Controllers
     {
         private readonly IErrorCodeService _errorService;
 
-        public HandleController(IErrorCodeService errorService, IMapper mapper) 
+        public HandleController(IErrorCodeService errorService) 
         {
             _errorService = errorService;
         }

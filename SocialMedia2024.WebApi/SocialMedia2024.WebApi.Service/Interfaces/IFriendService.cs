@@ -4,7 +4,7 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
 {
     public interface IFriendService
     {
-        Task FriendStatusModify(FriendStatusVM friendStatusVM);
-        Task<FriendStatusVM> FriendStatusGet(string currentUserId, string friendId);
+        Task UpdateFriendStatus(FriendStatusVM friendStatusVM);
+        Task<FriendStatusVM> GetFriendStatus(string currentUserId, string friendId);
     }
 }
