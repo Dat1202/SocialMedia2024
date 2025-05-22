@@ -29,6 +29,11 @@ namespace SocialMedia2024.WebApi.Controllers
             return HandleMessageContent(messageResponse, data, response => Ok(response));
         }
 
+        protected Task<IActionResult> ResponseSuccess(string messageResponse = null)
+        {
+            return HandleMessageContent<object>(messageResponse, null, response => Ok(response));
+        }
+
         protected Task<IActionResult> ResponseError(string messageResponse)
         {
             return HandleMessageContent<object>(messageResponse, null, response => BadRequest(response));

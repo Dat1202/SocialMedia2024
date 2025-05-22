@@ -52,7 +52,7 @@ namespace SocialMedia2024.WebApi.Service.Service
 
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);
-            parameters.Add("@PageSize", 5);
+            parameters.Add("@PageSize",5);
             parameters.Add("@PageIndex", page);
 
             var postDtos = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(sql, parameters);

@@ -40,7 +40,7 @@ namespace SocialMedia2024.WebApi.Controllers
 
             if (user == null) 
             { 
-                return await UnauthorizedError("IncorrectUser");
+                return await ResponseError("IncorrectUser");
             }
 
             //if (!user.EmailConfirmed)

@@ -38,7 +38,7 @@ const Profile = () => {
         });
         setFriendStatus(res.data);
     }
-    
+
     const ControllFriend = async (status) => {
         if ((status <= 1 && userId === friendStatus.userSentID) || status === 0) {
             const FriendStatusVM = {
@@ -63,9 +63,16 @@ const Profile = () => {
         <div className='flex justify-center'>
             <div className='w-9/12 border border-black flex justify-between items-center px-8 '>
                 <div onClick={() => setShowAvatar(!showAvatar)} className='relative'>
-                    <ProfileRoute avatar={userProfile?.avatar} userName={`${userProfile?.lastName} ${userProfile?.firstName}`} height='h-36' width='w-36' />
+                    <ProfileRoute avatar={userProfile?.avatar} userName={`${userProfile?.lastName} 
+                            ${userProfile?.firstName}`} height='h-36' width='w-36' textFont='text-5xl' />
                     {showAvatar && userProfile?.id === currentUser?.id &&
-                        <p className='absolute top-36 cursor-pointer' onClick={openModal}>Chọn ảnh đại diện</p>}
+                        <div className='absolute bg-red-100 bg-[--primary-color] p-2 text-black  
+                                gap-2 items-center rounded-lg hover:cursor-pointer'>
+                            <div className='hover:bg-[--hover-color] rounded-lg p-2 cursor-pointer'
+                                onClick={openModal}>Chọn ảnh đại diện</div>
+                            <div className='hover:bg-[--hover-color] rounded-lg p-2 cursor-pointer'>Xem ảnh đại diện</div>
+                        </div>
+                    }
                     <ModalUploadImage isOpen={isModalOpen} onClose={closeModal} user={userProfile} />
                 </div>
                 <div className='flex justify-between items-center gap-5'>
