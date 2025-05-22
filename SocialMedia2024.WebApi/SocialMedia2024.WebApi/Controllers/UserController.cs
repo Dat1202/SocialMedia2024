@@ -25,10 +25,11 @@ namespace SocialMedia2024.WebApi.Controllers
         private readonly IEmailTemplateReader _emailTemplateReader;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, IErrorCodeService errorService, IMapper mapper, UserManager<User> userManager, 
-               PasswordHasher<User> passwordHasher, PasswordValidator<User> passwordValidator,
-               IEmailHelper emailHelper, IEmailTemplateReader emailTemplateReader, ICloudinaryService cloudinaryService) : base(errorService, mapper)
-        {
+        public UserController(IUserService userService, IErrorCodeService errorService, IMapper mapper, 
+                UserManager<User> userManager, PasswordHasher<User> passwordHasher, PasswordValidator<User> passwordValidator,
+               IEmailHelper emailHelper, IEmailTemplateReader emailTemplateReader, ICloudinaryService cloudinaryService) 
+            : base(errorService)
+        {   
             _cloudinaryService = cloudinaryService;
             _emailHelper = emailHelper;
             _passwordHasher = passwordHasher;
@@ -127,7 +128,7 @@ namespace SocialMedia2024.WebApi.Controllers
 
             foreach (var result in resultList)
             {
-                await _userService.SaveImage(userId, result.Url.ToString());
+                await _userService.UpdateUserAvatar(userId, result.Url.ToString());
             }
 
             var urls = resultList.Select(r => r.Url.ToString()).ToList();
@@ -137,7 +138,7 @@ namespace SocialMedia2024.WebApi.Controllers
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfileUser([FromQuery] string userId)
         {
-            var user = await _userService.GetProfileUser(userId);
+            var user = await _userService.GetUserProfile(userId);
             return await ResponseSuccess(user, "");
         }
     } 

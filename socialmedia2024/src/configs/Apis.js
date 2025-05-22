@@ -8,14 +8,14 @@ const BASE_URL = "https://localhost:44389/api"
 export const endpoints = {
     "menu": "/Test/GetAllTest/",
     "login": "/Authentication/login/",
-    "getCurrentUser": "/Authentication/get-current-user/",
+    "getCurrentUser": "/Authentication/current-user/",
     "register": "/User/register/",
     "uploadAvatar": "/User/upload-avatar/",
-    "profile": "/User/profile", 
-    "post": "/Post/post/",
-    "action": "/Post/action/",
-    "notification": "/Notification/notification/",
-    "friendStatus": "/Friend/status-friend",
+    "profile": "/User/profile/", 
+    "post": "/Post/",
+    "action": "/Post/actions/",
+    "notification": "/Notification/",
+    "friendStatus": "/Friend/status/",
 }
 const instance = axios.create({
     baseURL: BASE_URL

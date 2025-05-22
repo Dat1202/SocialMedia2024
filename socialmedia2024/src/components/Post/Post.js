@@ -18,21 +18,16 @@ const Post = () => {
     const openPostModal = () => setIsOpenPostModal(true);
     const closePostModal = () => setIsOpenPostModal(false);
 
-    useEffect(() => {
-        GetReaction();
-        GetListPost(1);
-    }, []);
-
-    const GetReaction = async () => {
+    const GetReaction = useCallback(async () => {
         try {
             const res = await authApis().get(endpoints['action']);
             setPostAction(res.data);
         } catch (error) {
             console.error("Error fetching reactions:", error);
         }
-    };
+    }, []);
 
-    const GetListPost = async (currentPageIndex) => {
+    const GetListPost = useCallback(async (currentPageIndex) => {
         setLoading(true);
         try {
             const res = await authApis().get(endpoints['post'], {
@@ -45,9 +40,14 @@ const Post = () => {
             console.error("Error fetching posts:", error);
         } finally {
             setLoading(false);
-            if (initialLoad) setInitialLoad(false); 
+            if (initialLoad) setInitialLoad(false);
         }
-    };
+    }, [initialLoad]);
+
+    useEffect(() => {
+        GetReaction();
+        GetListPost(1);
+    }, [GetReaction, GetListPost]);
 
     const handleScroll = useCallback(() => {
         if (
@@ -63,7 +63,7 @@ const Post = () => {
         if (!initialLoad && pageIndex > 1) {
             GetListPost(pageIndex);
         }
-    }, [pageIndex, initialLoad]);
+    }, [pageIndex, initialLoad, GetListPost]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);

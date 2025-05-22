@@ -9,7 +9,7 @@ import cookie from "react-cookies";
 import { toast } from 'react-toastify';
 
 const UploadImageModal = ({ isOpen, onClose, user }) => {
-    const [currentUser, dispatch] = useContext(UserContext);
+    const [, dispatch] = useContext(UserContext);
 
     const [file, setFile] = useState(null);
     const [previewImage, setPreviewImage] = useState("");

@@ -15,9 +15,8 @@ namespace SocialMedia2024.WebApi.Service.Service
 
         public async Task<string?> GetMessageContent(string messageCode)
         {
-            var error = await _context.MessageResponse
-               .Where(e => e.MessageCode == messageCode)
-               .FirstOrDefaultAsync();
+            var error = await _context.MessageResponse.AsNoTracking()    
+               .FirstOrDefaultAsync(e => e.MessageCode == messageCode);
 
             return error?.MessageContent;
         }

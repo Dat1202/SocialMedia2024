@@ -9,8 +9,8 @@ const Chat = ({ userId, targetUserId }) => {
         startConnection();
 
         setOnMessageReceived((senderId, message) => {
-            console.log(`nhận message from ${senderId}: ${message}`);
-            setMessages((messages) => [...messages, { senderId, message }]);
+            console.log(`Nhận message từ ${senderId}: ${message}`);
+            setMessages((prevMessages) => [...prevMessages, { senderId, message }]);
         });
 
         return () => {
@@ -19,12 +19,17 @@ const Chat = ({ userId, targetUserId }) => {
     }, []);
 
     const handleSendMessage = async () => {
-        if (messageInput.trim()) {
-            await sendNotificationToUser("f2f5a505-9732-4710-992a-9fc845e42e20", messageInput);
-            setMessages((messages) => [...messages, { senderId: userId, message: messageInput }]);
-            setMessageInput("");
+        const trimmedMessage = messageInput.trim();
+        if (!trimmedMessage) return;
+    
+        try {
+          await sendNotificationToUser("SendNotificationToUser", targetUserId, trimmedMessage);
+          setMessages(prev => [...prev, { senderId: userId, message: trimmedMessage }]);
+          setMessageInput("");
+        } catch (error) {
+          console.error("Lỗi khi gửi message:", error);
         }
-    };
+      };
 
     return (
         <div>

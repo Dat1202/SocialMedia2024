@@ -23,7 +23,7 @@ namespace SocialMedia2024.WebApi.Service.Service
 
         public async Task CreatePost(Post post, List<ImageUploadResult> images)
         {
-            var listMedia = new List<PostMedia>();
+            var medias = new List<PostMedia>();
             await _unitOfWork.Posts.Add(post);
 
             if(images != null)
@@ -38,26 +38,26 @@ namespace SocialMedia2024.WebApi.Service.Service
                         IsVideo = image.ResourceType.Contains("video") ? true : false,
                         Post = post,
                     };
-                    listMedia.Add(newPostMedia);
+                    medias.Add(newPostMedia);
                 }
             }
           
-            await _unitOfWork.PostMedia.Add(listMedia);
+            await _unitOfWork.PostMedia.Add(medias);
             await _unitOfWork.Commit();
         }
 
-        public async Task<IEnumerable<PostVM>> ListPost(string userId, int page)
+        public async Task<IEnumerable<PostVM>> ListPost(string userId, int page, int pageSize = 5)
         {
-            string sql = "Post_Get";
+            const string storedProcedure = "Post_Get";
 
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);
-            parameters.Add("@PageSize",5);
+            parameters.Add("@PageSize", pageSize);
             parameters.Add("@PageIndex", page);
 
-            var postDtos = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(sql, parameters);
+            var posts = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(storedProcedure, parameters);
 
-            foreach (var post in postDtos)
+            foreach (var post in posts)
             {
                 if (!string.IsNullOrEmpty(post.PostMediasJson))
                 {
@@ -65,7 +65,7 @@ namespace SocialMedia2024.WebApi.Service.Service
                 }
             }
 
-            return postDtos;
+            return posts;
         }
     }
 }

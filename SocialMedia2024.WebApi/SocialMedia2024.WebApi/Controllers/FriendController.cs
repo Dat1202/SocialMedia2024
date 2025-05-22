@@ -2,36 +2,56 @@
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia2024.WebApi.Service.ViewModel;
 using SocialMedia2024.WebApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
+    [Authorize]
     [Route("/api/[controller]")]
     [ApiController]
     public class FriendController : HandleController
     {
         private readonly IFriendService _friendService;
 
-        public FriendController(IErrorCodeService errorService, IMapper mapper, IFriendService friendService) : base(errorService, mapper)
+        public FriendController(IErrorCodeService errorService, IMapper mapper, IFriendService friendService) : base(errorService)
         {
             _friendService = friendService;
         }
 
-        [HttpPost("status-friend")]
-        public async Task<IActionResult> FriendStatusPost([FromBody] FriendStatusVM friendStatusVM)
+        [HttpGet("status")]
+        public async Task<IActionResult> GetFriendStatus([FromQuery] string friendId)
         {
-            friendStatusVM.UserSentID = User.FindFirst("UserId")?.Value;
+            try
+            {
+                var currentUserId = User.FindFirst("UserId")?.Value;
+                if (string.IsNullOrWhiteSpace(currentUserId))
+                {
+                    return await ResponseError("Unauthorized");
+                }
 
-            await _friendService.FriendStatusModify(friendStatusVM);
-            return await CreateOK();
+                var status = await _friendService.GetFriendStatus(currentUserId, friendId);
+                return await ResponseSuccess(status, "Friend status retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return await ResponseError("");
+            }
         }
 
-        [HttpGet("status-friend")]
-        public async Task<IActionResult> FriendStatusGet([FromQuery] string friendId)
+        [HttpPost("status")]
+        public async Task<IActionResult> UpdateFriendStatus([FromBody] FriendStatusVM friendStatusVM)
         {
-            var currentUser = User.FindFirst("UserId")?.Value;
+            var currentUserId = User.FindFirst("UserId")?.Value;
 
-            var status =  await _friendService.FriendStatusGet(currentUser, friendId);
-            return await ResponseSuccess(status,"");
+            if (string.IsNullOrWhiteSpace(currentUserId))
+            {
+                return await ResponseError("Unauthorized");
+            }
+
+            friendStatusVM.UserSentID = currentUserId;
+
+            await _friendService.UpdateFriendStatus(friendStatusVM);
+            return await CreateOK();
         }
 
     }

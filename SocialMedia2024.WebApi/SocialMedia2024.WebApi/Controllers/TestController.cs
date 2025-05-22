@@ -15,7 +15,7 @@ namespace SocialMedia2024.WebApi.Controllers
         private readonly ICloudinaryService _cloudinaryService;
         private readonly IUserService _userService;
 
-        public TestController(IUserService userService,IMenuService ITLMenuService, IErrorCodeService errorService, IMapper mapper, IEmailHelper emailHelper, ICloudinaryService cloudinaryService) : base(errorService, mapper) 
+        public TestController(IUserService userService,IMenuService ITLMenuService, IErrorCodeService errorService, IMapper mapper, IEmailHelper emailHelper, ICloudinaryService cloudinaryService) : base(errorService) 
         {
             _emailHelper = emailHelper;
             _ITLMenuService = ITLMenuService;

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Google } from '@mui/icons-material'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Apis, { endpoints, authApis } from '../../configs/Apis';
 import cookie from "react-cookies";
 import { toast } from 'react-toastify';
@@ -14,7 +14,6 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 

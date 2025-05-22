@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 const Menu = ({ icon, content, func, link }) => {
 
   return (
-    <div>
-      <Link to={link} onClick={func} className="flex items-center gap-2 p-2 hover:bg-[var(--hover-color)] hover:rounded-lg transition duration-150 ease-in-out">
-        <BaseIcon icon={icon} background="var(--secondary-color)" />
-        <input type="button" value={content} />
-      </Link>
-    </div>
+    <Link to={link} onClick={func} role="menuitem" tabIndex={0}
+      className="flex items-center gap-2 p-2 hover:bg-[var(--hover-color)]
+        hover:rounded-lg transition duration-150 ease-in-out">
+      <BaseIcon icon={icon} background="var(--secondary-color)" />
+      <span className="cursor-pointer select-none">{content}</span>
+    </Link>
   )
 }
 

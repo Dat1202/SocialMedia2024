@@ -18,7 +18,7 @@ namespace SocialMedia2024.WebApi.Controllers
         private readonly IUserService _userService;
         private readonly ITokenHandler _tokenHandler;
 
-        public AuthenticationController(IErrorCodeService errorService, IMapper mapper, IUserService userService, ITokenHandler tokenHandler) : base(errorService, mapper)
+        public AuthenticationController(IErrorCodeService errorService, IMapper mapper, IUserService userService, ITokenHandler tokenHandler) : base(errorService)
         {
             _userService = userService;
             _tokenHandler = tokenHandler;
@@ -36,7 +36,7 @@ namespace SocialMedia2024.WebApi.Controllers
                 return await ResponseError("InvalidPassword");
             }
 
-            var user = await _userService.CheckLogin(loginVM.Username, loginVM.Password);
+            var user = await _userService.ValidateUser(loginVM.Username, loginVM.Password);
 
             if (user == null) 
             { 
@@ -69,11 +69,11 @@ namespace SocialMedia2024.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get-current-user")]
-        public async Task<IActionResult> GetUser()
+        [HttpGet("current-user")]
+        public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.FindFirst("UserId")?.Value;
-            var currentUser = await _userService.FindUserById(userId);
+            var currentUser = await _userService.GetUserById(userId);
             return Ok(currentUser);
         }
     }

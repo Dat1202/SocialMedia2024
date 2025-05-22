@@ -14,9 +14,9 @@ namespace SocialMedia2024.WebApi.Infrastructure.Repositories
             _socialMedia2024DbContext = socialMedia2024DbContext;
         }
 
-        public async Task<Friend> ExistFriend(string currentUser, string friendId)
+        public async Task<bool> FriendExists(string currentUser, string friendId)
         {
-            return await _socialMedia2024DbContext?.Friend?.FirstOrDefaultAsync(f => f.UserSentID == currentUser && f.UserReceivedID == friendId);
+            return await _socialMedia2024DbContext.Friend.AsNoTracking().AnyAsync(f => f.UserSentID == currentUser && f.UserReceivedID == friendId);
         }
     }
-}
+}   

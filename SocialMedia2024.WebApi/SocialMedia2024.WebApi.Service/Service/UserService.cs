@@ -17,36 +17,35 @@ namespace SocialMedia2024.WebApi.Service.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<User> CheckLogin(string username, string password)
+        public async Task<User> ValidateUser(string username, string password)
         {
-
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null) 
             {
-                return default(User);
+                return null;
             }
 
-            var isExist = await _userManager.CheckPasswordAsync(user,password);
-            if (!isExist)
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user,password);
+            if (!isPasswordValid)
             {
-                return default(User);
+                return null;
             }
 
             return user;
         }
 
-        public async Task<User> FindUserByUsername(string name)
+        public async Task<User> GetUserByUsername(string name)
         {
             return await _unitOfWork.Users.GetSingle(u => u.UserName == name);
         }
 
-        public async Task<User> FindUserById(string id)
+        public async Task<User> GetUserById(string id)
         {
             return await _unitOfWork.Users.GetSingle(u => u.Id == id);
         }
 
-        public async Task SaveImage(string userId,string fileName)
+        public async Task UpdateUserAvatar(string userId,string fileName)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
@@ -57,10 +56,9 @@ namespace SocialMedia2024.WebApi.Service.Service
             }
         }
 
-        public async Task<User> GetProfileUser(string userId)
+        public async Task<User> GetUserProfile(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            return user;
+            return await _userManager.FindByIdAsync(userId);
         }
     }
 }

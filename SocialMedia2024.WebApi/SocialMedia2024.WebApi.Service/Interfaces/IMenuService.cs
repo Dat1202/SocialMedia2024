@@ -8,7 +8,5 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
         Task Delete(string name);
         Task<IEnumerable<TLMenu>> GetAll();
         Task<IEnumerable<TLMenu>> GetAllDapperSql();
-        Task<IEnumerable<PostVM>> ListPost(string userId);
-
     }
 }

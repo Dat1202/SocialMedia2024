@@ -53,27 +53,5 @@ namespace SocialMedia2024.WebApi.Service.Service
             return await _dapperHelper.ExecuteSqlReturnList<TLMenu>(sql);
         }
 
-        //gọi stored và truyền params
-        public async Task<IEnumerable<PostVM>> ListPost(string userId)
-        {
-            string sql = "GetPost";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("@UserId", userId);
-
-            var postDtos = await _dapperHelper.ExecuteStoreProcedureReturnListAsync<PostVM>(sql, parameters);
-
-            foreach (var post in postDtos)
-            {
-                if (!string.IsNullOrEmpty(post.PostMediasJson))
-                {
-                    post.PostMedias = JsonConvert.DeserializeObject<List<PostMediaVM>>(post?.PostMediasJson);
-                }
-            }
-
-            return postDtos;
-        }
-
-
     }
 }
