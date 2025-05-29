@@ -1,5 +1,5 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useState, useCallback} from 'react';
 import Menu from '../base/MenuItem';
 import ProfileRoute from '../base/ProfileRoute';
 import { UserContext } from '../../layout/Router';
@@ -42,4 +42,4 @@ const MenuSideBar = () => {
     );
 };
 
-export default MenuSideBar;
+export default React.memo(MenuSideBar);

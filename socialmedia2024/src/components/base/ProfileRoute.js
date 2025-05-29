@@ -24,4 +24,4 @@ const ProfileRoute = ({ avatar, userName, time, userId, height, width, link, tex
     );
 }
 
-export default ProfileRoute;
+export default React.memo(ProfileRoute);

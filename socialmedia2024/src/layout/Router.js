@@ -7,7 +7,8 @@ import cookie from "react-cookies";
 import Login from '../pages/auth/Login';
 import Home from '../pages/home/Home';
 import Profile from '../pages/profile/Profile';
-import Chat from '../components/base/Chat';
+// import Chat from '../components/chat/Chat';
+import Messenger from '../components/chat/Messenger';
 
 export const UserContext = createContext();
 
@@ -30,7 +31,7 @@ const Router = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>}>
               <Route index element={<Home />} />
-              <Route path="chat" element={<Chat />} />
+              <Route path="chat" element={<Messenger />} />
               <Route path="profile/:userId" element={<Profile />} />
             </Route>
           </Routes>

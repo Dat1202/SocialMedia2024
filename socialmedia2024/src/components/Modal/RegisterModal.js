@@ -1,227 +1,208 @@
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import moment from 'moment/moment';
-import { useState } from 'react';
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Apis, { endpoints } from '../../configs/Apis';
-import {  toast } from 'react-toastify';
-import Spinner from '../base/Spinner';
+import moment from "moment";
+import Apis, { endpoints } from "../../configs/Apis";
+import { toast } from "react-toastify";
+import Spinner from "../base/Spinner";
+import React from "react";
+import InputField from "../base/InputField";
 
 const RegisterModal = ({ isOpen, onClose }) => {
-    const [startDate, setStartDate] = useState(new Date());
-    const [currentSelectedMonth, setCurrentSelectedMonth] = useState(startDate.getMonth());
-    const [selectedSex, setSelectedSex] = useState('male');
-    const [loading, setLoading] = useState(false);
+  const firstInputRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    sex: true,
+    dateOfBirth: moment().format("YYYY-MM-DD"),
+  });
 
-    const [user, setUser] = useState({
-        "username": "",
-        "password": "",
-        "firstName": "",
-        "lastName": "",
-        "sex": selectedSex === "male",
-        "confirmPassword": "",
-        "dateOfBirth": moment(startDate).format("YYYY-MM-DD")
-    });
+  console.log(user)
 
-    const registerUser = async (e) => {
-        e.preventDefault();
+  const changeUser = useCallback(
+    (field) => (e) => {
+      setUser((prev) => ({ ...prev, [field]: e.target.value }));
+    },
+    []
+  );
 
-        if (user.password !== user.confirmPassword) {
-            toast.error('Passwords do not match.');
-            setLoading(false);
-            return;
+  const changeUserDirect = useCallback((field, value) => {
+    setUser((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const registerUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (user.password !== user.confirmPassword) {
+        toast.error("Passwords do not match.");
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const res = await Apis.post(endpoints["register"], user);
+        if (res.success) {
+          toast.success(res.messageResponse);
+          onClose();
         }
-        setLoading(true)
+      } catch (error) {
+        if (error.response?.data) {
+          error.response.data.forEach((err) => {
+            toast.error(err.description);
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [user, onClose]
+  );
 
-        process();
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => firstInputRef.current?.focus(), 100);
     }
+  }, [isOpen]);
 
-    const process = async () => {
-        try {
-            let res = await Apis.post(endpoints['register'], user);
-            if (res.success) {
-                setLoading(false)
-                onClose();  
-                toast.success(res.messageResponse)
-            }
+  return (
+    <Dialog open={isOpen} onClose={onClose} className="relative z-10">
+      <form onSubmit={registerUser}>
+        <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <DialogTitle
+                  as="h3"
+                  className="text-2xl font-semibold text-blue-400"
+                >
+                  Đăng ký
+                </DialogTitle>
+                <p className="text-sm text-gray-500 mb-3">
+                  Nhanh chóng và dễ dàng.
+                </p>
+                <div className="border-b border-blue-400 mb-4" />
 
-        } catch (error) {   
-            if (error.response && error.response.data) {
-                const errors = error.response.data;
-                setLoading(false)
-                errors.forEach(err => {
-                    toast.error(err.description);
-                });
-            }
-        }
-    }
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-4">
+                    <InputField
+                      label="Họ"
+                      name="firstName"
+                      value={user.firstName}
+                      onChange={changeUser("firstName")}
+                      autoFocus
+                      ref={firstInputRef}
+                    />
+                    <InputField
+                      label="Tên"
+                      name="lastName"
+                      value={user.lastName}
+                      onChange={changeUser("lastName")}
+                    />
+                  </div>
 
-    const changeUser = (value, field) => {
-        setUser(current => {
-            return { ...current, [field]: value };
-        });
-    }
+                  <InputField
+                    label="Tên đăng nhập"
+                    name="username"
+                    value={user.username}
+                    onChange={changeUser("username")}
+                  />
 
-    const handleChangeDatePicker = (date) => {
-        if (!date) {
-            const today = new Date();
-            setStartDate(today);
-            setCurrentSelectedMonth(today.getMonth());
-        } else 
-            setStartDate(date);
-        
-        changeUser(moment(date).format("YYYY-MM-DD"), "dateOfBirth");
+                  <InputField
+                    label="Mật khẩu"
+                    name="password"
+                    type="password"
+                    value={user.password}
+                    onChange={changeUser("password")}
+                  />
 
-    }
+                  <InputField
+                    label="Xác nhận mật khẩu"
+                    name="confirmPassword"
+                    type="password"
+                    value={user.confirmPassword}
+                    onChange={changeUser("confirmPassword")}
+                  />
 
-    const handleSexChange = (event) => {
-        setSelectedSex(event.target.id);
-        changeUser(event.target.id === "male", "sex")
-    };
-
-    const isSameMonth = (month) => {
-        return month === currentSelectedMonth;
-    };
-
-    const dayClassName = (date) => {
-        if (!isSameMonth(date.getMonth())) {
-            return "text-white bg-slate-400";
-        }
-        return "";
-    };
-
-    const handleMonthChange = (date) => {
-        if (!date) {
-            setCurrentSelectedMonth(moment(new Date().getMonth()))
-            return;
-        }
-        setCurrentSelectedMonth(date.getMonth());
-    };
-
-    const handleClick = (date) => {
-        setCurrentSelectedMonth(date.getMonth());
-        if (isSameMonth(date.getMonth())) {
-            return "text-white bg-slate-400";
-        }
-        return "";
-    };
-
-    return (
-        <Dialog open={isOpen} onClose={onClose} className="relative z-10">
-            <form onSubmit={registerUser}>
-                <DialogBackdrop
-                    transition
-                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                />
-                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <DialogPanel
-                            transition
-                            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all"
-                        >
-                            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div className="sm:flex sm:items-start">
-                                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                        <DialogTitle as="h3" className="text-2xl font-semibold leading-6 text-blue-400">
-                                            Đăng ký
-                                        </DialogTitle>
-                                        <div className="mt-2">
-                                            <p className="text-sm text-gray-500">
-                                                Nhanh chóng và dễ dàng.
-                                            </p>
-                                        </div>
-
-                                        <div className="inline-block border-[1px] justify-center w-full border-blue-400 border-solid"></div>
-
-                                        <div className='flex flex-col h-96 gap-4 mt-4'>
-                                            <div className='flex '>
-                                                <label className="block mr-4">
-                                                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                        Họ
-                                                    </span>
-                                                    <input onChange={e => changeUser(e.target.value, "firstName")} type="text" name="firstName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Họ" />
-                                                </label>
-
-                                                <label className="block">
-                                                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                        Tên
-                                                    </span>
-                                                    <input onChange={e => changeUser(e.target.value, "lastName")} type="text" name="lastName" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Tên" />
-                                                </label>
-                                            </div>
-
-                                            <label className="block">
-                                                <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                    Tên đăng nhập
-                                                </span>
-                                                <input onChange={e => changeUser(e.target.value, "username")} type="text" name="username" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Số điện thoại hoặc email" />
-                                            </label>
-
-                                            <label className="block">
-                                                <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                    Mật khẩu
-                                                </span>
-                                                <input onChange={e => changeUser(e.target.value, "password")} type="password" name="password" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Mật khẩu" />
-                                            </label>
-
-                                            <label className="block">
-                                                <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                    Xác nhận mật khẩu
-                                                </span>
-                                                <input onChange={e => changeUser(e.target.value, "confirmPassword")} type="password" name="confirmPassword" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Xác nhận mật khẩu" />
-                                            </label>
-
-                                            <div className='flex justify-between'>
-                                                <label className="block">
-                                                    <span className="mb-3 after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                        Giới tính
-                                                    </span>
-                                                    <fieldset className='mr-3'>
-                                                        <input id="male" className="male mr-2" type="radio" name="sex"
-                                                            checked={selectedSex === 'male'}
-                                                            onChange={handleSexChange} />
-                                                        <label className="mr-6">Nam</label>
-
-                                                        <input id="female" className="female mr-2" type="radio" name="sex"
-                                                            checked={selectedSex === 'female'}
-                                                            onChange={handleSexChange} />
-                                                        <label className="mr-6">Nữ</label>
-                                                    </fieldset>
-                                                </label>
-
-                                                <label className="block">
-                                                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                                                        Ngày sinh
-                                                    </span>
-                                                    <DatePicker className="border-2 border-slate-300 rounded-md p-1 mt-1"
-                                                        onChange={handleChangeDatePicker} selected={startDate} dateFormat="dd/MM/yyyy"
-                                                        dayClassName={dayClassName}
-                                                        onMonthChange={handleMonthChange}
-                                                        onSelect={handleClick}
-
-                                                    />
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            {loading ? <div className="text-end mr-4"><Spinner /></div> : <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                <input
-                                    type="submit"
-                                    data-autofocus
-                                    className="mt-3 inline-flex w-full justify-center rounded-md text-white bg-blue-400 hover:text-blue-400 hover:bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 sm:mt-0 sm:w-auto transition duration-200 ease-in"
-                                    value="Save"
-                                />
-                            </div>}
-                            
-                        </DialogPanel>
+                  <div className="flex justify-between gap-4">
+                    <div className="w-1/2">
+                      <span className="block text-sm font-medium text-slate-700 mb-1">
+                        Giới tính *
+                      </span>
+                      <div className="flex gap-4 items-center">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="sex"
+                            checked={user.sex === true}
+                            onChange={() => changeUserDirect("sex", true)}
+                          />
+                          Nam
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="sex"
+                            checked={user.sex === false}
+                            onChange={() => changeUserDirect("sex", false)}
+                          />
+                          Nữ
+                        </label>
+                      </div>
                     </div>
-                </div>
-            </form>
-        </Dialog>
-    )
-}
 
-export default RegisterModal;
+                    <div className="w-1/2">
+                      <span className="block text-sm font-medium text-slate-700 mb-1">
+                        Ngày sinh *
+                      </span>
+                      <DatePicker
+                        selected={moment(user.dateOfBirth).toDate()}
+                        onChange={(date) =>
+                          changeUserDirect(
+                            "dateOfBirth",
+                            moment(date).format("YYYY-MM-DD")
+                          )
+                        }
+                        dateFormat="dd/MM/yyyy"
+                        className="border-2 border-slate-300 rounded-md p-2 w-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                {loading ? (
+                  <div className="text-end w-full">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    className="inline-flex w-full justify-center rounded-md text-white bg-blue-400 
+                    hover:text-blue-400 hover:bg-white px-3 py-2 text-sm font-semibold shadow-sm 
+                    ring-1 ring-inset ring-gray-300 sm:ml-3 sm:w-auto transition duration-200"
+                  >
+                    Đăng ký
+                  </button>
+                )}
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </form>
+    </Dialog>
+  );
+};
+
+export default React.memo(RegisterModal);

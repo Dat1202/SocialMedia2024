@@ -18,12 +18,12 @@ const Chat = ({ userId, targetUserId }) => {
         };
     }, []);
 
-    const handleSendMessage = async () => {
+    const sendMessage = async () => {
         const trimmedMessage = messageInput.trim();
         if (!trimmedMessage) return;
     
         try {
-          await sendNotificationToUser("SendNotificationToUser", targetUserId, trimmedMessage);
+          await sendNotificationToUser("SendNotificationToUser", '77d436ad-ffd9-4a89-90dc-5e3dd0b46413', trimmedMessage);
           setMessages(prev => [...prev, { senderId: userId, message: trimmedMessage }]);
           setMessageInput("");
         } catch (error) {
@@ -46,7 +46,7 @@ const Chat = ({ userId, targetUserId }) => {
                 onChange={(e) => setMessageInput(e.target.value)}
                 placeholder="Type a message..."
             />
-            <button onClick={handleSendMessage}>Send</button>
+            <button onClick={sendMessage}>Send</button>
         </div>
     );
 };

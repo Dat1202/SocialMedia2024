@@ -2,7 +2,7 @@ import React from 'react'
 import BaseIcon from './BaseIcon';
 import { Link } from 'react-router-dom';
 
-const Menu = ({ icon, content, func, link }) => {
+const MenuItem = ({ icon, content, func, link }) => {
 
   return (
     <Link to={link} onClick={func} role="menuitem" tabIndex={0}
@@ -14,4 +14,4 @@ const Menu = ({ icon, content, func, link }) => {
   )
 }
 
-export default Menu;
+export default MenuItem;

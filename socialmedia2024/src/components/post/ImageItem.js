@@ -47,4 +47,4 @@ const ImageItem = ({ image, total }) => {
     )
 }
 
-export default ImageItem
+export default React.memo(ImageItem);
