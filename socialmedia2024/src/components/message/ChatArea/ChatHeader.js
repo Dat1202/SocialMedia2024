@@ -1,21 +1,21 @@
 import React from 'react';
 import { Phone, Video, MoreHorizontal } from 'lucide-react';
 const ChatHeader = ({ chat }) => {
+  console.log(chat, "chat");  if (!chat) return null;
+
   return (
     <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
       <div className="flex items-center space-x-3">
         <div className="relative">
-          <div
-            className={`w-10 h-10 bg-gradient-to-r ${chat.color} rounded-full flex items-center justify-center text-white font-medium`}
-          >
-            {chat.avatar}
-          </div>
+          <img src={chat.avatar}
+            className={`w-10 h-10 bg-gradient-to-r rounded-full flex items-center justify-center text-white font-medium`}
+          />
           {chat.online && (
             <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
           )}
         </div>
         <div>
-          <h2 className="font-semibold text-gray-900">{chat.name}</h2>
+          <h2 className="capitalize font-semibold text-gray-900">{chat.userName}</h2>
           <p className="text-sm text-gray-500">
             {chat.online ? "Đang hoạt động" : `Hoạt động ${chat.time} trước`}
           </p>

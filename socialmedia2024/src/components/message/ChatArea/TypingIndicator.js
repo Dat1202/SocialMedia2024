@@ -1,12 +1,12 @@
 import React from "react";
 
-const TypingIndicator = ({ currentChat }) => {
+const TypingIndicator = ({ }) => {
   return (
     <div className="flex items-start space-x-3 px-4 py-2 animate-fade-in">
       <div
-        className={`w-8 h-8 bg-gradient-to-r ${currentChat?.color} rounded-full flex items-center justify-center text-white text-sm`}
+        className={`w-8 h-8 bg-gradient-to-r rounded-full flex items-center justify-center text-white text-sm`}
       >
-        {currentChat?.avatar}
+      
       </div>
       <div className="bg-gray-200 rounded-2xl rounded-tl-md px-4 py-3">
         <div className="flex space-x-1">

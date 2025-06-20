@@ -4,7 +4,7 @@ import './App.css';
 
 const App = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <Header />
       <Outlet />
     </div>

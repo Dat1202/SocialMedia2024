@@ -73,7 +73,7 @@ const PostItem = ({ post, postAction }) => {
                 });
             }
         } catch (error) {
-            console.error("Error submitting/resetting reaction:", error);
+            console.error("Error reaction:", error);
         }
     };
 

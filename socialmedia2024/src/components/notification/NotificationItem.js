@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
-import ProfileRoute from "./ProfileRoute";
+import ProfileRoute from "../base/ProfileRoute";
 import moment from "moment";
 import { authApis, endpoints } from "../../configs/Apis";
 import { FriendStatus } from "../../constants/FriendsStatus";
 import { NotificationActionType } from "../../constants/NotificationActionType";
 
-const Notifications = ({ notifications, getNotifications }) => {
+const NotificationItem = ({ notifications, getNotifications }) => {
   console.log(notifications);
 
   const [loadingUserId, setLoadingUserId] = useState(null);
@@ -101,4 +101,4 @@ const Notifications = ({ notifications, getNotifications }) => {
   );
 };
 
-export default Notifications;
+export default NotificationItem;

@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
 
-const MessagesArea = ({ messages, currentChat, isTyping }) => {
+const MessagesArea = ({ messages, isTyping }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -13,18 +13,18 @@ const MessagesArea = ({ messages, currentChat, isTyping }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  console.log(messages, "MessagesArea");
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-      {messages.map((message) => (
+    <div className="flex-1 p-4 space-y-4">
+      {messages && messages.map((message) => (
         <MessageBubble
           key={message.id}
           message={message}
-          currentChat={currentChat}
         />
       ))}
 
-      {isTyping && <TypingIndicator currentChat={currentChat} />}
+      {/* {isTyping && <TypingIndicator />} */}
       <div ref={messagesEndRef} />
     </div>
   );

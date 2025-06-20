@@ -16,6 +16,10 @@ export const endpoints = {
     "action": "/Post/actions/",
     "notification": "/Notification/",
     "friendStatus": "/Friend/status/",
+    "loginFirebase": "/Firebase/firebase-token/",
+    "chat" : "/Chat/recent-conversations/",
+    "chatListUser" : "/Friend/chat-list-user/",
+
 }
 const instance = axios.create({
     baseURL: BASE_URL

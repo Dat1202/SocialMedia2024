@@ -1,23 +1,20 @@
 import React, {useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { UserContext } from "./Router";
-import { faArrowRightFromBracket, faGear} from "@fortawesome/free-solid-svg-icons";
 import { faBell, faMessage } from "@fortawesome/free-regular-svg-icons";
 import BaseIcon from "../components/base/BaseIcon";
-import Menu from "../components/base/MenuItem";
-import ProfileRoute from "../components/base/ProfileRoute";
-import Notification from "../components/base/Notification";
 import { setOnMessageReceived, startConnection, stopConnection } from "../service/HubService";
 import { authApis, endpoints } from "../configs/Apis";
 import Logo from "../components/base/Logo";
 import Search from "../components/base/Search";
+import ProfileMenu from "../components/profile/ProfileMenu";
+import Notification from "../components/notification/Notification";
 
 const Header = () => {
-    const [user, dispatch] = useContext(UserContext);
-    const nav = useNavigate()
+    const [user] = useContext(UserContext);
     const [isOpenProfile, setIsOpenProfile] = useState(false);
     const [isOpenNotify, setIsOpenNotify] = useState(false);
-    const [notification, setNotification] = useState([]);
+    const [notifications, setNotification] = useState([]);
     // console.log(notification);
 
     useEffect(() => {
@@ -58,13 +55,7 @@ const Header = () => {
         // console.log(res.data)
     }
 
-    const logout = (e) => {
-        e.preventDefault();
-        nav("/login")
-        dispatch({
-            "type": "logout",
-        })
-    }
+
     const OpenProfile = () => {
         if (isOpenNotify) {
             setIsOpenNotify(!isOpenNotify);
@@ -91,7 +82,10 @@ const Header = () => {
               <Logo />
             </div>
             {/* search */}
-            <div style={{ color: "var(--icon-color)" }} className="relative group" >
+            <div
+              style={{ color: "var(--icon-color)" }}
+              className="relative group"
+            >
               <Search />
             </div>
           </div>
@@ -100,7 +94,7 @@ const Header = () => {
             style={{ color: "var(--icon-color)" }}
             className="flex gap-2 justify-between items-center my-1"
           >
-            <Link to="/chat" className="relative">
+            <Link to="/chat/" className="relative">
               <BaseIcon icon={faMessage} background="var(--secondary-color)" />
             </Link>
 
@@ -108,17 +102,7 @@ const Header = () => {
               <BaseIcon icon={faBell} background="var(--secondary-color)" />
             </span>
 
-            {isOpenNotify && (
-              <div
-                style={{ background: "var(--primary-color)" }}
-                className="absolute top-16 right-8 p-2 w-80 rounded-lg border-2"
-              >
-                <Notification
-                  notifications={notification}
-                  getNotifications={GetNotifications}
-                />
-              </div>
-            )}
+            {isOpenNotify && <Notification notifications={notifications}  getNotifications={GetNotifications}/>}
 
             <div onClick={OpenProfile} className="relative p-2">
               {/* <ProfileRoute avatar={user?.avatar} /> */}
@@ -130,36 +114,7 @@ const Header = () => {
               />
             </div>
 
-            {isOpenProfile &&
-              (user === null ? (
-                <div
-                  style={{ background: "var(--primary-color)" }}
-                  className="absolute top-16 right-8 p-2 w-64 rounded-lg border-2"
-                >
-                  <Menu
-                    icon={faArrowRightFromBracket}
-                    content="Đăng nhập"
-                    link="/login"
-                  />
-                </div>
-              ) : (
-                <div
-                  style={{ background: "var(--primary-color)" }}
-                  className="absolute top-16 right-8 p-3 w-64 rounded-lg border-2"
-                >
-                  <ProfileRoute
-                    avatar={user?.avatar}
-                    userName={`${user?.lastName} ${user?.firstName}`}
-                    userId={user?.id}
-                  />
-                  <Menu icon={faGear} content="Cài đặt" link="/setting" />
-                  <Menu
-                    icon={faArrowRightFromBracket}
-                    content="Đăng xuất"
-                    func={logout}
-                  />
-                </div>
-              ))}
+            {isOpenProfile && <ProfileMenu />}
           </div>
         </section>
       </>

@@ -25,16 +25,16 @@ namespace SocialMedia2024.WebApi.Service.Service
 
         public async Task<IEnumerable<TLMenu>> GetAll()
         {
-            var resultCache = await _distributedCacheService.Get<IEnumerable<TLMenu>>("cache_tlmenu_1");
+            //var resultCache = await _distributedCacheService.Get<IEnumerable<TLMenu>>("cache_tlmenu_1");
 
-            if (resultCache != null)
-            {
-                return resultCache;
-            }
+            //if (resultCache != null)
+            //{
+            //    return resultCache;
+            //}
 
             var menuItems = await _unitOfWork.Menus.GetAll();
 
-            await _distributedCacheService.Set("cache_tlmenu_1", menuItems);
+            //await _distributedCacheService.Set("cache_tlmenu_1", menuItems);
 
             return menuItems;
         }

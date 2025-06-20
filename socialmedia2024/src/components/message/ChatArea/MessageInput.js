@@ -5,7 +5,7 @@ const MessageInput = ({ newMessage, onMessageChange, onSendMessage, onKeyPress }
     const inputRef = useRef(null);
   
     return (
-      <div className="p-4 bg-white border-t border-gray-200">
+      <div className="p-5 bg-white border-t border-gray-200">
         <div className="flex items-center space-x-3">
           <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <Camera size={20} className="text-blue-500" />

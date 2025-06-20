@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseIcon from './BaseIcon';
+import BaseIcon from '../base/BaseIcon';
 import { Link } from 'react-router-dom';
 
 const MenuItem = ({ icon, content, func, link }) => {
