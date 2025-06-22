@@ -9,15 +9,7 @@ import { serverTimestamp } from "firebase/firestore";
 const ChatArea = ({ activeChat, messages, onSendMessage, groupedMessages, chatList }) => {
   const [user] = useContext(UserContext);
   const [newMessage, setNewMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const currentMessages = messages?.[activeChat] || [];
   const activeChatData = chatList.find((chat) => chat.chatGroupId === activeChat);
-
-  console.log(activeChatData, "activeChatData");
-  console.log(currentMessages, "currentMessages");
-  console.log(activeChat, "activeChat");
-  console.log(messages);
-
   const getCurrentTime = () => {
     const now = new Date();
     return (
@@ -38,14 +30,11 @@ const ChatArea = ({ activeChat, messages, onSendMessage, groupedMessages, chatLi
       time: getCurrentTime(),
       chatGroupId: activeChat,
       createdAt: serverTimestamp(),
-      avatar: user.avatar || "", // Default avatar if not set
+      avatar: user.avatar || "", 
     };
-
-    console.log(message, "constMessage");
 
     onSendMessage(activeChat, message);
     setNewMessage("");
-
   };
 
   const handleKeyPress = (e) => {
@@ -63,10 +52,7 @@ const ChatArea = ({ activeChat, messages, onSendMessage, groupedMessages, chatLi
     <div className="flex-1 flex flex-col h-full">
       <ChatHeader chat={activeChatData} />
       <div className="overflow-y-auto bg-gray-50 h-messages-area-scroll">
-        <MessagesArea
-          messages={currentMessages}
-          isTyping={isTyping}
-        />
+        <MessagesArea messages={messages} />
       </div>
       <MessageInput
         newMessage={newMessage}

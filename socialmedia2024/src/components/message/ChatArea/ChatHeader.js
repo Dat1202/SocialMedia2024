@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone, Video, MoreHorizontal } from 'lucide-react';
 const ChatHeader = ({ chat }) => {
-  console.log(chat, "chat");  if (!chat) return null;
+   if (!chat) return null;
 
   return (
     <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">

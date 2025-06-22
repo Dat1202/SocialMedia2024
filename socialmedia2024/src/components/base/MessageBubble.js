@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { UserContext } from "../../../layout/Router";
+import { UserContext } from "../../layout/Router";
 
-const MessageBubble = ({ message }) => {
+const MessageBubble = ({ message, isHiddenAvatar }) => {
   const [user] = useContext(UserContext);
-  // console.log(currentChat, "currentChat");
+  console.log(message, "MessageBubble text");
   return (
     <div
-      className={`flex items-end space-x-2 animate-fade-in 
+      className={`flex items-end space-x-2 animate-fade-in  
     ${message.senderId === user.id ? "justify-end" : "justify-start"}`}
     >
       {message.senderId !== user.id && (
@@ -27,7 +27,7 @@ const MessageBubble = ({ message }) => {
         <p className="text-sm">{message.text}</p>
       </div>
 
-      {message.senderId === user.id && (
+      {message.senderId === user.id && !isHiddenAvatar && (
         <img
           src={message.avatar}
           alt="avatar"

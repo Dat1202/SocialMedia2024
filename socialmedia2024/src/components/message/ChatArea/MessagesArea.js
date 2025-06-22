@@ -1,9 +1,8 @@
 import React from "react";
 import { useEffect, useRef } from "react";
-import MessageBubble from "./MessageBubble";
-import TypingIndicator from "./TypingIndicator";
+import MessageBubble from "../../base/MessageBubble";
 
-const MessagesArea = ({ messages, isTyping }) => {
+const MessagesArea = ({ messages }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -13,7 +12,6 @@ const MessagesArea = ({ messages, isTyping }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  console.log(messages, "MessagesArea");
 
   return (
     <div className="flex-1 p-4 space-y-4">
@@ -24,7 +22,6 @@ const MessagesArea = ({ messages, isTyping }) => {
         />
       ))}
 
-      {/* {isTyping && <TypingIndicator />} */}
       <div ref={messagesEndRef} />
     </div>
   );

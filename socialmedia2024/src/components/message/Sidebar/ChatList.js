@@ -1,37 +1,5 @@
 import SidebarHeader from './SidebarHeader';
 import ChatListItem from "./ChatListItem";
-const CHAT_LIST = [
-  {
-    id: 1,
-    name: "Mai Anh",
-    avatar: "👩‍💼",
-    lastMessage: "Bạn có rảnh không? Mình muốn hỏi về dự án",
-    time: "2 phút",
-    unread: 2,
-    online: true,
-    color: "from-pink-500 to-rose-500",
-  },
-  {
-    id: 2,
-    name: "Đức Minh",
-    avatar: "👨‍💻",
-    lastMessage: "Code review meeting lúc 3h nhé!",
-    time: "15 phút",
-    unread: 0,
-    online: true,
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    id: 3,
-    name: "Thu Hà",
-    avatar: "👩‍🎨",
-    lastMessage: "Design mới đã xong, check giúp mình",
-    time: "1 giờ",
-    unread: 1,
-    online: false,
-    color: "from-purple-500 to-pink-500",
-  }
-];
 
 const ChatList = ({ chatList, activeChat, onChatSelect, searchQuery, onSearchChange }) => {
   // const filteredChats = chatList.filter((chat) =>
