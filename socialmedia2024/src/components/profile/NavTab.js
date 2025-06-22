@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import 'react-tabs/style/react-tabs.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -33,4 +33,4 @@ const NavTab = () => {
     );
 };
 
-export default NavTab;
+export default React.memo(NavTab);

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
-    [Authorize]
     [Route("/api/[controller]")]
     [ApiController]
     public class FriendController : HandleController
@@ -52,6 +51,13 @@ namespace SocialMedia2024.WebApi.Controllers
 
             await _friendService.UpdateFriendStatus(friendStatusVM);
             return await CreateOK();
+        }
+        [HttpGet("chat-list-user")]
+        public async Task<IActionResult> ChatListUser()
+        {
+            var currentUserId = User.FindFirst("UserId")?.Value;
+
+            return await ResponseSuccess(await _friendService.ChatListUser(currentUserId), "");
         }
 
     }

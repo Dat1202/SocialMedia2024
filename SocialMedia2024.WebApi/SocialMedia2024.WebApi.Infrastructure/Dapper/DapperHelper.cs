@@ -12,7 +12,7 @@ namespace SocialMedia2024.WebApi.Infrastructure.Dapper
 
         public DapperHelper(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("SocialMediaConnention") ?? string.Empty;
+            _connectionString = configuration.GetConnectionString("SocialMediaConnection") ?? string.Empty;
         }
 
         public async Task ExecuteNonReturn(string query, DynamicParameters parameters = null, IDbTransaction dbTransaction = null)

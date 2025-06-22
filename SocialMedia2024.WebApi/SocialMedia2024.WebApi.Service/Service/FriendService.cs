@@ -40,5 +40,16 @@ namespace SocialMedia2024.WebApi.Service.Service
 
             return status;
         }
+
+        public async Task<IEnumerable<UserBriefVM>> ChatListUser(string userId)
+        {
+            const string storedProcedure = "Chat_List_User_Get";
+            var parameters = new DynamicParameters();
+            parameters.Add("@CurrentUserId", userId);
+
+            var users = await _dapperHelper.ExecuteSqlReturnList<UserBriefVM>(storedProcedure, parameters);
+
+            return users;
+        }
     }
 }

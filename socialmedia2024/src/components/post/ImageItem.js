@@ -17,29 +17,32 @@ const ImageItem = ({ image, total }) => {
                         gridClasses += ' col-span-2';
                     }
 
-                    let overlayClasses = 'absolute top-0 left-0 w-full h-full bg-[--bg-image] opacity-80 z-10';
-
                     return (
-                        <React.Fragment key={md.id}>
-                            {index < 4 && (
-                                <div key={index} className={gridClasses}>
-                                    {md.isVideo ? (
-                                        <video controls>
-                                            <source src={md.mediaUrl} type="video/mp4" />
-                                        </video>
-                                    ) : (
-                                        <img className='max-w-full h-full object-cover' loading='lazy' src={md.mediaUrl} alt="" />
-                                    )}
-                                    {total >= 5 && index === 3 && (
-                                        <div className={overlayClasses}>
-                                            <p className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl z-30'>
-                                                +{total - 4}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
+                      <div key={md.id}>
+                        {index < 4 && (
+                          <div key={index} className={gridClasses}>
+                            {md.isVideo ? (
+                              <video controls>
+                                <source src={md.mediaUrl} type="video/mp4" />
+                              </video>
+                            ) : (
+                              <img
+                                className="max-w-full h-full object-cover z-10"
+                                loading="lazy"
+                                src={md.mediaUrl}
+                                alt={md.mediaUrl}
+                              />
                             )}
-                        </React.Fragment>
+                            {total >= 5 && index === 3 && (
+                              <div className="absolute top-0 left-0 w-full h-full bg-[--bg-image] opacity-80 z-10">
+                                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl z-10">
+                                  +{total - 4}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     );
                 })}
             </div>
@@ -47,4 +50,4 @@ const ImageItem = ({ image, total }) => {
     )
 }
 
-export default ImageItem
+export default React.memo(ImageItem);

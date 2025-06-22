@@ -1,5 +1,7 @@
 ﻿using Alachisoft.NCache.Caching.Distributed;
 using CloudinaryDotNet;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
@@ -35,7 +37,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SocialMedia2024DbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SocialMediaConnention")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SocialMediaConnection")));
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
                 {
@@ -65,6 +67,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 builder.Services.AddScoped<PasswordHasher<User>>();
@@ -190,7 +193,6 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Scheme = "bearer",
         BearerFormat = "JWT",
-        Description = "Please input your token"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -207,6 +209,12 @@ builder.Services.AddSwaggerGen(c =>
                 new string[] {}
             }
         });
+});
+var credentialPath = builder.Configuration["Firebase:CredentialPath"];
+
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(credentialPath)
 });
 
 var app = builder.Build();

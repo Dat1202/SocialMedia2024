@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../layout/Router';
 import ModalRegister from '../../components/modal/RegisterModal';
 import Spinner from '../../components/base/Spinner';
+import loginToFirebase from '../../firebase/LoginToFirebase';
 
 const Login = () => {
     const [user, dispatch] = useContext(UserContext);
@@ -19,7 +20,7 @@ const Login = () => {
 
     const login = async (e) => {
         e.preventDefault();
-
+        
         try {
             setLoading(true)
 
@@ -39,7 +40,10 @@ const Login = () => {
                     "type": "login",
                     "payload": currentUser
                 });
-                setLoading(false)
+
+                await loginToFirebase();
+                
+                setLoading(false);
             }
 
         } catch (ex) {

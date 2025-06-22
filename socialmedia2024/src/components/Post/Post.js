@@ -27,7 +27,7 @@ const Post = () => {
         }
     }, []);
 
-    const GetListPost = useCallback(async (currentPageIndex) => {
+    const GetPosts = useCallback(async (currentPageIndex) => {
         setLoading(true);
         try {
             const res = await authApis().get(endpoints['post'], {
@@ -46,8 +46,8 @@ const Post = () => {
 
     useEffect(() => {
         GetReaction();
-        GetListPost(1);
-    }, [GetReaction, GetListPost]);
+        GetPosts(1);
+    }, [GetReaction, GetPosts]);
 
     const handleScroll = useCallback(() => {
         if (
@@ -61,9 +61,9 @@ const Post = () => {
 
     useEffect(() => {
         if (!initialLoad && pageIndex > 1) {
-            GetListPost(pageIndex);
+            GetPosts(pageIndex);
         }
-    }, [pageIndex, initialLoad, GetListPost]);
+    }, [pageIndex, initialLoad, GetPosts]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -79,7 +79,7 @@ const Post = () => {
                 <input type='text' onClick={openPostModal} placeholder={`${user.firstName} ơi, Bạn đang nghĩ gì thế?`}
                     className='w-11/12 px-4 py-2 rounded-full caret-transparent focus:outline-none hover:cursor-pointer bg-[var(--bg-color)] hover:bg-[var(--hover-color)]' />
             </div>
-            <PostModal GetListPost={() => GetListPost(1)} isOpen={isOpenPostModal} onClose={closePostModal} />
+            <PostModal GetPosts={() => GetPosts(1)} isOpen={isOpenPostModal} onClose={closePostModal} />
 
             {posts.length > 0 ? posts.map(p => (
                 <PostItem key={p.id} post={p} postAction={postAction} />
@@ -90,4 +90,4 @@ const Post = () => {
     );
 }
 
-export default Post;
+export default React.memo(Post);

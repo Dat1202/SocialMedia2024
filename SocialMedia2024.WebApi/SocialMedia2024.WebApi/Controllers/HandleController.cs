@@ -5,7 +5,7 @@ using SocialMedia2024.WebApi.ViewModel;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
-    [ApiController] 
+    [ApiController]
     public class HandleController : ControllerBase
     {
         private readonly IErrorCodeService _errorService;

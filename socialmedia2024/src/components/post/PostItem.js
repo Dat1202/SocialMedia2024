@@ -9,6 +9,7 @@ import { endpoints, authApis } from '../../configs/Apis';
 import { sendNotificationToUser } from '../../service/HubService';
 import { UserContext } from '../../layout/Router';
 import moment from 'moment';
+import { NotificationActionType } from '../../constants/NotificationActionType';
 
 const reactionsList = [
     { value: 0, name: 'like', icon: '👍', label: 'thích' },
@@ -31,7 +32,6 @@ const PostItem = ({ post, postAction }) => {
     const [currentAction, setCurrentAction] = useState(reactionsList[0]);
     const [user] = useContext(UserContext);
 
-    // Set current reaction on post change
     useEffect(() => {
         const reaction = reactionsList.find(r => +r.value === +post?.reactionTypeID) || reactionsList[0];
         setCurrentAction(reaction);
@@ -52,12 +52,12 @@ const PostItem = ({ post, postAction }) => {
 
                 if (user.id !== post.postUserId) {
                     const notificationAction = {
-                        senderName: `${user.lastName} ${user.firstName}`,
-                        avatar: user.avatar,
-                        reaction: reaction.label,
-                        postID: post.id,
-                        createdAt: moment(),
-                        ActionType: 1,
+                      senderName: `${user.lastName} ${user.firstName}`,
+                      avatar: user.avatar,
+                      reaction: reaction.label,
+                      postID: post.id,
+                      createdAt: moment(),
+                      ActionType: NotificationActionType.POST_REACTED,
                     };
                     try {
                         await sendNotificationToUser("SendNotification", post.postUserId, notificationAction);
@@ -73,7 +73,7 @@ const PostItem = ({ post, postAction }) => {
                 });
             }
         } catch (error) {
-            console.error("Error submitting/resetting reaction:", error);
+            console.error("Error reaction:", error);
         }
     };
 
@@ -150,4 +150,4 @@ const PostItem = ({ post, postAction }) => {
     );
 };
 
-export default PostItem;
+export default React.memo(PostItem);

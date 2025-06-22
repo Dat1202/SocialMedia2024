@@ -6,5 +6,6 @@ namespace SocialMedia2024.WebApi.Service.Interfaces
     {
         Task UpdateFriendStatus(FriendStatusVM friendStatusVM);
         Task<FriendStatusVM> GetFriendStatus(string currentUserId, string friendId);
+        Task<IEnumerable<UserBriefVM>> ChatListUser(string userId);
     }
 }

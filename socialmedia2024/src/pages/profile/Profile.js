@@ -1,6 +1,6 @@
 import React from 'react'
 import NavTab from '../../components/profile/NavTab';
-import Header from '../../components/profile/Header';
+import Header from '../../components/profile/IntroSection';
 
 const Profile = () => {
     return (

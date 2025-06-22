@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { UserContext } from '../../layout/Router'
 import Spinner from '../base/Spinner'
@@ -18,39 +18,43 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const [files, setFile] = useState([]);
     const [isOpenAddImage, setOpenAddImage] = useState(false);
 
-    const createPost = async (e) => {
+
+    const createPost = useCallback(async (e) => {
         e.preventDefault();
 
         if (content === "" && files.length === 0) {
-            toast.error("Please fill in all required fields");
-            return;
+          toast.error("Please fill in all required fields");
+          return;
         }
 
         setLoading(true);
         const data = new FormData();
-
-        data.append("UserId", user.id)
-        data.append("Content", content)
+        data.append("UserId", user.id);
+        data.append("Content", content);
         if (files && files.length > 0) {
-            files.forEach((file) => {
-                data.append("Files", file);
-            });
+          files.forEach((file) => {
+            data.append("Files", file);
+          });
         }
 
         try {
-            let post = await authApis().post(endpoints['post'], data);
-            toast.success(post.data.messageResponse);
-            onClose();
-            setContent('');
-            setFile([]);
-            setLoading(false);
-            setPreviewImage(null);
-            GetListPost();
+          let post = await authApis().post(endpoints["post"], data);
+          toast.success(post.data.messageResponse);
+          onClose();
+          setContent("");
+          setFile([]);
+          setLoading(false);
+          setPreviewImage(null);
+          GetListPost();
+        } catch (ex) {
+          console.log(ex);
+          toast.error("Đã có lỗi xảy ra khi đăng bài.");
+          setLoading(false);
         }
-        catch (ex) {
-            console.log(ex);
-        }
-    }
+      },
+      [content, files, user.id, onClose, GetListPost]);
+
+
     const handleInput = (e) => {
         const textarea = e.target;
         textarea.style.height = 'auto';
@@ -75,6 +79,7 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
     const openAddImage = () => {
         setOpenAddImage(!isOpenAddImage);
     }
+    
     const DeletePreviewImage = () => {
         setPreviewImage(null);
         setFile([]);
@@ -165,4 +170,4 @@ const PostModal = ({ isOpen, onClose, GetListPost }) => {
     )
 }
 
-export default PostModal
+export default React.memo(PostModal);

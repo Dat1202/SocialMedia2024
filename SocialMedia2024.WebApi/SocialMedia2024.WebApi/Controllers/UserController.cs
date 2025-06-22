@@ -7,7 +7,6 @@ using SocialMedia2024.WebApi.Core.EmailHelper;
 using SocialMedia2024.WebApi.Infrastructure.CommonService;
 using SocialMedia2024.WebApi.Service.Interfaces;
 using SocialMedia2024.WebApi.Service.ViewModel;
-using SocialMedia2024.WebApi.ViewModel;
 
 namespace SocialMedia2024.WebApi.Controllers
 {
