@@ -397,12 +397,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /SocialMedia2024.WebApi/SocialMedia2024.WebApi/SessionStoreProvider
-SocialMedia2024.WebApi/SocialMedia2024.WebApi/client.ncconf
+/SocialMedia2024.WebApi/SocialMedia2024.WebApi/client.ncconf
 /SocialMedia2024.WebApi/SocialMedia2024.WebApi.Infrastructure/Migrations
 /SocialMedia2024.WebApi/SocialMedia2024.WebApi/log-files
-/SocialMedia2024.WebApi/SocialMedia2024.WebApi
-/SocialMedia2024.WebApi/SocialMedia2024.WebApi
-/SocialMedia2024.WebApi
-/SocialMedia2024.WebApi/SocialMedia2024.WebApi
-/SocialMedia2024.WebApi/SocialMedia2024.WebApi
-/SocialMedia2024.WebApi
+/SocialMedia2024.WebApi/SocialMedia2024.WebApi/Configuration/firebase-adminsdk.json
